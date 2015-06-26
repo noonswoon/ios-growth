@@ -26,6 +26,12 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
     
     
     
+    // MARK: Content attributes
+    
+    var contentURLImage = ""
+    
+    
+    
     // MARK: Facebook SDKs instance
     
     let permissions = ["public_profile", "email", "user_likes", "user_photos"]
@@ -38,8 +44,11 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
     // MARK: View elements instance
     
     var backgroundImageView: UIImageView!
+    var contentBackgroundImageShape: CAShapeLayer!
     var contentBackgroundImageView: UIView!
+    
     var profileImageView: CustomImageView!
+    
     var shareButton:   FBSDKShareButton!
     var loginView:     FBSDKLoginButton!
     var shareDialog:   FBSDKShareDialog!
@@ -65,11 +74,15 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
             let statusBarHeight: CGFloat = 20
             let topMargin: CGFloat = statusBarHeight + self.margin
             
-            self.loginView.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
+            // Login view animate
+            if ( self.loginView != nil ) {
+                self.loginView.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
+            }
             
+            // Share button animate
             if ( self.shareButton != nil ) {
-                    self.shareButton.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
-                }
+                self.shareButton.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
+            }
             
         }, completion: nil)
     }
@@ -85,7 +98,7 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
             self.userLoggedIn()
         }
         else {
-            //self.setLoginView()
+            self.setLoginView()
         }
         
     }
@@ -102,11 +115,10 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
         
         // Calculateing
         self.findMaximumPageCategoryCount()
-        self.saveResult()
         
         // Set view elements
+        // The share button wiil be shown after the result generated
         self.setContentBackground()
-        self.setShareButton()
         
         // Just for testing query data
         sortingFanpageUserLike()
@@ -284,6 +296,11 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
         self.showAds()
     }
     
+    func loginViewClicked () {
+        
+        self.loginView.removeFromSuperview()
+    }
+    
     func showAds () {
         
         UIView.animateWithDuration(1.0, delay: 3.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
@@ -387,9 +404,6 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
     
     // MARK: Calculating result
     func findMaximumPageCategoryCount () {
-        // For more complex open graph stories, use `FBSDKShareAPI`
-        // with `FBSDKShareOpenGraphContent`
-        /* make the API call */
         
         var graphPath : String = "me?fields=likes.limit(1000)"
         var returnResult = ""
@@ -446,18 +460,41 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
                 // println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
                 
                 UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+                    
                     self.resultLabel.alpha = 0.0
+                    
                     }, completion: {
                         (finished: Bool) -> Void in
                         
                         //Once the label is completely invisible, set the text and fade it back in
-                        self.resultLabel.text = self.generateResult("\(sortedKeys[0])")
+                        //self.resultLabel.text = self.generateResult("\(sortedKeys[0])")
+                        
+                        let image = UIImage(named: "tempResult.png")
+                        let imageView = UIImageView(image: image)
+                        imageView.frame = CGRectMake(0, 0, self.view.frame.width - self.margin*2, self.view.frame.width/2 )
+                        imageView.center.x = self.view.center.x
+                        imageView.center.y = self.view.frame.height * 3/4 - 20
+                        
+                        self.contentBackgroundImageView.addSubview( imageView )
                         
                         // Fade in
                         UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+                            
                             self.resultLabel.alpha = 1.0
+                            
                             }, completion: nil)
                 })
+                
+                
+                
+                
+                let delay = 4.5 * Double(NSEC_PER_SEC)
+                let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                dispatch_after(time, dispatch_get_main_queue()) {
+                    self.saveResult()
+                }
+
+                
                 
                 
             }
@@ -523,22 +560,32 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
     }
     
     func saveResult () {
-        var newImage = PFObject(className: "UserGeneratedResult")
-        var imageData: NSData = UIImagePNGRepresentation( UIImage(named: "NoonswoonAds") )
+        
+        
+        var objectFile = PFObject(className: "UserGeneratedResult")
+        
+        let window: UIWindow! = UIApplication.sharedApplication().keyWindow
+        let windowImage = window.capture()
+
+        //var imageData: NSData = UIImagePNGRepresentation( UIImage(named: imageSource) )
+        var imageData: NSData = UIImagePNGRepresentation( windowImage )
         
         var newImageFile = PFFile(name: "UserGeneratedResult.png", data: imageData)
-        newImage["userID"] = "justUserID"
-        newImage["imageFile"] = newImageFile
+        objectFile["userID"] = "justUserID"
+        objectFile["imageFile"] = newImageFile
         newImageFile.saveInBackgroundWithBlock({
             (succeeded: Bool, error: NSError?) -> Void in
                 if (error == nil){
+                    self.setShareButtonWith(contentURLImage: newImageFile.url!)
+                    self.contentURLImage = newImageFile.url!
                     println(newImageFile.url)
                 }
             }, progressBlock: {
                 (percentDone: Int32) -> Void in
                 println("percentDone: \(percentDone)")
         })
-        newImage.saveInBackground()
+        
+        objectFile.saveInBackground()
     }
 
     
@@ -591,10 +638,6 @@ extension ViewController {
         
         if (logObject == nil) {
             self.setLogObject()
-        }
-        
-        if (loginView == nil) {
-            self.setLoginView()
         }
         
         if (contentBackgroundImageView == nil) {
@@ -685,8 +728,8 @@ extension ViewController {
         let statusBarHeight: CGFloat = 20
         let topMargin: CGFloat = statusBarHeight + margin
         
-        var contentBackgroundImageShape: CAShapeLayer = CAShapeLayer()
-        contentBackgroundImageShape.frame = CGRect(x: margin, y: topMargin, width: self.view.frame.width - margin * 2, height: self.view.frame.height - ( margin * 2 + topMargin) - loginView.frame.height)
+        contentBackgroundImageShape = CAShapeLayer()
+        contentBackgroundImageShape.frame = CGRect(x: margin, y: topMargin, width: self.view.frame.width - margin * 2, height: self.view.frame.height - ( margin * 2 + topMargin) - elementHeight)
         contentBackgroundImageShape.path = UIBezierPath(roundedRect: contentBackgroundImageShape.bounds, cornerRadius: 6).CGPath
         contentBackgroundImageShape.fillColor = UIColor(white: 1, alpha: 1).CGColor
         contentBackgroundImageShape.strokeColor = UIColor.grayColor().CGColor
@@ -706,10 +749,11 @@ extension ViewController {
         loginView.frame = CGRectMake(8, 0, self.view.frame.width - 16, elementHeight)
         loginView.center.x = CGRectGetMidX( self.view.frame )
         // The y position should be animated
+        
         loginView.center.y = CGRectGetMaxY( self.view.frame ) + CGRectGetMidY( self.loginView.frame ) + self.margin
         loginView.layer.cornerRadius = 6
         loginView.layer.masksToBounds = true
-        //loginView.layer.zPosition = -1
+        loginView.addTarget(self, action: "loginViewClicked", forControlEvents: .TouchUpInside)
         
         loginView.readPermissions = permissions
         loginView.delegate = self
@@ -728,10 +772,10 @@ extension ViewController {
             }, completion: nil)
     }
     
-    func setShareButton (){
+    func setShareButtonWith (#contentURLImage: String){
         
         let contentURL = "https://noonswoonapp.com"
-        let contentURLImage = "http://blog.noonswoonapp.com/wp-content/uploads/2015/06/b04.jpg"
+        let default_contentURLImage = "http://blog.noonswoonapp.com/wp-content/uploads/2015/06/b04.jpg"
         let contentTitle = "Noonswoon, give yourself a change"
         let contentDescription = "Noonswoon introduces you to one NEW person every day at noon.You have 24 hours to decide whether you like your match.If both of you LIKE each other, the app will CONNECT you and you can CHAT privately"
         
@@ -743,7 +787,11 @@ extension ViewController {
         
         shareButton = FBSDKShareButton()
         shareButton.shareContent = content
-        shareButton.frame = loginView.frame
+        shareButton.frame = CGRectMake(8, 0, self.view.frame.width - 16, elementHeight)
+        shareButton.center.x = CGRectGetMidX( self.view.frame )
+        // The y position should be animated
+        
+        shareButton.center.y = CGRectGetMaxY( self.view.frame ) + elementHeight/2 + self.margin
         shareButton.addTarget(self, action: "shareButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
         shareButton.layer.cornerRadius = 6
         shareButton.layer.masksToBounds = true
@@ -751,10 +799,33 @@ extension ViewController {
         if (shareButton.superview == nil) {
             self.view.addSubview(shareButton)
         }
+        
+        UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+            
+            if ( self.shareButton != nil ) {
+                self.shareButton.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
+            }
+            
+        }, completion: nil)
     }
     
     func setLogObject () {
         self.logObject = PFObject(className: "UserLogged")
     }
+
+}
+
+public extension UIWindow {
+    
+    func capture() -> UIImage {
+        
+        UIGraphicsBeginImageContextWithOptions(self.frame.size , self.opaque, 0.0)
+        self.layer.renderInContext(UIGraphicsGetCurrentContext())
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+    
 }
 

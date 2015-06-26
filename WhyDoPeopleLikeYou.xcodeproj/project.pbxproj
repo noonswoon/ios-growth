@@ -57,6 +57,7 @@
 		9F8B46E41B3962F6004BE8E9 /* background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F8B46E11B3962F6004BE8E9 /* background2.png */; };
 		9F8B46E51B3962F6004BE8E9 /* launchScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F8B46E21B3962F6004BE8E9 /* launchScreen.png */; };
 		9F8B46E91B3973EA004BE8E9 /* noonswoon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F8B46E81B3973EA004BE8E9 /* noonswoon.png */; };
+		9F9C8B561B3D66140051D5D2 /* tempResult.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F9C8B551B3D66140051D5D2 /* tempResult.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,6 +141,7 @@
 		9F8B46E11B3962F6004BE8E9 /* background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background2.png; path = Images/background2.png; sourceTree = "<group>"; };
 		9F8B46E21B3962F6004BE8E9 /* launchScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = launchScreen.png; path = Images/launchScreen.png; sourceTree = "<group>"; };
 		9F8B46E81B3973EA004BE8E9 /* noonswoon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noonswoon.png; path = Images/noonswoon.png; sourceTree = "<group>"; };
+		9F9C8B551B3D66140051D5D2 /* tempResult.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tempResult.png; path = Images/tempResult.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,11 +185,7 @@
 		9F0C17431B390C5300122D7C = {
 			isa = PBXGroup;
 			children = (
-				9F8B46E01B3962F6004BE8E9 /* main_background.png */,
-				9F0D0FA91B3AA6C400B24C86 /* NoonswoonAds.png */,
-				9F8B46E11B3962F6004BE8E9 /* background2.png */,
-				9F8B46E81B3973EA004BE8E9 /* noonswoon.png */,
-				9F8B46E21B3962F6004BE8E9 /* launchScreen.png */,
+				9F9C8B541B3D63E30051D5D2 /* Images */,
 				9F0C17961B390F6100122D7C /* Framework */,
 				9F0C174E1B390C5300122D7C /* WhyDoPeopleLikeYou */,
 				9F0C17671B390C5300122D7C /* WhyDoPeopleLikeYouTests */,
@@ -312,6 +310,19 @@
 			name = SDWebImage;
 			sourceTree = "<group>";
 		};
+		9F9C8B541B3D63E30051D5D2 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				9F8B46E01B3962F6004BE8E9 /* main_background.png */,
+				9F9C8B551B3D66140051D5D2 /* tempResult.png */,
+				9F0D0FA91B3AA6C400B24C86 /* NoonswoonAds.png */,
+				9F8B46E11B3962F6004BE8E9 /* background2.png */,
+				9F8B46E81B3973EA004BE8E9 /* noonswoon.png */,
+				9F8B46E21B3962F6004BE8E9 /* launchScreen.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -397,6 +408,7 @@
 				9F0C175F1B390C5300122D7C /* LaunchScreen.xib in Resources */,
 				9F8B46E51B3962F6004BE8E9 /* launchScreen.png in Resources */,
 				9F8B46E41B3962F6004BE8E9 /* background2.png in Resources */,
+				9F9C8B561B3D66140051D5D2 /* tempResult.png in Resources */,
 				9F0C175C1B390C5300122D7C /* Images.xcassets in Resources */,
 				9F0D0FAA1B3AA6C400B24C86 /* NoonswoonAds.png in Resources */,
 				9F8B46E31B3962F6004BE8E9 /* main_background.png in Resources */,
