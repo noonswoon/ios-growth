@@ -1,6 +1,8 @@
 # ios-growth
 Internship iOS Fun &amp; Growth App
 
+<img src="http://files.parsetfss.com/3d189fc8-bfe5-41b9-9c96-fded3c6809a7/tfss-ae47d901-3b54-41ca-9df6-b33bdd16da87-UserGeneratedResult.png">
+
 <h1>Done</h1>
 Authenticate user with Facebook
   - Sign-in / Sign-out 
