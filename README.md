@@ -8,7 +8,12 @@ Done:
 Authenticate user with Facebook
   - Sign-in / Sign-out 
 
-Get permission as public profile, photos, email
+Get permission
+  - Public profile
+  - photos
+  - email
+  - display (using graph.facebook)
+  - birthday
 
 Generate content as a plain text
 
