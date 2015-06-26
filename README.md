@@ -17,7 +17,7 @@ Capture screen (for sharing to social network)
 Upload snapshot to Parse (Use for content image url)
 
 Share to Facebook (Focus onlu share link)
-    - content url
-    - content image url
-    - content title
-    - content description
+  - content url
+  - content image url
+  - content title
+  - content description
