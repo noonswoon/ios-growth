@@ -1,9 +1,6 @@
 # ios-growth
 Internship iOS Fun &amp; Growth App
 
-Done:
-
-
 <h1>Done</h1>
 Authenticate user with Facebook
   - Sign-in / Sign-out 
@@ -15,7 +12,8 @@ Get permission
   - display (using graph.facebook)
   - birthday
 
-Generate content as a plain text
+Generate content
+  - plain text
 
 Capture screen (for sharing to social network)
 
@@ -26,3 +24,11 @@ Share to Facebook (Focus onlu share link)
   - content image url
   - content title
   - content description
+  
+<h1>To do</h1>
+
+Make application flow clealy
+
+Specific area for snapshot
+
+Content for generrating
