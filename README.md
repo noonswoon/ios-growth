@@ -2,7 +2,7 @@
 Internship iOS Fun &amp; Growth App
 
 ** If you have a chance to try the app, wait for 5 second before the a share button show up.
-<img src="http://files.parsetfss.com/3d189fc8-bfe5-41b9-9c96-fded3c6809a7/tfss-ae47d901-3b54-41ca-9df6-b33bdd16da87-UserGeneratedResult.png" height="30%" width="30%">
+<img src="http://files.parsetfss.com/3d189fc8-bfe5-41b9-9c96-fded3c6809a7/tfss-686821dc-b9cc-4110-935c-5cec01f46970-UserGeneratedResult.png" height="30%" width="30%">
 
 <h1>Done</h1>
 Authenticate user with Facebook
@@ -18,20 +18,23 @@ Get permission
 Generate content
   - plain text
 
-Capture screen (for sharing to social network)
+Screen capture for the result
 
-Upload snapshot to Parse (Use for content image url)
+Upload the screen capture to Parse (Use to get image url)
 
-Share to Facebook (Focus onlu share link)
+Share to social network (Facebook, focus only share link)
   - content url
   - content image url
   - content title
   - content description
+
+Loading indicator
+
+Advertisment pop-up
+  - Link to Noonswoon itunes
   
 <h1>To do</h1>
 
 Make application flow clealy
-
-Specific area for snapshot
 
 Content for generrating
