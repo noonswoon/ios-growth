@@ -36,6 +36,8 @@
 		9F0C17A21B3910DE00122D7C /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0C179F1B3910DE00122D7C /* FBSDKShareKit.framework */; };
 		9F0D0FA81B3A9EB900B24C86 /* AdvertisementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0D0FA71B3A9EB900B24C86 /* AdvertisementViewController.swift */; };
 		9F0D0FAA1B3AA6C400B24C86 /* NoonswoonAds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0D0FA91B3AA6C400B24C86 /* NoonswoonAds.png */; };
+		9F11D84C1B4151D800B91BB3 /* SwiftSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F11D84B1B4151D800B91BB3 /* SwiftSpinner.swift */; };
+		9F11D8511B415CBC00B91BB3 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F11D8501B415CBC00B91BB3 /* CustomAlertView.swift */; };
 		9F18D1601B39229100C97F52 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F18D1441B39229000C97F52 /* NSData+ImageContentType.m */; };
 		9F18D1611B39229100C97F52 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F18D1461B39229000C97F52 /* SDImageCache.m */; };
 		9F18D1621B39229100C97F52 /* SDWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F18D1481B39229000C97F52 /* SDWebImageCompat.m */; };
@@ -105,6 +107,8 @@
 		9F0C17A31B3911B200122D7C /* WhyDoPeopleLikeYou-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhyDoPeopleLikeYou-Bridging-Header.h"; sourceTree = "<group>"; };
 		9F0D0FA71B3A9EB900B24C86 /* AdvertisementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvertisementViewController.swift; sourceTree = "<group>"; };
 		9F0D0FA91B3AA6C400B24C86 /* NoonswoonAds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoonswoonAds.png; sourceTree = "<group>"; };
+		9F11D84B1B4151D800B91BB3 /* SwiftSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSpinner.swift; sourceTree = "<group>"; };
+		9F11D8501B415CBC00B91BB3 /* CustomAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
 		9F18D1431B39229000C97F52 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
 		9F18D1441B39229000C97F52 /* NSData+ImageContentType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ImageContentType.m"; sourceTree = "<group>"; };
 		9F18D1451B39229000C97F52 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
@@ -208,7 +212,9 @@
 				9F18D16E1B39229800C97F52 /* SDWebImage */,
 				9F0C17511B390C5300122D7C /* AppDelegate.swift */,
 				9F18D16F1B3922D600C97F52 /* CircularLoaderView.swift */,
+				9F11D8501B415CBC00B91BB3 /* CustomAlertView.swift */,
 				9F18D1701B3922D600C97F52 /* CustomImageView.swift */,
+				9F11D84B1B4151D800B91BB3 /* SwiftSpinner.swift */,
 				9F0C17561B390C5300122D7C /* ViewController.swift */,
 				9F0D0FA71B3A9EB900B24C86 /* AdvertisementViewController.swift */,
 				9F18D1731B3943E900C97F52 /* DataController.swift */,
@@ -446,8 +452,10 @@
 				9F18D16C1B39229100C97F52 /* UIImageView+WebCache.m in Sources */,
 				9F18D1661B39229100C97F52 /* SDWebImageManager.m in Sources */,
 				9F18D16A1B39229100C97F52 /* UIImage+MultiFormat.m in Sources */,
+				9F11D84C1B4151D800B91BB3 /* SwiftSpinner.swift in Sources */,
 				9F0D0FA81B3A9EB900B24C86 /* AdvertisementViewController.swift in Sources */,
 				9F18D1671B39229100C97F52 /* SDWebImagePrefetcher.m in Sources */,
+				9F11D8511B415CBC00B91BB3 /* CustomAlertView.swift in Sources */,
 				9F0C17551B390C5300122D7C /* WhyDoPeopleLikeYou.xcdatamodeld in Sources */,
 				9F18D1611B39229100C97F52 /* SDImageCache.m in Sources */,
 			);

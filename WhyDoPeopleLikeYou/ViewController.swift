@@ -9,28 +9,7 @@
 import UIKit
 import Parse
 
-extension UIView {
-    func fadeIn(duration: NSTimeInterval = 1.0, delay: NSTimeInterval = 0.0, completion: ((Bool) -> Void) = {(finished: Bool) -> Void in}) {
-        UIView.animateWithDuration(duration, delay: delay, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.alpha = 1.0
-            }, completion: completion)  }
-    
-    func fadeOut(duration: NSTimeInterval = 1.0, delay: NSTimeInterval = 0.0, completion: (Bool) -> Void = {(finished: Bool) -> Void in}) {
-        UIView.animateWithDuration(duration, delay: delay, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.alpha = 0.0
-            }, completion: completion)
-    }
-}
-
-class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    
-    
-    
-    // MARK: Content attributes
-    
-    var contentURLImage = ""
-    
-    
+class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, CustomAlertViewDelegate {
     
     // MARK: Facebook SDKs instance
     
@@ -38,8 +17,6 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
     var content : FBSDKSharePhotoContent!
     var imagePicker = UIImagePickerController()
     var mediaSelected = ""
-    
-    
     
     // MARK: View elements instance
     
@@ -58,270 +35,72 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
     let margin: CGFloat = 8
     let elementHeight: CGFloat = 44
     
-    
-    
     // MARK: Parse user logged object
     
     var logObject: PFObject!
     
+    // MARK: Loading indicator
+    
+    var indicator: UIActivityIndicatorView!
+    
+    // MARK: Alert View container
+    
+    var containerView: UIView!
+    var alertView: CustomAlertView!
     
     
     // MARK: Program life cycle
     
-    override func viewDidAppear(animated: Bool) {
-        UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            
-            let statusBarHeight: CGFloat = 20
-            let topMargin: CGFloat = statusBarHeight + self.margin
-            
-            // Login view animate
-            if ( self.loginView != nil ) {
-                self.loginView.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
-            }
-            
-            // Share button animate
-            if ( self.shareButton != nil ) {
-                self.shareButton.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
-            }
-            
-        }, completion: nil)
-    }
-
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set the view elements
+        
         self.configView()
-
+        
+        // Check that is user already logged in, if not, show the login view up
+        
         if (FBSDKAccessToken.currentAccessToken() != nil) {
+        
             self.userLoggedIn()
         }
         else {
+            
             self.setLoginView()
         }
         
     }
     
     
-    
-    // MARK: Controller
-    
-    func userLoggedIn () {
+    override func viewDidAppear(animated: Bool) {
         
-        // Set user information
-        self.setUserInformation()
-        self.setUserProfilePictureWithAnimation()
-        
-        // Calculateing
-        self.findMaximumPageCategoryCount()
-        
-        // Set view elements
-        // The share button wiil be shown after the result generated
-        self.setContentBackground()
-        
-        // Just for testing query data
-        sortingFanpageUserLike()
+        UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+            
+            let statusBarHeight: CGFloat = 20
+            let topMargin: CGFloat = statusBarHeight + self.margin
+            
+            // Login view animate
+            
+            if ( self.loginView != nil ) {
+                self.loginView.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
+            }
+            
+            // Share button animate
+            
+            if ( self.shareButton != nil ) {
+                self.shareButton.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
+            }
+            
+        }, completion: nil)
     }
+}
     
 
-    
-    // Facebook Delegate Methods
-    
-    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
-        println("User Logged In")
-        
-        if ((error) != nil) {
-        }
-        else if result.isCancelled {
-        }
-        else {
-            self.userLoggedIn()
-        }
-    }
-    
-    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
-        
-        self.nameLabel.text   = ""
-        self.resultLabel.text = ""
-        self.profileImageView.removeFromSuperview()
-        self.backgroundImageView.image = UIImage(named: "background1.png")
-        self.shareButton.removeFromSuperview()
-        self.contentBackgroundImageView.removeFromSuperview()
-        
-        println("User Logged Out")
-    }
+// MARK: Generating result
 
-    func comment () {
-/*
-    // Link Methods
-    func showLinkButton() {
-        
-        let contentURL = "http://www.brianjcoleman.com/tutorial-how-to-share-in-facebook-sdk-4-0-for-swift"
-        let contentURLImage = "http://www.brianjcoleman.com/wp-content/uploads/2015/03/10734326_939301926101159_1211166514_n-667x333.png"
-        let contentTitle = "Tutorial: How To Share in Facebook SDK 4.0 for Swift"
-        let contentDescription = "In this tutorial learn how to integrate Facebook Sharing into your iOS Swift project using the native Facebook SDK 4.0."
-        
-        let content : FBSDKShareLinkContent = FBSDKShareLinkContent()
-        content.contentURL = NSURL(string: contentURL)
-        content.contentTitle = contentTitle
-        content.contentDescription = contentDescription
-        content.imageURL = NSURL(string: contentURLImage)
-        
-        let button : FBSDKShareButton = FBSDKShareButton()
-        button.shareContent = content
-        button.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 100) * 0.5, 50, 100, 25)
-        
-        let label : UILabel = UILabel()
-        label.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 200) * 0.5, 25, 200, 25)
-        label.text = "Link Example"
-        label.textAlignment = .Center
-        
-        self.view.addSubview(button)
-        self.view.addSubview(label)
-    }
+extension ViewController {
     
-    // Photo Methods
-    func showPhotoButton()
-    {
-        let button : UIButton = UIButton()
-        button.backgroundColor = UIColor.blueColor()
-        button.setTitle("Choose Photo", forState: .Normal)
-        button.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 150) * 0.5, 125, 150, 25)
-        button.addTarget(self, action: "photoBtnClicked", forControlEvents: .TouchUpInside)
-        self.view.addSubview(button)
-        
-        let label : UILabel = UILabel()
-        label.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 200) * 0.5, 100, 200, 25)
-        label.text = "Photos Example"
-        label.textAlignment = .Center
-        self.view.addSubview(label)
-    }
-    
-    func photoBtnClicked(){
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
-            println("Photo capture")
-            imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum;
-            imagePicker.allowsEditing = false
-            self.presentViewController(imagePicker, animated: true, completion: nil)
-            
-            self.mediaSelected = "Photo"
-        }
-        
-    }
-    
-    
-    // Video Methods
-    func showVideoButton()
-    {
-        let button : UIButton = UIButton()
-        button.backgroundColor = UIColor.blueColor()
-        button.setTitle("Choose Video", forState: .Normal)
-        button.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 150) * 0.5, 200, 150, 25)
-        button.addTarget(self, action: "videoBtnClicked", forControlEvents: .TouchUpInside)
-        self.view.addSubview(button)
-        
-        let label : UILabel = UILabel()
-        label.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 200) * 0.5, 175, 200, 25)
-        label.text = "Video Example"
-        label.textAlignment = .Center
-        self.view.addSubview(label)
-    }
-    
-    func videoBtnClicked(){
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
-            println("Video capture")
-            imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
-            imagePicker.allowsEditing = false
-            self.presentViewController(imagePicker, animated: true, completion: nil)
-            
-            self.mediaSelected = "Video"
-        }
-        
-    }
-    
-    
-    // Used for Both Photo & Video Methods
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        
-        if self.mediaSelected == "Photo" {
-            
-            let photo : FBSDKSharePhoto = FBSDKSharePhoto()
-            photo.image = info[UIImagePickerControllerOriginalImage] as! UIImage
-            photo.caption = "#noonswoon"
-            photo.userGenerated = true
-            self.content = FBSDKSharePhotoContent()
-            content.photos = [photo]
-            
-            // Show the temporary image into device screen
-            self.profileImageView.image = photo.image
-            
-            sharingButton = FBSDKShareButton()
-            sharingButton.shareContent = content
-            sharingButton.frame = loginView.frame
-            sharingButton.addTarget(self, action: "removeSharingButton", forControlEvents: UIControlEvents.TouchUpInside)
-            
-            self.view.addSubview(sharingButton)
-            
-            picker.dismissViewControllerAnimated(true, completion: nil)
-        }
-        
-        if self.mediaSelected == "Video" {
-            
-            let video : FBSDKShareVideo = FBSDKShareVideo()
-            video.videoURL = info[UIImagePickerControllerMediaURL] as! NSURL
-            
-            let content : FBSDKShareVideoContent = FBSDKShareVideoContent()
-            content.video = video
-        }
-        
-        self.mediaSelected = ""
-    }
-        
-        
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        picker.dismissViewControllerAnimated(true, completion: nil)
-    }
-    */
-    }
-
-    
-    func shareButtonClicked () {
-
-        logObject["clickedShare"] = true
-        logObject.saveInBackground()
-        
-        self.showAds()
-    }
-    
-    func loginViewClicked () {
-        
-        self.loginView.removeFromSuperview()
-    }
-    
-    func showAds () {
-        
-        UIView.animateWithDuration(1.0, delay: 3.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.nameLabel.alpha = 0.0
-            }, completion: {
-                (finished: Bool) -> Void in
-                
-                //Once the label is completely invisible, set the text and fade it back in
-                var adsViewController = AdvertisementViewController()
-                adsViewController.logObject = self.logObject
-                self.presentViewController(adsViewController, animated: true, completion: nil)
-                
-                // Fade in
-                UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-                    self.nameLabel.alpha = 1.0
-                    }, completion: nil)
-        })
-    }
-    
-    
-    // MARK: User information
+    // User information
     
     func setUserInformation() {
         
@@ -379,30 +158,9 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
         }
     }
     
-    func setUserProfilePictureWithAnimation () {
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
-        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil) {
-                println("Error: \(error)")
-            }
-            else {
-                let publicProfile = result as! NSDictionary
-                let userID = publicProfile["id"] as! String
-                println(userID)
-                
-                let urlString = "https://graph.facebook.com/\(userID)/picture?type=large"
-                
-                self.profileImageView.setImage(url: urlString)
-                self.profileImageView.runProcess()
-                
-                
-            }
-        })
-    }
-    
     
     // MARK: Calculating result
+    
     func findMaximumPageCategoryCount () {
         
         var graphPath : String = "me?fields=likes.limit(1000)"
@@ -561,60 +319,66 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
     
     func saveResult () {
         
+        let objectFile = PFObject(className: "UserGeneratedResult")
+        let snapshotImage = screenShotSpecificArea()
+        let imageData: NSData = UIImagePNGRepresentation( snapshotImage )
         
-        var objectFile = PFObject(className: "UserGeneratedResult")
+        SwiftSpinner.showWithDelay(2.0, title: "It's taking longer than expected")
+        SwiftSpinner.show("Processing \n0%")
         
-        let window: UIWindow! = UIApplication.sharedApplication().keyWindow
-        let windowImage = window.capture()
-
-        //var imageData: NSData = UIImagePNGRepresentation( UIImage(named: imageSource) )
-        var imageData: NSData = UIImagePNGRepresentation( windowImage )
         
         var newImageFile = PFFile(name: "UserGeneratedResult.png", data: imageData)
-        objectFile["userID"] = "justUserID"
-        objectFile["imageFile"] = newImageFile
         newImageFile.saveInBackgroundWithBlock({
             (succeeded: Bool, error: NSError?) -> Void in
                 if (error == nil){
-                    self.setShareButtonWith(contentURLImage: newImageFile.url!)
-                    self.contentURLImage = newImageFile.url!
+            
+                    
+                    SwiftSpinner.hide()
+                    
                     println(newImageFile.url)
+                    self.setShareButtonWith(contentURLImage: newImageFile.url!)
+
                 }
             }, progressBlock: {
                 (percentDone: Int32) -> Void in
                 println("percentDone: \(percentDone)")
+                
+                SwiftSpinner.show("Processing \n\(percentDone-2)%")
+                
         })
+        
+        objectFile["userID"] = "justUserID"
+        objectFile["imageFile"] = newImageFile
         
         objectFile.saveInBackground()
     }
+}
 
+
+
+// MARK: View attributes control
+
+extension ViewController {
     
-    
-    // MARK: View attributes control
+    // Handle the touche
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        
-        if (profileImageView == nil) {
-            return
-        }
+    
         
         var touch = touches.first as! UITouch
-        var point = touch.locationInView( profileImageView )
+        var point = touch.locationInView( self.view )
         
-        if (CGRectContainsPoint( profileImageView.bounds, point)) {
-            //setShareButton()
+        if (CGRectContainsPoint( self.view.bounds , point)) {
+            println("testset")
         }
         
         super.touchesBegan(touches , withEvent:event)
     }
-    
-
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        super.preferredStatusBarStyle()
-        return UIStatusBarStyle.LightContent
-    }
 }
 
+
+
+// MARK: Set view elements
 
 extension ViewController {
     
@@ -643,7 +407,14 @@ extension ViewController {
         if (contentBackgroundImageView == nil) {
             self.setContentBackgroundImageView()
         }
+        
+        if (indicator == nil) {
+            self.indicator = setLoadingIndicator()
+        }
     }
+    
+    
+    // Determine the size of device
     
     func isClassicModel () -> Bool {
         
@@ -669,18 +440,41 @@ extension ViewController {
             return false
         }
     }
+
     
+    // Set the status bar style
     
-    // MARK: Setting elements
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        
+        return UIStatusBarStyle.LightContent
+    }
+
+}
+
+
+// MARK: Setter methods for view elements
+
+extension ViewController {
+    
+    // set the profile image view
+    
     func setProfileImageView () {
+        
+        // Calculate x, y position from screen device
+        
         let imageSize: CGFloat = 150
         var imagePosX: CGFloat = CGRectGetMidX( self.view.frame ) - imageSize / 2
         var imagePosY: CGFloat = imagePosX
         
         if (self.isClassicModel()) {
-            // Change the xPosition if the device is iPhone4,4S (iPhone classic)
+            
+            // Handle the x position if the device is iPhone4,4S (iPhone classic)
+            // because we calculate the y position from the frame width, but iPhone classic has difference screen ratio
+            
             imagePosY = imagePosX * 0.55
         }
+        
+        // Make view and add to subview
         
         self.profileImageView = CustomImageView()
         self.profileImageView.frame = CGRectMake(imagePosX, imagePosY, imageSize, imageSize)
@@ -691,7 +485,11 @@ extension ViewController {
         self.view.addSubview( self.profileImageView )
     }
     
+    
+    // Set the name label
+    
     func setNameLabel () {
+        
         nameLabel = UILabel(frame: CGRectMake(0, 0, self.view.frame.width, 120))
         nameLabel.numberOfLines = 0
         nameLabel.textAlignment = NSTextAlignment.Center
@@ -702,7 +500,11 @@ extension ViewController {
         self.view.addSubview( nameLabel )
     }
     
+    
+    // Set the result label
+    
     func setResultLabel () {
+        
         resultLabel = UILabel(frame: CGRectMake(0, 0, self.view.frame.width * 0.85, 200))
         resultLabel.center.x = self.view.center.x
         resultLabel.center.y = self.view.frame.height * 0.7
@@ -715,6 +517,9 @@ extension ViewController {
         self.view.addSubview( resultLabel )
     }
     
+    
+    // Set the background image view (green screen)
+    
     func setBackgroundImageView () {
         backgroundImageView = UIImageView(image: UIImage(named: "main_background.png"))
         backgroundImageView.frame = view.frame
@@ -724,9 +529,17 @@ extension ViewController {
         view.sendSubviewToBack(backgroundImageView)
     }
     
+    
+    // Set the content background image view (white screen)
+    
     func setContentBackgroundImageView () {
+        
+        // defind the top margin
+        
         let statusBarHeight: CGFloat = 20
         let topMargin: CGFloat = statusBarHeight + margin
+        
+        // Create a shape
         
         contentBackgroundImageShape = CAShapeLayer()
         contentBackgroundImageShape.frame = CGRect(x: margin, y: topMargin, width: self.view.frame.width - margin * 2, height: self.view.frame.height - ( margin * 2 + topMargin) - elementHeight)
@@ -735,31 +548,39 @@ extension ViewController {
         contentBackgroundImageShape.strokeColor = UIColor.grayColor().CGColor
         contentBackgroundImageShape.lineWidth = 0.3;
         
+        // Create a imageView then assign a shape
+        // The view should be add into subview when the content is ready, by method setContentBackground
+        
         contentBackgroundImageView = UIView()
         contentBackgroundImageView.frame = self.view.frame
         contentBackgroundImageView.layer.addSublayer( contentBackgroundImageShape)
-        
         contentBackgroundImageView.layer.zPosition = -1
+        
         self.view.layer.zPosition = -2
     }
     
-    func setLoginView () {
-        
-        loginView = FBSDKLoginButton()
-        loginView.frame = CGRectMake(8, 0, self.view.frame.width - 16, elementHeight)
-        loginView.center.x = CGRectGetMidX( self.view.frame )
-        // The y position should be animated
-        
-        loginView.center.y = CGRectGetMaxY( self.view.frame ) + CGRectGetMidY( self.loginView.frame ) + self.margin
-        loginView.layer.cornerRadius = 6
-        loginView.layer.masksToBounds = true
-        loginView.addTarget(self, action: "loginViewClicked", forControlEvents: .TouchUpInside)
-        
-        loginView.readPermissions = permissions
-        loginView.delegate = self
-        
-        self.view.addSubview(loginView)
+    func setUserProfilePictureWithAnimation () {
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+            
+            if ((error) != nil) {
+                println("Error: \(error)")
+            }
+            else {
+                let publicProfile = result as! NSDictionary
+                let userID = publicProfile["id"] as! String
+                println(userID)
+                
+                let urlString = "https://graph.facebook.com/\(userID)/picture?type=large"
+                
+                self.profileImageView.setImage(url: urlString)
+                self.profileImageView.runProcess()
+                
+                
+            }
+        })
     }
+    
     
     func setContentBackground () {
         
@@ -772,7 +593,93 @@ extension ViewController {
             }, completion: nil)
     }
     
+    func setLogObject () {
+        self.logObject = PFObject(className: "UserLogged")
+    }
+}
+
+// MARK: Snapshot method for window
+
+extension ViewController {
+    
+    
+    func screenShotSpecificArea () -> UIImage {
+
+        // Make snapshot area, then shanp it to image
+        
+        let snapshotArea = self.view.frame.size
+        UIGraphicsBeginImageContext( snapshotArea )
+        
+        self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
+        
+        var screenShortImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        
+        // Cropping the image, cut out the area outside result
+        
+        let cropingArea = contentBackgroundImageShape.frame
+        var croppingImg:CGImageRef = screenShortImage.CGImage
+        croppingImg = CGImageCreateWithImageInRect(croppingImg, cropingArea)
+        
+        
+        // Optional: save the image to album
+        
+        let resultImage = UIImage(CGImage: croppingImg)
+        // saveImageToAlbum( resultImage! )
+        
+        return resultImage!
+    }
+    
+    
+    // Function for saving image to photos album
+    
+    func saveImageToAlbum (image: UIImage) {
+        
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+    }
+}
+
+
+// MARK: Facebook SDKs setter method
+
+extension ViewController {
+    
+    
+    // Set login button
+    
+    func setLoginView () {
+        
+        loginView = FBSDKLoginButton()
+        loginView.frame = CGRectMake(8, 0, self.view.frame.width - 16, elementHeight)
+        loginView.center.x = CGRectGetMidX( self.view.frame )
+        
+        // The y position should be animated
+        loginView.center.y = CGRectGetMaxY( self.view.frame ) + CGRectGetMidY( self.loginView.frame ) + self.margin
+        
+        loginView.layer.cornerRadius = 6
+        loginView.layer.masksToBounds = true
+        loginView.addTarget(self, action: "loginViewClicked", forControlEvents: .TouchUpInside)
+        
+        loginView.readPermissions = permissions
+        loginView.delegate = self
+        
+        self.view.addSubview(loginView)
+    }
+    
+    
+    // After user clicked the logginView, it should be removed from super and show the share buton instead
+    
+    func loginViewClicked () {
+        
+        self.loginView.removeFromSuperview()
+    }
+    
+    
+    // Set share button
+    
     func setShareButtonWith (#contentURLImage: String){
+        
+        // Set the content of ShareLinkContent
         
         let contentURL = "https://noonswoonapp.com"
         let default_contentURLImage = "http://blog.noonswoonapp.com/wp-content/uploads/2015/06/b04.jpg"
@@ -789,16 +696,24 @@ extension ViewController {
         shareButton.shareContent = content
         shareButton.frame = CGRectMake(8, 0, self.view.frame.width - 16, elementHeight)
         shareButton.center.x = CGRectGetMidX( self.view.frame )
+
         // The y position should be animated
-        
         shareButton.center.y = CGRectGetMaxY( self.view.frame ) + elementHeight/2 + self.margin
+        
         shareButton.addTarget(self, action: "shareButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
         shareButton.layer.cornerRadius = 6
         shareButton.layer.masksToBounds = true
         
+        
+        // Add button into subview
+        
         if (shareButton.superview == nil) {
+            
             self.view.addSubview(shareButton)
         }
+        
+        
+        // Show up animation
         
         UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             
@@ -806,26 +721,189 @@ extension ViewController {
                 self.shareButton.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
             }
             
-        }, completion: nil)
+            }, completion: nil)
     }
     
-    func setLogObject () {
-        self.logObject = PFObject(className: "UserLogged")
+    
+    
+    // Handlge when user click share button
+    
+    func shareButtonClicked () {
+        
+        logObject["clickedShare"] = true
+        logObject.saveInBackground()
+        
+        //self.showAds()
+    }
+    
+    
+    // Set the advertisments, it should has a few delays before showing up
+    
+    func showAds (timeDelay: Double) {
+        
+        let delay = timeDelay * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            self.launchAlertView()
+        }
+
+    }
+    
+    func launchAlertView() {
+        
+        var buttons = ["Cancel"]
+        
+        alertView = CustomAlertView()
+        
+        alertView.buttonTitles = buttons
+        alertView.containerView = createAds()
+        alertView.delegate = self
+        alertView.onButtonTouchUpInside = { (alertView: CustomAlertView, buttonIndex: Int) -> Void in
+            println("CLOSURE: Button '\(buttons[buttonIndex])' touched")
+        }
+        
+        alertView.show()
+    }
+    
+    func createAds () -> UIView {
+        
+        let width:  CGFloat = 290
+        let height: CGFloat = 290
+        
+        containerView = UIView(frame: CGRectMake(0, 0, width, height))
+        
+        let adsString = "NoonswoonAds"
+        let image = UIImage(named: adsString)!
+
+        var button = UIButton(frame: CGRectMake(0, 0, width, height))
+        button.setImage(image, forState: UIControlState.Normal)
+        button.setImage(image, forState: UIControlState.Highlighted )
+        button.addTarget(self, action: "adsClicked", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        containerView.addSubview( button )
+        
+        return containerView
+    }
+    
+    func customAlertViewButtonTouchUpInside(alertView: CustomAlertView, buttonIndex: Int) {
+        
+        alertView.close()
+    }
+    
+    func adsClicked () {
+        
+        alertView.close()
+        
+        logObject["clickedAds"] = true
+        logObject.saveInBackground()
+        
+        let itunesLink: NSURL = NSURL(string: "itms-apps://itunes.apple.com/th/app/noonswoon-top-dating-app-to/id605218289?mt=8")!
+        UIApplication.sharedApplication().openURL(itunesLink)
     }
 
 }
 
-public extension UIWindow {
+
+// MARK: Login - Logout activities
+
+extension ViewController {
     
-    func capture() -> UIImage {
+    func userLoggedIn () {
         
-        UIGraphicsBeginImageContextWithOptions(self.frame.size , self.opaque, 0.0)
-        self.layer.renderInContext(UIGraphicsGetCurrentContext())
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+        // Set user information
         
-        return image
+        self.setUserInformation()
+        self.setUserProfilePictureWithAnimation()
+        
+        // Calculateing
+        
+        self.findMaximumPageCategoryCount()
+        
+        // Set view elements
+        // The share button wiil be shown after the result generated
+        
+        self.setContentBackground()
+        
+        // Just for testing query data
+        
+        sortingFanpageUserLike()
     }
     
+    
+    
+    // Facebook Delegate Methods
+    
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+        println("User Logged In")
+        
+        if ((error) != nil) {
+        }
+        else if result.isCancelled {
+        }
+        else {
+            self.userLoggedIn()
+        }
+    }
+    
+    // Remove the view elements if user logged out the application
+    
+    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        
+        self.nameLabel.text   = ""
+        self.resultLabel.text = ""
+        self.profileImageView.removeFromSuperview()
+        self.backgroundImageView.image = UIImage(named: "background1.png")
+        self.shareButton.removeFromSuperview()
+        self.contentBackgroundImageView.removeFromSuperview()
+        
+        println("User Logged Out")
+    }
 }
 
+
+// MARK: UIView extension
+
+extension UIView {
+    
+    // Fade in
+    
+    func fadeIn(duration: NSTimeInterval = 1.0, delay: NSTimeInterval = 0.0, completion: ((Bool) -> Void) = {(finished: Bool) -> Void in}) {
+        UIView.animateWithDuration(duration, delay: delay, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+            self.alpha = 1.0
+            }, completion: completion)  }
+    
+    // Fade out
+    
+    func fadeOut(duration: NSTimeInterval = 1.0, delay: NSTimeInterval = 0.0, completion: (Bool) -> Void = {(finished: Bool) -> Void in}) {
+        UIView.animateWithDuration(duration, delay: delay, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+            self.alpha = 0.0
+            }, completion: completion)
+    }
+}
+
+
+// MARK: Loading indicator
+
+extension ViewController {
+    
+    func setLoadingIndicator () -> UIActivityIndicatorView {
+        
+        indicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+
+        indicator.backgroundColor = UIColor(white: 0.6, alpha: 0.8)
+        indicator.frame = CGRectMake(0, 0, 140, 140);
+        indicator.center = self.view.center;
+        indicator.layer.cornerRadius = indicator.frame.width/4
+        indicator.clipsToBounds = true
+        
+        // indicator.layer.borderColor = UIColor.lightGrayColor().CGColor;
+        // indicator.layer.borderWidth = 1;
+        
+        self.view.addSubview(indicator)
+        indicator.bringSubviewToFront( self.view)
+        
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        
+        return indicator
+    }
+}
