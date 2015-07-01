@@ -7,8 +7,18 @@
 //
 
 import Foundation
+import Parse
 
 public class DataController {
+    
+    static var summation = 0
+    
+    static var questions = [String]()
+    static var choices = [String]()
+    static var list_questionViewController = [QuestionViewController]()
+    
+    static var userProfileImage: UIImage!
+    static var userFirstNameText: String = "Error found"
     
     static let resultsEng = [
         ("You’ve got beautiful eyes, cute smile and silky hair."),
@@ -60,152 +70,161 @@ public class DataController {
         ("คุณเป็นคนที่มีมารยาทดี มีความเป็นกันเอง บางครั้งคุณก็ซุกซนนิดหน่อย และคุณก็น่ารักด้วย"),
         ("คุณดูเด็ก และมีจิตใจที่ดี คุณใจดีกับทุกๆคน (NO LIKE CASE)")]
 
+
+    // MARK: Generate question view controller
     
-    class func getEmailFromUser () {
+    class func setQuestionAndChoice () {
         
-        let graphPath : String = "me?fields=email,first_name"
+        questions.append( "Question1" )
         
-        var request: FBSDKGraphRequest = FBSDKGraphRequest(graphPath: graphPath, parameters: nil, HTTPMethod: "GET")
-        request.startWithCompletionHandler({ (connection, result, error) -> Void in
+        choices.append( "Choice1_1" )
+        choices.append( "Choice1_2" )
+        choices.append( "Choice1_3" )
+        choices.append( "Choice1_4" )
+        
+        questions.append( "Question2" )
+        
+        choices.append( "Choice2_1" )
+        choices.append( "Choice2_2" )
+        choices.append( "Choice2_3" )
+        choices.append( "Choice2_4" )
+
+        questions.append( "Question3" )
+        
+        choices.append( "Choice3_1" )
+        choices.append( "Choice3_2" )
+        choices.append( "Choice3_3" )
+        choices.append( "Choice3_4" )
+
+        questions.append( "Question4" )
+        
+        choices.append( "Choice4_1" )
+        choices.append( "Choice4_2" )
+        choices.append( "Choice4_3" )
+        choices.append( "Choice4_4" )
+
+        
+    }
+    
+    class func setQuestionViewControllers () {
+        
+        println("number of question: \(questions.count)")
+        
+        let numberOfChoicePerQuestion = 4
+        let numberOfQuestion = questions.count
+        
+        for (var i=0 ; i<numberOfQuestion ; i++) {
+            
+            var questionViewController = QuestionViewController()
+            
+            for (var j=0 ; j<numberOfChoicePerQuestion ; j++) {
+                
+                let choice = choices[ i * numberOfQuestion + j ]
+                questionViewController.addChoice( choice )
+            }
+            
+            questionViewController.setQuestionLabel( questions[i] )
+            questionViewController.setChoicesLabels()
+            questionViewController.setQuestionNumber( i )
+            
+            list_questionViewController.append( questionViewController )
+        }
+    }
+    
+    class func getStart (rootView: UIViewController) {
+        
+        let timeDelay: Double = 1
+        
+        var firstQuestion = list_questionViewController[0]
+        firstQuestion.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
+        
+        let delay = timeDelay * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            rootView.presentViewController( firstQuestion, animated: true, completion: nil)
+        }
+        
+    }
+    
+    
+    
+    // MARK: Generating result
+    
+    // User profile image from user ID
+    
+    class func loadUserProfileImage () {
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             if ((error) != nil) {
+                
                 println("Error: \(error)")
             }
             else {
                 
-                var fname = result["first_name"]
-                var email = result["emaiasdal"]
+                let publicProfile = result as! NSDictionary
+                let userID = publicProfile["id"] as! String
+                println(userID)
                 
-                if (email == nil || fname != nil) {
-                    email = (fname as! String) + "@facebook.com"
-                }
-                else {
-                    email = ""
-                }
+                let urlString = "https://graph.facebook.com/\(userID)/picture?type=large"
+                let nsURL = NSURL(string:  urlString)
+                let nsData = NSData(contentsOfURL: nsURL!)
                 
-                println("Email: \(email)")
+                self.userProfileImage = UIImage(data: nsData!)
+                
             }
         })
     }
     
-    class func findMaximumPageCategoryCount () -> String {
-        // For more complex open graph stories, use `FBSDKShareAPI`
-        // with `FBSDKShareOpenGraphContent`
-        /* make the API call */
-        
-        let graphPath : String = "me?fields=likes.limit(1000)"
-        
-        var returnResult = ""
-        
-        var request: FBSDKGraphRequest = FBSDKGraphRequest(graphPath: graphPath, parameters: nil, HTTPMethod: "GET")
-        request.startWithCompletionHandler({ (connection, result, error) -> Void in
+    // First name
+    
+    class func loadUserFirstName () {
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             if ((error) != nil) {
+                
                 println("Error: \(error)")
             }
             else {
-                var categoryDic = Dictionary<Character, Int>()
                 
-                // Getting all of the category of page that user liked
-                let resultData = result as! NSDictionary
-                let likes: NSDictionary = resultData["likes"] as! NSDictionary
-                let datas:  NSArray = likes["data"] as! NSArray
+                let publicProfile = result as! NSDictionary
+                let fname = publicProfile["first_name"] as! String
+                println(fname)
                 
-                // Keep those data into dictionary named categoryDic. Use category name as key and among as value
-                for data in datas {
-                    let category = data[ "category" ] as! String
-                    let firstChar = (Array(category))[0]
-                    
-                    println("\(firstChar): \(category)")
-                    
-                    if ( categoryDic[firstChar] == nil ) {
-                        categoryDic[firstChar] = 0
-                    } else {
-                        categoryDic[firstChar] = categoryDic[firstChar]! + 1
-                    }
-                }
-                
-                // Sorting keys by value
-                var sortedKeys = Array(categoryDic.keys).sorted({
-                    categoryDic[$0] > categoryDic[$1]
-                })
-                
-                /*
-                // Showing
-                for sortedKey in sortedKeys {
-                let key   = sortedKey
-                let value = categoryDic[sortedKey]
-                if (value == 0) {
-                continue
-                }
-                println("\(value!)\t : \(key)")
-                self.makingResult(key)
-                }
-                */
-                
-                println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
-                returnResult = String("\(sortedKeys[0])")
+                self.userFirstNameText = fname
             }
         })
-        
-        return returnResult
-    }
-    
-    class func generateResult () -> String {
-        
-        let keyword     = findMaximumPageCategoryCount()
-        
-        var scalars     = keyword.lowercaseString.unicodeScalars
-        let firstScalar = scalars[ scalars.startIndex ].hashValue
-        let key         = firstScalar - 97
-        
-        return DataController.resultsEng[ key ] + "\n\n" + DataController.resultsThai[ key ]
     }
     
     
-    class func sortingFanpageUserLike () {
-        // For more complex open graph stories, use `FBSDKShareAPI`
-        // with `FBSDKShareOpenGraphContent`
-        /* make the API call */
+    class func loadUserProfile() {
         
-        let graphPath : String = "me?fields=likes.limit(1000)"
-        
-        var request: FBSDKGraphRequest = FBSDKGraphRequest(graphPath: graphPath, parameters: nil, HTTPMethod: "GET")
-        request.startWithCompletionHandler({ (connection, result, error) -> Void in
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me?fields=id,email,first_name,last_name,birthday", parameters: nil)
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             if ((error) != nil) {
+                // Process error
                 println("Error: \(error)")
             }
             else {
-                var categoryDic = Dictionary<String, Int>()
+                println("fetched user: \(result)")
                 
-                // Getting all of the category of page that user liked
-                let resultData = result as! NSDictionary
-                let likes: NSDictionary = resultData["likes"] as! NSDictionary
-                let datas:  NSArray = likes["data"] as! NSArray
+                let id        : String = (result.valueForKey("id")         != nil)  ? result.valueForKey("id")          as! String : ""
+                let firstname : String = (result.valueForKey("first_name") != nil)  ? result.valueForKey("first_name")  as! String : ""
+                let lastname  : String = (result.valueForKey("last_name")  != nil)  ? result.valueForKey("last_name")   as! String : ""
+                let email     : String = (result.valueForKey("emails")     != nil)  ? result.valueForKey("emails")      as! String : firstname + "." + lastname + "@facebook.com"
+                let birthday  : String = (result.valueForKey("birthday")   != nil)  ? result.valueForKey("birthday")    as! String : ""
                 
-                // Keep those data into dictionary named categoryDic. Use category name as key and among as value
-                for data in datas {
-                    let category = data[ "category" ] as! String
-                    if ( categoryDic[category] == nil ) {
-                        categoryDic[category] = 0
-                    } else {
-                        categoryDic[category] = categoryDic[category]! + 1
-                    }
-                }
-                
-                // Sorting keys by value
-                var sortedKeys = Array(categoryDic.keys).sorted({
-                    categoryDic[$0] > categoryDic[$1]
-                })
-                
-                // Showing
-                for sortedKey in sortedKeys {
-                    let key   = sortedKey
-                    let value = categoryDic[sortedKey]
-                    println("\(value!)\t : \(key)")
-                }
+                UserLogged.saveUserInformation(id, firstname: firstname, lastname: lastname, email: email, birthday: birthday)
             }
         })
     }
+
+
 }
+
+
+
+
+

@@ -12,12 +12,21 @@ import CoreData
 import Parse
 import Bolts
 
+
+extension UIColor {
+    class func mainColor () -> UIColor {
+        return UIColor(red: 3/255, green: 121/255, blue: 68/255, alpha: 1)
+    }
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        self.window?.backgroundColor = UIColor.mainColor()
         
         // [Optional] Power your app with Local Datastore. For more info, go to
         // https://parse.com/docs/ios_guide#localdatastore/iOS
@@ -55,9 +64,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         
-        
-        // Launch Ads
-        (window?.rootViewController as! ViewController).showAds(1.0)
+        if (AdvertismentController.enableAds) {
+            
+            // Launch Ads
+            AdvertismentController.showAds(1.2)
+        }
         
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }

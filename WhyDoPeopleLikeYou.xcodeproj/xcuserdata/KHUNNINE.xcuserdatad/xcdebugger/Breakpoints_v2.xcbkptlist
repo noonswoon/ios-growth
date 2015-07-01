@@ -10,27 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WhyDoPeopleLikeYou/DataController.swift"
-            timestampString = "456904614.548874"
+            timestampString = "457430318.512639"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "generateResult()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WhyDoPeopleLikeYou/DataController.swift"
-            timestampString = "456904275.020186"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
             landmarkName = "DataController"
             landmarkType = "3">
          </BreakpointContent>
@@ -41,60 +25,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WhyDoPeopleLikeYou/ViewController.swift"
-            timestampString = "457275196.326814"
+            filePath = "WhyDoPeopleLikeYou/ResultViewController.swift"
+            timestampString = "457430347.031129"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
-            landmarkName = "saveResult()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WhyDoPeopleLikeYou/ViewController.swift"
-            timestampString = "457275196.326814"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "346"
-            endingLineNumber = "346"
-            landmarkName = "saveResult()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WhyDoPeopleLikeYou/ViewController.swift"
-            timestampString = "457275196.326814"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WhyDoPeopleLikeYou/ViewController.swift"
-            timestampString = "457275196.326814"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -105,29 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WhyDoPeopleLikeYou/ViewController.swift"
-            timestampString = "457275196.326814"
+            filePath = "WhyDoPeopleLikeYou/DataController.swift"
+            timestampString = "457430318.512639"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "viewDidAppear(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WhyDoPeopleLikeYou/AppDelegate.swift"
-            timestampString = "457271746.467183"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "applicationWillEnterForeground(_:)"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "setQuestionAndChoice()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,60 +58,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WhyDoPeopleLikeYou/ViewController.swift"
-            timestampString = "457275196.326814"
+            timestampString = "457429614.098845"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "368"
-            endingLineNumber = "368"
-            landmarkName = "touchesBegan(_:withEvent:)"
+            startingLineNumber = "284"
+            endingLineNumber = "284"
+            landmarkName = "userLoggedIn()"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "WhyDoPeopleLikeYou.ViewController.findMaximumPageCategoryCount (WhyDoPeopleLikeYou.ViewController)() -&gt; ()"
-                  moduleName = "WhyDoPeopleLikeYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/KHUNNINE/Documents/Swift%20Coding/Intern%20Projects/WhyDoPeopleLikeYou/WhyDoPeopleLikeYou/ViewController.swift"
-                  timestampString = "457273142.403591"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "368"
-                  endingLineNumber = "368"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "WhyDoPeopleLikeYou.ViewController.(findMaximumPageCategoryCount (WhyDoPeopleLikeYou.ViewController) -&gt; () -&gt; ()).(closure #1).(closure #2)"
-                  moduleName = "WhyDoPeopleLikeYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/KHUNNINE/Documents/Swift%20Coding/Intern%20Projects/WhyDoPeopleLikeYou/WhyDoPeopleLikeYou/ViewController.swift"
-                  timestampString = "457273142.403953"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "424"
-                  endingLineNumber = "424"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "WhyDoPeopleLikeYou.ViewController.(findMaximumPageCategoryCount (WhyDoPeopleLikeYou.ViewController) -&gt; () -&gt; ()).(closure #1).(closure #3).(closure #1)"
-                  moduleName = "WhyDoPeopleLikeYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/KHUNNINE/Documents/Swift%20Coding/Intern%20Projects/WhyDoPeopleLikeYou/WhyDoPeopleLikeYou/ViewController.swift"
-                  timestampString = "457273142.404197"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "443"
-                  endingLineNumber = "443"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -201,12 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WhyDoPeopleLikeYou/ViewController.swift"
-            timestampString = "457275196.326814"
+            timestampString = "457429614.098845"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "370"
-            endingLineNumber = "370"
-            landmarkName = "touchesBegan(_:withEvent:)"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
+            landmarkName = "setLoginView()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

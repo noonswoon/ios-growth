@@ -9,103 +9,74 @@
 import Foundation
 import Parse
 
-class AdvertisementViewController: UIViewController {
+// MARK: Advertisment
+
+class AdvertismentController: NSObject {
     
-    var backgroundImageView: UIImageView!
-    var noonswoonAds: UIImageView!
-    var contentBackgroundImageShape: CAShapeLayer!
-    var dismissButton: UIButton!
+    static var enableAds: Bool = false
     
-    let margin: CGFloat = 8
-    let btnHeight: CGFloat = 44
+    // MARK: Alert View container
     
-    var logObject: PFObject!
+    static var containerView: UIView!
+    static var alertView: CustomAlertView!
     
-    override func viewDidLoad() {
+    
+    // Set the advertisments, it should has a few delays before showing up
+    
+    class func showAds (timeDelay: Double) {
         
-        super.viewDidLoad()
-        self.view.backgroundColor = UIColor.whiteColor()
-        
-        if (backgroundImageView == nil) {
-            
-            backgroundImageView = UIImageView(image: UIImage(named: "main_background.png"))
-            backgroundImageView.frame = view.frame
-            backgroundImageView.contentMode = .ScaleAspectFill
-            
-            view.addSubview(backgroundImageView)
-            view.sendSubviewToBack(backgroundImageView)
+        let delay = timeDelay * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            self.launchAlertView()
         }
         
-        if (contentBackgroundImageShape == nil) {
-            
-            let elementWidth:    CGFloat = CGRectGetMaxX( self.view.frame ) - margin * 2
-            let statusBarHeight: CGFloat = 20
-            let topMargin:       CGFloat = statusBarHeight + margin
-            
-            contentBackgroundImageShape = CAShapeLayer()
-            contentBackgroundImageShape.frame = CGRect(x: margin, y: topMargin, width: elementWidth, height: self.view.frame.height - ( margin * 2 + topMargin) - btnHeight)
-            contentBackgroundImageShape.path = UIBezierPath(roundedRect: contentBackgroundImageShape.bounds, cornerRadius: 6).CGPath
-            contentBackgroundImageShape.fillColor = UIColor(white: 1, alpha: 1).CGColor
-            contentBackgroundImageShape.strokeColor = UIColor.grayColor().CGColor
-            contentBackgroundImageShape.lineWidth = 0.3;
-            
-            self.backgroundImageView.layer.addSublayer( contentBackgroundImageShape )
-        }
-        
-        if (noonswoonAds == nil) {
-            
-            let adsString = "NoonswoonAds"
-            let image = UIImage(named: adsString)!
-            
-            let width = image.size.width * 0.4
-            let height = image.size.height * 0.4
-            
-            noonswoonAds = UIImageView(image: image)
-            noonswoonAds.frame = CGRectMake(0, 0, width, height)
-            noonswoonAds.center = contentBackgroundImageShape.position
-            
-            self.view.addSubview( noonswoonAds )
-            
-        }
-        
-        if (dismissButton == nil) {
-            
-            let buttonWidth = CGRectGetMaxX( self.view.frame ) - margin * 2
-            let yPosition   = CGRectGetMaxY( self.view.frame ) - btnHeight - margin
-            
-            dismissButton = UIButton(frame: CGRectMake(margin, yPosition, buttonWidth, btnHeight))
-            dismissButton.setTitle("Back", forState: .Normal)
-            dismissButton.addTarget(self, action: "dismissButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
-            dismissButton.layer.cornerRadius = 6
-            dismissButton.layer.masksToBounds = true
-            dismissButton.backgroundColor = UIColor(red:0.365, green:0.612, blue:0.925, alpha:1)
-            
-            self.view.addSubview( dismissButton )
-        }
     }
     
-    func dismissButtonClicked () {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    class private func launchAlertView() {
         
-        var touch = touches.first as! UITouch
-        var point = touch.locationInView( self.view )
+        var buttons = ["Cancel"]
         
-        if (CGRectContainsPoint( contentBackgroundImageShape.bounds, point)) {
-            
-            logObject["clickedAds"] = true
-            logObject.saveInBackground()
-            
-            let itunesLink: NSURL = NSURL(string: "itms-apps://itunes.apple.com/th/app/noonswoon-top-dating-app-to/id605218289?mt=8")!
-            UIApplication.sharedApplication().openURL(itunesLink)
+        alertView = CustomAlertView()
+        
+        alertView.buttonTitles = buttons
+        alertView.containerView = createAds()
+        alertView.onButtonTouchUpInside = { (alertView: CustomAlertView, buttonIndex: Int) -> Void in
+            println("CLOSURE: Button '\(buttons[buttonIndex])' touched")
+            alertView.close()
         }
         
-        super.touchesBegan(touches , withEvent:event)
+        alertView.show()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    class private func createAds () -> UIView {
+        
+        let width:  CGFloat = 290
+        let height: CGFloat = 290
+        
+        containerView = UIView(frame: CGRectMake(0, 0, width, height))
+        
+        let adsString = "NoonswoonAds"
+        let image = UIImage(named: adsString)!
+        
+        var button = UIButton(frame: CGRectMake(0, 0, width, height))
+        button.setImage(image, forState: UIControlState.Normal)
+        button.setImage(image, forState: UIControlState.Highlighted )
+        button.addTarget(self, action: "adsClicked", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        containerView.addSubview( button )
+        
+        return containerView
     }
+    
+    class private func adsClicked () {
+        
+        UserLogged.adsClicked()
+        
+        let itunesLink: NSURL = NSURL(string: "itms-apps://itunes.apple.com/th/app/noonswoon-top-dating-app-to/id605218289?mt=8")!
+        UIApplication.sharedApplication().openURL(itunesLink)
+        
+        alertView.close()
+    }
+    
 }
