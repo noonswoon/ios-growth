@@ -35,6 +35,5 @@ Advertisment pop-up
   
 <h1>To do</h1>
 
-Make application flow clealy
 
 Content for generrating
