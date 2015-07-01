@@ -69,7 +69,11 @@ class AdvertismentController: NSObject {
         return containerView
     }
     
-    class private func adsClicked () {
+    func adsClicked () {
+        AdvertismentController.adsClicked()
+    }
+    
+    class func adsClicked () {
         
         UserLogged.adsClicked()
         
