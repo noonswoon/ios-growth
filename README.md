@@ -37,3 +37,5 @@ Advertisment pop-up
 
 
 Content for generrating
+
+UI and Content
