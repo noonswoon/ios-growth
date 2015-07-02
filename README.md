@@ -32,6 +32,8 @@ Loading indicator
 
 Advertisment pop-up
   - Link to Noonswoon itunes
+
+Play again features
   
 <h1>To do</h1>
 
@@ -39,3 +41,5 @@ Advertisment pop-up
 Content for generrating
 
 UI and Content
+
+Content for questions
