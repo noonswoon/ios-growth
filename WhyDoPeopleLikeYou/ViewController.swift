@@ -34,6 +34,7 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
         // Set the view elements
         
         setBackgroundImageView()
+        setQuestion()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -47,137 +48,6 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
         }
     }
 }
-    
-
-// MARK: Generating result
-
-extension ViewController {
-    
-    // User information
-    
-    
-    // MARK: Calculating result
-    
-    func findMaximumPageCategoryCount () {
-        
-        var graphPath : String = "me?fields=likes.limit(1000)"
-        var returnResult = ""
-        
-        var request: FBSDKGraphRequest = FBSDKGraphRequest(graphPath: graphPath, parameters: nil, HTTPMethod: "GET")
-        request.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil) {
-                println("Error: \(error)")
-            }
-            else {
-                var categoryDic = Dictionary<Character, Int>()
-                
-                // Getting all of the category of page that user liked
-                let resultData = result as! NSDictionary
-                let likes: NSDictionary = resultData["likes"] as! NSDictionary
-                let datas:  NSArray = likes["data"] as! NSArray
-                
-                // Keep those data into dictionary named categoryDic. Use category name as key and among as value
-                for data in datas {
-                    let category = data[ "category" ] as! String
-                    let firstChar = (Array(category))[0]
-                    
-                    //println("\(firstChar): \(category)")
-                    
-                    if ( categoryDic[firstChar] == nil ) {
-                        categoryDic[firstChar] = 0
-                    } else {
-                        categoryDic[firstChar] = categoryDic[firstChar]! + 1
-                    }
-                }
-                
-                // Sorting keys by value
-                var sortedKeys = Array(categoryDic.keys).sorted({
-                    categoryDic[$0] > categoryDic[$1]
-                })
-                
-                
-                // Show result
-                println("\nCouting the first character of fanpage category that user liked")
-                for sortedKey in sortedKeys {
-                    
-                    let key   = sortedKey
-                    let value = categoryDic[sortedKey]
-                    
-                    if (value == 0) {
-                        continue
-                    }
-                    
-                    println("\(value!)\t : \(key)")
-                }
-                
-                
-                // println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
-                
-            }
-        })
-    }
-    
-    func generateResult (keyword: String) -> String {
-        
-        var scalars     = keyword.lowercaseString.unicodeScalars
-        let firstScalar = scalars[ scalars.startIndex ].hashValue
-        let key         = firstScalar - 97
-        
-        return DataController.resultsEng[ key ] + "\n\n" + DataController.resultsThai[ key ]
-    }
-    
-    
-    func sortingFanpageUserLike () {
-        // For more complex open graph stories, use `FBSDKShareAPI`
-        // with `FBSDKShareOpenGraphContent`
-        /* make the API call */
-        
-        let graphPath : String = "me?fields=likes.limit(1000)"
-        
-        var request: FBSDKGraphRequest = FBSDKGraphRequest(graphPath: graphPath, parameters: nil, HTTPMethod: "GET")
-        request.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil) {
-                println("Error: \(error)")
-            }
-            else {
-                var categoryDic = Dictionary<String, Int>()
-                
-                // Getting all of the category of page that user liked
-                let resultData = result as! NSDictionary
-                let likes: NSDictionary = resultData["likes"] as! NSDictionary
-                let datas:  NSArray = likes["data"] as! NSArray
-                
-                // Keep those data into dictionary named categoryDic. Use category name as key and among as value
-                for data in datas {
-                    let category = data[ "category" ] as! String
-                    if ( categoryDic[category] == nil ) {
-                        categoryDic[category] = 1
-                    } else {
-                        categoryDic[category] = categoryDic[category]! + 1
-                    }
-                }
-                
-                // Sorting keys by value
-                var sortedKeys = Array(categoryDic.keys).sorted({
-                    categoryDic[$0] > categoryDic[$1]
-                })
-                
-                // Show
-                println("\nCouting category of fanpage that user liked")
-                for sortedKey in sortedKeys {
-                    let key   = sortedKey
-                    let value = categoryDic[sortedKey]
-                    
-                    println("\(value!)\t : \(key)")
-                }
-            }
-        })
-    }
-    
-}
-
 
 
 
@@ -231,12 +101,20 @@ extension ViewController {
     
     func setBackgroundImageView () {
         
-        backgroundImageView = UIImageView(image: UIImage(named: "main_background.png"))
+        backgroundImageView = UIImageView(image: UIImage(named: "main_background"))
         backgroundImageView.frame = view.frame
         backgroundImageView.contentMode = .ScaleAspectFill
         
         view.addSubview(backgroundImageView)
         view.sendSubviewToBack(backgroundImageView)
+    }
+    
+    func setQuestion () {
+        
+        // Set the question to user for generating result
+        
+        DataController.setQuestionAndChoice()
+        DataController.setQuestionViewControllers()
     }
 }
 
@@ -279,15 +157,22 @@ extension ViewController {
     
     func userLoggedIn () {
         
-        // Load user information from Facebook API
-        DataController.loadUserProfileImage()
-        DataController.loadUserFirstName()
-        DataController.loadUserProfile()
+        DataController.getStart(self) // Start the question
+        
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            
+            // Do some task
+            
+            dispatch_async(dispatch_get_main_queue()) {
 
-        // Start the question to user for generating result
-        DataController.setQuestionAndChoice()
-        DataController.setQuestionViewControllers()
-        DataController.getStart(self)
+                // update some UI
+                DataController.loadUserProfileImage()
+                DataController.loadUserFirstName()
+                DataController.loadUserProfile()
+                DataController.findMaximumPageCategoryCount()
+            }
+        }
     }
     
     

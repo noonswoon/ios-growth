@@ -18,19 +18,24 @@ class ResultViewController: UIViewController {
     let elementHeight: CGFloat = 44
     
     override func viewDidLoad() {
+        
         self.view.backgroundColor = UIColor.mainColor()
+        
         setContentBackgroundImageView()
         setContentBackgroundTemplate() // Temporary use
         
         setUserDisplayPhoto()
-        setResultImage()
+        setResultImage( DataController.summation )
         setUserFirstName()
+        setResult()
         
         println("Summation: \(DataController.summation)")
     }
     
     override func viewDidAppear(animated: Bool) {
-        saveResult()
+        if (!AdvertismentController.enableAds) {
+            saveResult()
+        }
     }
 }
 
@@ -41,7 +46,7 @@ extension ResultViewController {
         // Set the content of ShareLinkContent
         
         let contentURL = "https://noonswoonapp.com"
-        let default_contentURLImage = "http://blog.noonswoonapp.com/wp-content/uploads/2015/06/b04.jpg"
+        let default_contentURLImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/2000px-F_icon.svg.png"
         let contentTitle = "Noonswoon, give yourself a change"
         let contentDescription = "Noonswoon introduces you to one NEW person every day at noon.You have 24 hours to decide whether you like your match.If both of you LIKE each other, the app will CONNECT you and you can CHAT privately"
         
@@ -169,6 +174,7 @@ extension ResultViewController {
 extension ResultViewController {
     
     func setUserFirstName () {
+        
         let userFirstNameLabel = UILabel(frame: CGRectMake(0, 0, self.view.frame.width, 80))
         userFirstNameLabel.text = DataController.userFirstNameText
         userFirstNameLabel.textAlignment = NSTextAlignment.Center
@@ -180,11 +186,25 @@ extension ResultViewController {
         
         self.view.addSubview( userFirstNameLabel )
     }
+    
+    func setResult () {
+        
+        let result = UILabel(frame: CGRectMake(0, 0, self.view.frame.width - margin*10, 100))
+        result.numberOfLines = 0
+        result.lineBreakMode = .ByWordWrapping
+        result.text = DataController.summationDescription
+        result.textAlignment = NSTextAlignment.Center
+        result.backgroundColor = UIColor.lightGrayColor()
+        result.sizeToFit()
+        result.center.x = self.view.center.x
+        result.center.y = self.view.frame.height * 0.55
+        
+        
+        self.view.addSubview( result )
+    }
 
     func setUserDisplayPhoto () {
         
-        var imageString = "ResultPictures/1.png"
-        var image = UIImage(named: imageString)
         var imageView = UIImageView(image: DataController.userProfileImage)
         
         imageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
@@ -198,9 +218,14 @@ extension ResultViewController {
         self.view.addSubview(imageView)
     }
     
-    func setResultImage () {
+    func setResultImage (summation: Int) {
 
-        var imageString = "ResultPictures/1.png"
+        var imageKey = (summation < 1) ? 1 : summation
+        
+        var imageString = "\(imageKey)"
+        
+        println(imageString)
+        
         var image = UIImage(named: imageString)
         var imageView = UIImageView(image: image)
         
@@ -215,15 +240,19 @@ extension ResultViewController {
     
     func setContentBackgroundTemplate () {
         
-        let margin: CGFloat = self.margin * 2
+        let margin: CGFloat = self.margin + 6
         let statusBarHeight: CGFloat = 20
-        let topMargin: CGFloat = statusBarHeight + margin
+        let topMargin: CGFloat = statusBarHeight + self.margin + 3
         
         var imageString = "tempContentBackground"
         var image = UIImage(named: imageString)
         
+        let frameHeight = self.view.frame.height - (topMargin) - elementHeight - margin - 6
+        let frameWidth  = frameHeight * 0.7
+        
         backgroundImageView = UIImageView(image: image)
-        backgroundImageView.frame = CGRect(x: margin, y: topMargin, width: self.view.frame.width - margin * 2, height: self.view.frame.height - ( margin * 2 + topMargin) - elementHeight)
+        backgroundImageView.frame = CGRect(x: margin, y: topMargin, width: frameWidth, height: frameHeight)
+        backgroundImageView.center.x = self.view.center.x
         
         self.view.addSubview(backgroundImageView)
     }

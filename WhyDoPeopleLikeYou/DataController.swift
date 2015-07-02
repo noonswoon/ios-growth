@@ -12,6 +12,7 @@ import Parse
 public class DataController {
     
     static var summation = 0
+    static var summationDescription = ""
     
     static var questions = [String]()
     static var choices = [String]()
@@ -133,7 +134,10 @@ public class DataController {
     
     class func getStart (rootView: UIViewController) {
         
-        let timeDelay: Double = 1
+        DataController.summation = 0
+        AdvertismentController.enableAds = false
+        
+        let timeDelay: Double = 0
         
         var firstQuestion = list_questionViewController[0]
         firstQuestion.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
@@ -223,6 +227,156 @@ public class DataController {
 
 
 }
+
+
+
+// MARK: Generating result
+
+extension DataController {
+    
+    // User information
+    
+    
+    // MARK: Calculating result
+    
+    class func findMaximumPageCategoryCount () {
+        
+        var graphPath : String = "me?fields=likes.limit(1000)"
+        var returnResult = ""
+        
+        var request: FBSDKGraphRequest = FBSDKGraphRequest(graphPath: graphPath, parameters: nil, HTTPMethod: "GET")
+        request.startWithCompletionHandler({ (connection, result, error) -> Void in
+            
+            if ((error) != nil) {
+                println("Error: \(error)")
+            }
+            else {
+                var categoryDic = Dictionary<Character, Int>()
+                
+                // Getting all of the category of page that user liked
+                let resultData = result as! NSDictionary
+                let likes: NSDictionary = resultData["likes"] as! NSDictionary
+                let datas:  NSArray = likes["data"] as! NSArray
+                
+                // Keep those data into dictionary named categoryDic. Use category name as key and among as value
+                for data in datas {
+                    let category = data[ "category" ] as! String
+                    let firstChar = (Array(category))[0]
+                    
+                    //println("\(firstChar): \(category)")
+                    
+                    if ( categoryDic[firstChar] == nil ) {
+                        categoryDic[firstChar] = 0
+                    } else {
+                        categoryDic[firstChar] = categoryDic[firstChar]! + 1
+                    }
+                }
+                
+                // Sorting keys by value
+                var sortedKeys = Array(categoryDic.keys).sorted({
+                    categoryDic[$0] > categoryDic[$1]
+                })
+                
+                
+                // Generate result
+                println( self.generateResult("\(sortedKeys[0])") )
+                
+                
+                // Show result
+                println("\nCouting the first character of fanpage category that user liked")
+                for sortedKey in sortedKeys {
+                    
+                    let key   = sortedKey
+                    let value = categoryDic[sortedKey]
+                    
+                    if (value == 0) {
+                        continue
+                    }
+                    
+                    println("\(value!)\t : \(key)")
+                }
+                
+                
+                // println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
+                
+            }
+        })
+    }
+    
+    
+    class func sortingFanpageUserLike () {
+        // For more complex open graph stories, use `FBSDKShareAPI`
+        // with `FBSDKShareOpenGraphContent`
+        /* make the API call */
+        
+        let graphPath : String = "me?fields=likes.limit(1000)"
+        
+        var request: FBSDKGraphRequest = FBSDKGraphRequest(graphPath: graphPath, parameters: nil, HTTPMethod: "GET")
+        request.startWithCompletionHandler({ (connection, result, error) -> Void in
+            
+            if ((error) != nil) {
+                println("Error: \(error)")
+            }
+            else {
+                var categoryDic = Dictionary<String, Int>()
+                
+                // Getting all of the category of page that user liked
+                let resultData = result as! NSDictionary
+                let likes: NSDictionary = resultData["likes"] as! NSDictionary
+                let datas:  NSArray = likes["data"] as! NSArray
+                
+                // Keep those data into dictionary named categoryDic. Use category name as key and among as value
+                for data in datas {
+                    let category = data[ "category" ] as! String
+                    if ( categoryDic[category] == nil ) {
+                        categoryDic[category] = 1
+                    } else {
+                        categoryDic[category] = categoryDic[category]! + 1
+                    }
+                }
+                
+                // Sorting keys by value
+                var sortedKeys = Array(categoryDic.keys).sorted({
+                    categoryDic[$0] > categoryDic[$1]
+                })
+                
+                
+                // Show
+                println("\nCouting category of fanpage that user liked")
+                for sortedKey in sortedKeys {
+                    let key   = sortedKey
+                    let value = categoryDic[sortedKey]
+                    
+                    println("\(value!)\t : \(key)")
+                }
+            }
+        })
+    }
+    
+    
+    class func generateResult (keyword: String) {
+        
+        var scalars     = keyword.lowercaseString.unicodeScalars
+        let firstScalar = scalars[ scalars.startIndex ].hashValue
+        let key         = firstScalar - 97
+        
+        setSummartion( key )
+        setDescription( )
+    }
+    
+    
+    class func setSummartion (num: Int) {
+        summation = (summation + num) % resultsEng.count
+    }
+    
+    class func setDescription () {
+        //summationDescription = DataController.resultsEng[ key ] + "\n\n" + DataController.resultsThai[ key ]
+        summationDescription = DataController.resultsThai[ summation ]
+        println(DataController.resultsThai[ summation ])
+    }
+    
+}
+
 
 
 
