@@ -361,18 +361,18 @@ extension DataController {
         let key         = firstScalar - 97
         
         setSummartion( key )
-        setDescription( )
     }
     
     
     class func setSummartion (num: Int) {
+
         summation = (summation + num) % resultsEng.count
+        println("summation: \(summation)")
     }
     
-    class func setDescription () {
+    class func getDescription () -> String {
         //summationDescription = DataController.resultsEng[ key ] + "\n\n" + DataController.resultsThai[ key ]
-        summationDescription = DataController.resultsThai[ summation ]
-        println(DataController.resultsThai[ summation ])
+        return DataController.resultsThai[ summation ]
     }
     
 }

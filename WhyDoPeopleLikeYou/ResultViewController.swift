@@ -192,7 +192,7 @@ extension ResultViewController {
         let result = UILabel(frame: CGRectMake(0, 0, self.view.frame.width - margin*10, 100))
         result.numberOfLines = 0
         result.lineBreakMode = .ByWordWrapping
-        result.text = DataController.summationDescription
+        result.text = DataController.getDescription()
         result.textAlignment = NSTextAlignment.Center
         result.backgroundColor = UIColor.lightGrayColor()
         result.sizeToFit()
