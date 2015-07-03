@@ -24,7 +24,7 @@ class QuestionViewController: UIViewController {
     
     override func viewDidLoad() {
         
-        view.backgroundColor = UIColor.mainColor()
+        view.backgroundColor = UIColor.clearColor()
         setContentBackgroundImageView()
 
     }

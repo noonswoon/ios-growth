@@ -14,8 +14,39 @@ import Bolts
 
 
 extension UIColor {
+    
     class func mainColor () -> UIColor {
         return UIColor(red: 185/255, green: 0/255, blue: 52/255, alpha: 1)
+    }
+    class func appCreamColor () -> UIColor {
+        return UIColor(red: 254/255, green: 255/255, blue: 187/255, alpha: 1)
+    }
+    
+    class func appBrownColor () -> UIColor {
+        return UIColor(red: 84/255, green: 32/255, blue: 0, alpha: 1)
+    }
+    
+    class func appGreenColor () -> UIColor {
+        return UIColor(red: 7/255, green: 89/255, blue: 1/255, alpha: 1)
+    }
+    
+    class func appBlueColor () -> UIColor {
+        return UIColor(red: 0, green: 0, blue: 234/255, alpha: 1)
+    }
+}
+
+extension AppDelegate {
+    
+    func setWindowBackgroundImageView () {
+        
+        //self.window?.backgroundColor = UIColor.mainColor()
+        
+        var backgroundImageView = UIImageView(image: UIImage(named: "main_background"))
+        backgroundImageView.frame = window!.frame
+        backgroundImageView.contentMode = .ScaleAspectFill
+        
+        window!.addSubview(backgroundImageView)
+        window!.sendSubviewToBack(backgroundImageView)
     }
 }
 
@@ -26,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        self.window?.backgroundColor = UIColor.mainColor()
+        setWindowBackgroundImageView()
         
         // [Optional] Power your app with Local Datastore. For more info, go to
         // https://parse.com/docs/ios_guide#localdatastore/iOS
@@ -74,9 +105,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if (AdvertismentController.enableAds) {
             
-            var topView = topMostController()
-            var retryVC = RetryViewController()
-            topView.presentViewController(retryVC, animated: true, completion: nil)
+//            var topView = topMostController()
+//            var retryVC = RetryViewController()
+//            topView.presentViewController(retryVC, animated: true, completion: nil)
             
         }
     }

@@ -13,9 +13,15 @@ class UserLogged: NSObject {
     
     // MARK: Parse user logged object
     
-    static var logObject = PFObject(className: "UserLogged")
+    static var logObject: PFObject!
+    
+    class func setLogObject () {
+        logObject = PFObject(className: "UserLogged")
+    }
     
     class func saveUserInformation (id: String, firstname: String, lastname: String, email: String, birthday: String) {
+        
+        
         
         logObject["userId"]       = id
         logObject["first_name"]   = firstname

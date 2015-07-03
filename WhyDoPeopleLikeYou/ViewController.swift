@@ -16,6 +16,8 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
     let permissions = ["public_profile", "email", "user_likes", "user_photos"]
     var loginView:     FBSDKLoginButton!
     
+    var startButton: UIButton!
+    
     // MARK: View elements instance
     
     var backgroundImageView: UIImageView!
@@ -53,7 +55,7 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
 
 // MARK: Utilities
 
-extension ViewController {
+extension UIViewController {
     
     // Determine the size of device
     
@@ -82,6 +84,10 @@ extension ViewController {
         }
     }
 
+    
+}
+
+extension ViewController {
     
     // Set the status bar style
     
@@ -157,7 +163,7 @@ extension ViewController {
     
     func userLoggedIn () {
         
-        DataController.getStart(self) // Start the question
+        setStartButton()
         
         let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
         dispatch_async(dispatch_get_global_queue(priority, 0)) {
@@ -166,6 +172,8 @@ extension ViewController {
             
             dispatch_async(dispatch_get_main_queue()) {
 
+                UserLogged.setLogObject()
+                
                 // update some UI
                 DataController.loadUserProfileImage()
                 DataController.loadUserFirstName()
@@ -175,6 +183,36 @@ extension ViewController {
         }
     }
     
+    func setStartButton () {
+        
+        startButton = UIButton(frame: CGRectMake(0, 0, self.view.frame.width - 16, 44))
+        startButton.setTitle("เริ่ม!", forState: .Normal)
+        startButton.setTitleColor( UIColor.blackColor(), forState: .Normal)
+        startButton.setTitleColor( UIColor.grayColor(), forState: .Highlighted)
+        startButton.center.x = self.view.center.x
+        startButton.center.y = self.view.frame.height + 44
+        startButton.backgroundColor = UIColor.whiteColor()
+        startButton.layer.cornerRadius = 6
+        startButton.layer.borderColor = UIColor.blackColor().CGColor
+        startButton.layer.borderWidth = 1
+        startButton.addTarget(self, action: "getStarted", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        view.addSubview(startButton)
+        
+        UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: {
+            self.startButton.center.y = self.view.frame.height * 2/3
+            }, completion: nil)
+    }
+    
+    func getStarted () {
+        
+        UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: {
+            self.startButton.center.y = self.view.frame.height + 44
+            }, completion: { (finished: Bool) in
+                DataController.getStart(self)
+        })
+        
+    }
     
     // Facebook Delegate Methods
     

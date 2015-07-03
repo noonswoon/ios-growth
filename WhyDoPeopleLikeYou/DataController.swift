@@ -140,7 +140,7 @@ public class DataController {
         let timeDelay: Double = 0
         
         var firstQuestion = list_questionViewController[0]
-        firstQuestion.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
+        firstQuestion.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
         
         let delay = timeDelay * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
@@ -367,11 +367,16 @@ extension DataController {
     class func setSummartion (num: Int) {
 
         summation = (summation + num) % resultsEng.count
+        
         println("summation: \(summation)")
     }
     
     class func getDescription () -> String {
+        
         //summationDescription = DataController.resultsEng[ key ] + "\n\n" + DataController.resultsThai[ key ]
+        
+        summation = (summation < 1) ? 1 : summation
+        
         return DataController.resultsThai[ summation ]
     }
     
