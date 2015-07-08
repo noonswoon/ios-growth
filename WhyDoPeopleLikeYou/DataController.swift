@@ -11,6 +11,7 @@ import Parse
 
 public class DataController {
     
+    static var result = 0
     static var summation = 0
     static var summationDescription = ""
     
@@ -19,100 +20,108 @@ public class DataController {
     static var list_questionViewController = [QuestionViewController]()
     
     static var userProfileImage: UIImage!
-    static var userFirstNameText: String = "Error found"
-    
-    static let resultsEng = [
-        ("You’ve got beautiful eyes, cute smile and silky hair."),
-        ("You’ve got a nice skin, very good looking and adorable."),
-        ("You’re so sexy that you make the others blush when they look at you."),
-        ("You have glamorous lips and perfect body."),
-        ("You’ve slim body and skinny legs. Also your mind is beautiful."),
-        ("You’re homely looking but your possitive attitude make people like you."),
-        ("You’re friendly, good-humored that make everyone wants to be with you."),
-        ("You’ve got nice legs, curvy body and you’re easy-going with everyone."),
-        ("You’re so stunning. You make others’ jaw drop when they look at you."),
-        ("You’re funny person. You have sense of humor. Everyone wants to be close with you."),
-        ("You’ve got adorable dimples. Your smile melt the other hearts."),
-        ("You’re a little bit cheeky. your humor always make people laugh."),
-        ("You’re rich and generous. That’s why people want to be with you."),
-        ("You’re never look aged. You skin is very nice and you have no wrinkles."),
-        ("You look very elegant yet adorable. Everyone wants to be with you."),
-        ("You’ve got blushing cheeks. Everyone can fall in love with you easily when they see you."),
-        ("You’re very attractive person and your curvy body make people like you."),
-        ("You’re polite, quiet and modest. When people are with you, they’re happy."),
-        ("You like adventurous activities and love to visit exciting places."),
-        ("You’re extroverted person. Easy-going with everyone and you’re kind. That’s why people like you."),
-        ("You’ve nice eyebrows, pretty lips and elegant hair. Moreover you’re funny."),
-        ("You’ve good manner, friendly yet sometimes you’re a little bit naughty and cute."),
-        ("You’re young and have beautiful mind. You’re kind to everyone. (NO LIKE)")]
+    static var userFirstNameText: String!
+    static var userProfileID: String!
     
     static let resultsThai = [
-        ("คุณมีดวงตาที่สวยงาม มีรอยยิ้มที่น่ารัก และมีผมที่นุ่มสลวย"),
-        ("คุณมีผิวพรรณที่ดี เป็นคนที่ดูดีและน่ารัก"),
-        ("คุณมีความเซ็กซี่มากจนกระทั่ง ทำให้คนอื่นหน้าแดง เมื่อพวกเขามองมายังคุณ"),
-        ("คุณมีริมฝีปากที่สวย และรูปร่างอันเพอร์เฟ็ค"),
-        ("นอกจากนี้จิตใจคุณยังงดงามอีกด้วย"),
-        ("หน้าตาของคุณก็งั้นๆแหละ แต่คุณเป็นคนคิดบวกเลยทำให้ผู้คนชอบคุณ"),
-        ("คุณเป็นคนที่เป็นกันเอง มีความขบขัน ทำให้ทุกๆคนอยากจะเข้ามาอยู่ใกล้ๆคุณ"),
-        ("คุณมีขาที่สวย รูปร่างดี และเข้ากับคนอื่นได้ทุกๆคน"),
-        ("คุณสวยมาก! สวยจนกระทั่งทำให้คนอื่นอ้าปากค้างเมื่อพวกเขามองคุณ"),
-        ("คุณเป็นคนตลก มีความขำขัน จนทุกๆคนอยากจะอยู่ใกล้ๆกับคุณ"),
-        ("คุณมีลักยิ้มที่น่ารัก รอยยิ้มของคุณละลายใจของทุกๆคน"),
-        ("คุณมีความทะเล้น มุกตลกของคุณทำให้คนอื่นขำได้เสมอ"),
-        ("คุณรวยและเป็นคนใจกว้าง นี่แหละคือสาเหตุที่ผู้คนอยากอยู่ใกล้คุณ"),
-        ("คุณดูไม่แก่ลงไปเลย ผิวพรรณของคุณนั้นดีเยี่ยม ไม่มีแม้กระทั่งรอยตีนกา"),
-        ("คุณเป็นคนที่มีความสง่างาม แต่ยังมีความน่ารัก ทำให้ทุกๆคนอยากอยู่กับคุณ"),
-        ("คุณมีแก้มที่แดงสวย ทุกๆคนสามารถตกหลุมรักคุณได้อย่างง่ายดายเมื่อเขาเห็นคุณ"),
-        ("คุณเป็นคนที่มีเสน่ห์ดึงดูดมาก รูปร่างอันงดงามของคุณ ทำให้ผู้คนชอบคุณ"),
-        ("คุณเป็นคนสุภาพ เงียบ และเจียมเนื้อเจียมตัว เมื่อคนอื่นอยู่กับคุณ พวกเขารู้สึกมีความสุข"),
-        ("คุณเป็นคนที่ชอบกิจกรรมผจญภัย และชอบที่จะไปเยี่ยมชมสถานที่น่าตื่นตาตื่นใจ"),
-        ("คุณเป็นคนเข้าสังคมเก่ง เข้ากับคนอื่นได้ทุกคน และคุณยังใจดีอีกต่างหาก นั่นคือเหตุผลที่ทำไมผู้คนถึงชอบคุณ"),
-        ("คุณมีคิ้วที่ดูดี มีริมฝีปากที่รูปร่างสวย และมีผมที่นุ่มสลวย นอกจากนี้คุณยังเป็นคนที่มีความตลกอีกด้วย"),
-        ("คุณเป็นคนที่มีมารยาทดี มีความเป็นกันเอง บางครั้งคุณก็ซุกซนนิดหน่อย และคุณก็น่ารักด้วย"),
-        ("คุณดูเด็ก และมีจิตใจที่ดี คุณใจดีกับทุกๆคน (NO LIKE CASE)")]
+        ("ตาตี่ จิตใจเหี้ยม"),
+        ("บั้นท้ายใหญ่ ยิ้มง่าย"),
+        ("ขาใหญ่ ขำขัน"),
+        ("รูจมูกบาน เซ็กซี่"),
+        ("คิ้วดก พูดตรง"),
+        ("รักแร้เหม็น ทะเล้น"),
+        ("จ้ำม่ำ กินเก่ง"),
+        ("ขนจมูกยาว รวย"),
+        ("รักแร้ดำ จิตใจดี"),
+        ("ริมฝีปากอวบ ถ่อมตน"),
+        ("ไร้รอยตีนกา ขี้เหนียว"),
+        ("หูกาง ชอบรับฟัง"),
+        ("ขนหน้าแข้งดก เป็นกันเอง"),
+        ("ขายาว ขี้งอน"),
+        ("พุงนุ่มนิ่ม อ่อนโยน"),
+        ("รักแร้ขาว กินจุ"),
+        ("คิ้วบาง ตลก"),
+        ("จมูกโด่ง ซน"),
+        ("ขนแขนชูชัน ประหยัด"),
+        ("เอวบาง เข้าสังคมเก่ง"),
+        ("เท้าเหม็น อบอุ่น"),
+        ("ฟันเหยิน จริงใจ"),
+        ("หัวหยิก ล่ำสัน")]
+    
+    static let codeName = [
+        ("ตี๋อำมหิต"),
+        ("บั้นท้ายพิฆาต"),
+        ("ขาหมูสะท้านฟ้า"),
+        ("จมูกเครื่องดูดฝุ่น"),
+        ("คิ้วสาหร่าย"),
+        ("กลิ่นตัวสะท้านโลกา"),
+        ("จอมเขมือบแห่งศตวรรษ"),
+        ("เส้นขนทะยานฟ้า"),
+        ("หมักหมมบ่มเชื้อรา"),
+        ("จูบเย้ยจันทร์"),
+        ("หน้าเด็กตลอดกาล"),
+        ("หูกระด้ง"),
+        ("ขาหัวไชเท้า"),
+        ("ขาเรียวเกี่ยวสวาท"),
+        ("มาร์ชเมลโล่"),
+        ("วงแขนดวงจันทรา"),
+        ("คิ้ว 0 มิติ"),
+        ("พิน็อคคิโอ"),
+        ("ขนแขนอเมซอน"),
+        ("เอวเพรียวเกี่ยวใจ"),
+        ("กลิ่นบาทาปราบมาร"),
+        ("ฟันขูดมะพร้าว"),
+        ("ฝอยขัดหม้อ")]
+    
 
 
     // MARK: Generate question view controller
     
     class func setQuestionAndChoice () {
         
-        questions.append( "Question1" )
+        questions.append( "คุณคิดว่าตัวเองน่ารักรึเปล่า" )
         
-        choices.append( "Choice1_1" )
-        choices.append( "Choice1_2" )
-        choices.append( "Choice1_3" )
-        choices.append( "Choice1_4" )
+        choices.append( "ก็มีบ้างบางครั้งนะ" )
+        choices.append( "แน่นอน ก็ฉันน่ารักอะ" )
+        choices.append( "ไม่เลย ฉันไม่คิดว่าฉันน่ารัก" )
         
-        questions.append( "Question2" )
+        questions.append( "คุณแต่งหน้าบ่อยแค่ไหน" )
         
-        choices.append( "Choice2_1" )
-        choices.append( "Choice2_2" )
-        choices.append( "Choice2_3" )
-        choices.append( "Choice2_4" )
+        choices.append( "แต่งทุกวันเลย" )
+        choices.append( "ไม่เคยเลย" )
+        choices.append( "บางครั้งก็แต่ง" )
 
-        questions.append( "Question3" )
+        questions.append( "คุณออกกำลังกายบ่อยแค่ไหน" )
         
-        choices.append( "Choice3_1" )
-        choices.append( "Choice3_2" )
-        choices.append( "Choice3_3" )
-        choices.append( "Choice3_4" )
+        choices.append( "ไม่เคยเลย" )
+        choices.append( "ออกทุกวันนะ" )
+        choices.append( "เกือบทุกวัน บางวันก็ไม่ได้ออก" )
 
-        questions.append( "Question4" )
+        questions.append( "คุณโกนหนวด/เครา/ขน ของคุณบ่อยแค่ไหน" )
         
-        choices.append( "Choice4_1" )
-        choices.append( "Choice4_2" )
-        choices.append( "Choice4_3" )
-        choices.append( "Choice4_4" )
+        choices.append( "ทุกวัน" )
+        choices.append( "ทุกสัปดาห์" )
+        choices.append( "ไม่เคย" )
+        
+        questions.append( "ลองประเมิณความน่าดึงดูดของคุณ" )
+        
+        choices.append( "0 - 3" )
+        choices.append( "4 - 6" )
+        choices.append( "7 - 10" )
+
 
         
     }
     
     class func setQuestionViewControllers () {
         
-        println("number of question: \(questions.count)")
+        println(choices)
         
-        let numberOfChoicePerQuestion = 4
+        let numberOfChoicePerQuestion = choices.count/questions.count
         let numberOfQuestion = questions.count
+        
+        println("number of question: \(numberOfChoicePerQuestion)")
+        println("number of choice/Q: \(numberOfQuestion)")
         
         for (var i=0 ; i<numberOfQuestion ; i++) {
             
@@ -120,7 +129,7 @@ public class DataController {
             
             for (var j=0 ; j<numberOfChoicePerQuestion ; j++) {
                 
-                let choice = choices[ i * numberOfQuestion + j ]
+                let choice = choices[i*numberOfChoicePerQuestion+j]
                 questionViewController.addChoice( choice )
             }
             
@@ -133,8 +142,9 @@ public class DataController {
     }
     
     class func getStart (rootView: UIViewController) {
+    
+        DataController.summation = result
         
-        DataController.summation = 0
         AdvertismentController.enableAds = false
         
         let timeDelay: Double = 0
@@ -154,54 +164,6 @@ public class DataController {
     
     // MARK: Generating result
     
-    // User profile image from user ID
-    
-    class func loadUserProfileImage () {
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
-        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil) {
-                
-                println("Error: \(error)")
-            }
-            else {
-                
-                let publicProfile = result as! NSDictionary
-                let userID = publicProfile["id"] as! String
-                println(userID)
-                
-                let urlString = "https://graph.facebook.com/\(userID)/picture?type=large"
-                let nsURL = NSURL(string:  urlString)
-                let nsData = NSData(contentsOfURL: nsURL!)
-                
-                self.userProfileImage = UIImage(data: nsData!)
-                
-            }
-        })
-    }
-    
-    // First name
-    
-    class func loadUserFirstName () {
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
-        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil) {
-                
-                println("Error: \(error)")
-            }
-            else {
-                
-                let publicProfile = result as! NSDictionary
-                let fname = publicProfile["first_name"] as! String
-                println(fname)
-                
-                self.userFirstNameText = fname
-            }
-        })
-    }
-    
-    
     class func loadUserProfile() {
         
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me?fields=id,email,first_name,last_name,birthday", parameters: nil)
@@ -220,9 +182,46 @@ public class DataController {
                 let email     : String = (result.valueForKey("emails")     != nil)  ? result.valueForKey("emails")      as! String : firstname + "." + lastname + "@facebook.com"
                 let birthday  : String = (result.valueForKey("birthday")   != nil)  ? result.valueForKey("birthday")    as! String : ""
                 
+                
+                self.setUserProfileImage(id)
+                self.setUserFirstName(firstname)
+                self.setUserProfileID(id)
+                
+                
                 UserLogged.saveUserInformation(id, firstname: firstname, lastname: lastname, email: email, birthday: birthday)
             }
         })
+    }
+    
+    class func setUserProfileID(ID: String) {
+        self.userProfileID = ID
+    }
+    
+    class func setUserProfileImage (userID: String) {
+        
+        let urlString = "https://graph.facebook.com/\(userID)/picture?type=large"
+        let nsURL = NSURL(string:  urlString)
+        let nsData = NSData(contentsOfURL: nsURL!)
+        
+        self.userProfileImage = UIImage(data: nsData!)
+        
+        closeLoadingIndicator()
+    }
+    
+    class func setUserFirstName (fname: String) {
+        
+        self.userFirstNameText = fname
+        
+        closeLoadingIndicator()
+    }
+    
+    class func closeLoadingIndicator () {
+        
+        if (userProfileImage != nil && userFirstNameText != nil) {
+            
+            NSNotificationCenter.defaultCenter().postNotificationName("LoadUserProfileConpleted", object: nil)
+            SwiftSpinner.hide()
+        }
     }
 
 
@@ -360,30 +359,31 @@ extension DataController {
         let firstScalar = scalars[ scalars.startIndex ].hashValue
         let key         = firstScalar - 97
         
-        setSummartion( key )
+        setResult( key )
     }
     
+    class func setResult (num: Int) {
+        result = (self.result + num) % resultsThai.count
+    }
     
     class func setSummartion (num: Int) {
 
-        summation = (summation + num) % resultsEng.count
+        summation = (self.summation + num) % resultsThai.count
         
         println("summation: \(summation)")
     }
     
     class func getDescription () -> String {
         
-        //summationDescription = DataController.resultsEng[ key ] + "\n\n" + DataController.resultsThai[ key ]
-        
         summation = (summation < 1) ? 1 : summation
-        
-        return DataController.resultsThai[ summation ]
+        return DataController.resultsThai[ summation - 1 ]
+    }
+    
+    class func getCodeName () -> String {
+
+        summation = (summation < 1) ? 1 : summation
+        return DataController.codeName[ summation - 1 ]
     }
     
 }
-
-
-
-
-
 

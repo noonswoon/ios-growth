@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F0630AD1B4BE3B900AB4157 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0630AC1B4BE3B900AB4157 /* test.swift */; };
+		9F0630AF1B4BE58000AB4157 /* backgroundColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0630AE1B4BE58000AB4157 /* backgroundColor.png */; };
+		9F0630B11B4BF98800AB4157 /* main_background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0630B01B4BF98700AB4157 /* main_background2.png */; };
 		9F0C17521B390C5300122D7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0C17511B390C5300122D7C /* AppDelegate.swift */; };
 		9F0C17551B390C5300122D7C /* WhyDoPeopleLikeYou.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9F0C17531B390C5300122D7C /* WhyDoPeopleLikeYou.xcdatamodeld */; };
 		9F0C17571B390C5300122D7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0C17561B390C5300122D7C /* ViewController.swift */; };
@@ -96,6 +99,9 @@
 		9FDE83211B453CA700B513AE /* retry.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDE82FA1B453CA700B513AE /* retry.png */; };
 		9FDE83231B453CA700B513AE /* tempResult.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDE82FC1B453CA700B513AE /* tempResult.png */; };
 		9FDE83271B454CDF00B513AE /* tempContentBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FDE83261B454CDF00B513AE /* tempContentBackground.png */; };
+		9FE6F5AD1B4A6A790092E40B /* tempResultHorizental in Resources */ = {isa = PBXBuildFile; fileRef = 9FE6F5AC1B4A6A790092E40B /* tempResultHorizental */; };
+		9FE6F5AF1B4A86FE0092E40B /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE6F5AE1B4A86FE0092E40B /* StartViewController.swift */; };
+		9FF9989F1B4D233C009FA154 /* waterMarkBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FF9989E1B4D233C009FA154 /* waterMarkBG.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +115,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9F0630AC1B4BE3B900AB4157 /* test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
+		9F0630AE1B4BE58000AB4157 /* backgroundColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgroundColor.png; sourceTree = "<group>"; };
+		9F0630B01B4BF98700AB4157 /* main_background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_background2.png; sourceTree = "<group>"; };
 		9F0C174C1B390C5300122D7C /* WhyDoPeopleLikeYou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhyDoPeopleLikeYou.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F0C17501B390C5300122D7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F0C17511B390C5300122D7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -218,6 +227,9 @@
 		9FDE82FA1B453CA700B513AE /* retry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retry.png; sourceTree = "<group>"; };
 		9FDE82FC1B453CA700B513AE /* tempResult.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tempResult.png; sourceTree = "<group>"; };
 		9FDE83261B454CDF00B513AE /* tempContentBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tempContentBackground.png; sourceTree = "<group>"; };
+		9FE6F5AC1B4A6A790092E40B /* tempResultHorizental */ = {isa = PBXFileReference; lastKnownFileType = file; path = tempResultHorizental; sourceTree = "<group>"; };
+		9FE6F5AE1B4A86FE0092E40B /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		9FF9989E1B4D233C009FA154 /* waterMarkBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waterMarkBG.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -285,8 +297,10 @@
 				9FD928591B43D06D007602DC /* Custom class */,
 				9F0C17511B390C5300122D7C /* AppDelegate.swift */,
 				9F0C17561B390C5300122D7C /* ViewController.swift */,
+				9FE6F5AE1B4A86FE0092E40B /* StartViewController.swift */,
 				9F11D8521B424BFA00B91BB3 /* QuestionViewController.swift */,
 				9F297CEE1B429197006CFCED /* ResultViewController.swift */,
+				9F0630AC1B4BE3B900AB4157 /* test.swift */,
 				9F0D0FA71B3A9EB900B24C86 /* AdvertisementViewController.swift */,
 				9F18D1731B3943E900C97F52 /* DataController.swift */,
 				9FD928621B44F28E007602DC /* RetryViewController.swift */,
@@ -411,6 +425,10 @@
 		9FDE82D41B453CA700B513AE /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9FF9989E1B4D233C009FA154 /* waterMarkBG.png */,
+				9F0630B01B4BF98700AB4157 /* main_background2.png */,
+				9F0630AE1B4BE58000AB4157 /* backgroundColor.png */,
+				9FE6F5AC1B4A6A790092E40B /* tempResultHorizental */,
 				9FDE82D51B453CA700B513AE /* background2.png */,
 				9FDE82D61B453CA700B513AE /* icon.psd */,
 				9FDE82D91B453CA700B513AE /* icon120px.png */,
@@ -542,9 +560,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FDE831A1B453CA700B513AE /* 3.png in Resources */,
+				9FE6F5AD1B4A6A790092E40B /* tempResultHorizental in Resources */,
 				9FDE83131B453CA700B513AE /* 18.png in Resources */,
 				9FDE830D1B453CA700B513AE /* 12.png in Resources */,
 				9FDE83151B453CA700B513AE /* 2.png in Resources */,
+				9F0630B11B4BF98800AB4157 /* main_background2.png in Resources */,
 				9FDE831B1B453CA700B513AE /* 4.png in Resources */,
 				9FDE830F1B453CA700B513AE /* 14.png in Resources */,
 				9FDE830A1B453CA700B513AE /* 1.png in Resources */,
@@ -553,6 +573,7 @@
 				9FDE83121B453CA700B513AE /* 17.png in Resources */,
 				9FDE831C1B453CA700B513AE /* 5.png in Resources */,
 				9FDE82FD1B453CA700B513AE /* background2.png in Resources */,
+				9FF9989F1B4D233C009FA154 /* waterMarkBG.png in Resources */,
 				9FDE83101B453CA700B513AE /* 15.png in Resources */,
 				9FDE83111B453CA700B513AE /* 16.png in Resources */,
 				9FDE83161B453CA700B513AE /* 20.png in Resources */,
@@ -572,6 +593,7 @@
 				9FDE83031B453CA700B513AE /* icon58px.png in Resources */,
 				9FDE83091B453CA700B513AE /* NoonswoonAds.png in Resources */,
 				9FC9A17E1B4694780033643B /* testRatioImage.png in Resources */,
+				9F0630AF1B4BE58000AB4157 /* backgroundColor.png in Resources */,
 				9F0C175C1B390C5300122D7C /* Images.xcassets in Resources */,
 				9FDE83201B453CA700B513AE /* 9.png in Resources */,
 				9FDE830B1B453CA700B513AE /* 10.png in Resources */,
@@ -609,6 +631,7 @@
 				9F0C17571B390C5300122D7C /* ViewController.swift in Sources */,
 				9F18D1621B39229100C97F52 /* SDWebImageCompat.m in Sources */,
 				9F18D1711B3922D600C97F52 /* CircularLoaderView.swift in Sources */,
+				9F0630AD1B4BE3B900AB4157 /* test.swift in Sources */,
 				9F297CEF1B429197006CFCED /* ResultViewController.swift in Sources */,
 				9F0C17521B390C5300122D7C /* AppDelegate.swift in Sources */,
 				9F18D1601B39229100C97F52 /* NSData+ImageContentType.m in Sources */,
@@ -621,6 +644,7 @@
 				9F18D16A1B39229100C97F52 /* UIImage+MultiFormat.m in Sources */,
 				9F11D84C1B4151D800B91BB3 /* SwiftSpinner.swift in Sources */,
 				9F0D0FA81B3A9EB900B24C86 /* AdvertisementViewController.swift in Sources */,
+				9FE6F5AF1B4A86FE0092E40B /* StartViewController.swift in Sources */,
 				9F18D1671B39229100C97F52 /* SDWebImagePrefetcher.m in Sources */,
 				9FD928631B44F28E007602DC /* RetryViewController.swift in Sources */,
 				9F11D8511B415CBC00B91BB3 /* CustomAlertView.swift in Sources */,

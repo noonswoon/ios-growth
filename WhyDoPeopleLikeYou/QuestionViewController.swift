@@ -37,7 +37,7 @@ class QuestionViewController: UIViewController {
         
         question = UILabel(frame: CGRectMake(0, 0, CGRectGetMaxX( self.view.frame ) * 0.75, 100))
         question.center.x = self.view.center.x
-        question.center.y = self.view.frame.height * 1/4 - 50
+        question.center.y = self.view.frame.height * 1/4 - 15
         question.numberOfLines = 0
         question.textAlignment = NSTextAlignment.Center
         question.text = questionText
@@ -52,7 +52,7 @@ class QuestionViewController: UIViewController {
     
     func setChoicesLabels () {
         
-        let yPositionFirstChoice = self.view.frame.height * 1/3 - 50
+        let yPositionFirstChoice = self.view.frame.height * 0.3
         generateChoice( yPositionFirstChoice )
     }
     
@@ -110,9 +110,10 @@ class QuestionViewController: UIViewController {
     
     func choiceButtonClick (sender: UIButton!) {
 
-        println(choices[sender.tag])
+        println("\(sender.tag): \(choices[sender.tag])")
         
-        DataController.summation += sender.tag - 1
+        DataController.summation = DataController.summation + sender.tag
+        println(DataController.summation)
         
         if (questionNo == DataController.questions.count - 1) {
             

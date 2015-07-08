@@ -16,17 +16,12 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
     let permissions = ["public_profile", "email", "user_likes", "user_photos"]
     var loginView:     FBSDKLoginButton!
     
-    var startButton: UIButton!
-    
     // MARK: View elements instance
     
     var backgroundImageView: UIImageView!
     
     let margin: CGFloat = 8
     let elementHeight: CGFloat = 44
-    
-    
-    
     
     // MARK: Program life cycle
     
@@ -37,6 +32,7 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
         
         setBackgroundImageView()
         setQuestion()
+        setNotification()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -52,6 +48,19 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
 }
 
 
+extension ViewController {
+    func setNotification () {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadUserProfileConpleted", name: "LoadUserProfileConpleted", object: nil)
+    }
+    
+    func loadUserProfileConpleted () {
+        var startViewController = StartViewController()
+        startViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+        self.presentViewController(startViewController, animated: true, completion: nil)
+    }
+
+}
+
 
 // MARK: Utilities
 
@@ -59,28 +68,28 @@ extension UIViewController {
     
     // Determine the size of device
     
-    func isClassicModel () -> Bool {
+    func iPhoneScreenSize () -> String {
         
         var result: CGSize = UIScreen.mainScreen().bounds.size
         
         if(result.height == 480) {
-            println("iPhone Classic")
-            return true
+            println("3.5")
+            return "3.5"
         }
         else if(result.height == 568) {
-            println("iPhone 5")
-            return false
+            println("4")
+            return "4"
         }
         else if(result.height == 667) {
-            println("iPhone 6")
-            return false
+            println("4.7")
+            return "4.7"
         }
         else if(result.height == 736) {
-            println("iPhone 6 Plus")
-            return false
+            println("5.5")
+            return "5.5"
         }
         else {
-            return false
+            return ""
         }
     }
 
@@ -163,54 +172,15 @@ extension ViewController {
     
     func userLoggedIn () {
         
-        setStartButton()
+        SwiftSpinner.show("Loading\nUser profile", animated: true)
         
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority, 0)) {
-            
-            // Do some task
-            
-            dispatch_async(dispatch_get_main_queue()) {
-
-                UserLogged.setLogObject()
-                
-                // update some UI
-                DataController.loadUserProfileImage()
-                DataController.loadUserFirstName()
-                DataController.loadUserProfile()
-                DataController.findMaximumPageCategoryCount()
-            }
-        }
-    }
-    
-    func setStartButton () {
+        UserLogged.setLogObject()
         
-        startButton = UIButton(frame: CGRectMake(0, 0, self.view.frame.width - 16, 44))
-        startButton.setTitle("เริ่ม!", forState: .Normal)
-        startButton.setTitleColor( UIColor.blackColor(), forState: .Normal)
-        startButton.setTitleColor( UIColor.grayColor(), forState: .Highlighted)
-        startButton.center.x = self.view.center.x
-        startButton.center.y = self.view.frame.height + 44
-        startButton.backgroundColor = UIColor.whiteColor()
-        startButton.layer.cornerRadius = 6
-        startButton.layer.borderColor = UIColor.blackColor().CGColor
-        startButton.layer.borderWidth = 1
-        startButton.addTarget(self, action: "getStarted", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        view.addSubview(startButton)
-        
-        UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: {
-            self.startButton.center.y = self.view.frame.height * 2/3
-            }, completion: nil)
-    }
-    
-    func getStarted () {
-        
-        UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: {
-            self.startButton.center.y = self.view.frame.height + 44
-            }, completion: { (finished: Bool) in
-                DataController.getStart(self)
-        })
+        // update some UI
+//        DataController.loadUserProfileImage()
+//        DataController.loadUserFirstName()
+        DataController.loadUserProfile()
+        DataController.findMaximumPageCategoryCount()
         
     }
     
