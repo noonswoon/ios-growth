@@ -16,7 +16,6 @@
 		9F0C175A1B390C5300122D7C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F0C17581B390C5300122D7C /* Main.storyboard */; };
 		9F0C175C1B390C5300122D7C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F0C175B1B390C5300122D7C /* Images.xcassets */; };
 		9F0C175F1B390C5300122D7C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F0C175D1B390C5300122D7C /* LaunchScreen.xib */; };
-		9F0C176B1B390C5300122D7C /* WhyDoPeopleLikeYouTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0C176A1B390C5300122D7C /* WhyDoPeopleLikeYouTests.swift */; };
 		9F0C177A1B390E5800122D7C /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0C17741B390E5800122D7C /* Bolts.framework */; };
 		9F0C177B1B390E5800122D7C /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0C17751B390E5800122D7C /* Parse.framework */; };
 		9F0C177C1B390E5800122D7C /* ParseCrashReporting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0C17761B390E5800122D7C /* ParseCrashReporting.framework */; };
@@ -34,9 +33,6 @@
 		9F0C17911B390EA800122D7C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0C17901B390EA800122D7C /* SystemConfiguration.framework */; };
 		9F0C17931B390EAE00122D7C /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0C17921B390EAE00122D7C /* libz.dylib */; };
 		9F0C17951B390EB800122D7C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0C17941B390EB800122D7C /* libsqlite3.dylib */; };
-		9F0C17A01B3910DE00122D7C /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0C179D1B3910DE00122D7C /* FBSDKCoreKit.framework */; };
-		9F0C17A11B3910DE00122D7C /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0C179E1B3910DE00122D7C /* FBSDKLoginKit.framework */; };
-		9F0C17A21B3910DE00122D7C /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0C179F1B3910DE00122D7C /* FBSDKShareKit.framework */; };
 		9F0D0FA81B3A9EB900B24C86 /* AdvertisementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0D0FA71B3A9EB900B24C86 /* AdvertisementViewController.swift */; };
 		9F11D84C1B4151D800B91BB3 /* SwiftSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F11D84B1B4151D800B91BB3 /* SwiftSpinner.swift */; };
 		9F11D8511B415CBC00B91BB3 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F11D8501B415CBC00B91BB3 /* CustomAlertView.swift */; };
@@ -102,17 +98,10 @@
 		9FE6F5AD1B4A6A790092E40B /* tempResultHorizental in Resources */ = {isa = PBXBuildFile; fileRef = 9FE6F5AC1B4A6A790092E40B /* tempResultHorizental */; };
 		9FE6F5AF1B4A86FE0092E40B /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE6F5AE1B4A86FE0092E40B /* StartViewController.swift */; };
 		9FF9989F1B4D233C009FA154 /* waterMarkBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FF9989E1B4D233C009FA154 /* waterMarkBG.png */; };
+		D9FBCE981B4D4B2C00E4B287 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9FBCE951B4D4B2C00E4B287 /* FBSDKCoreKit.framework */; };
+		D9FBCE991B4D4B2C00E4B287 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9FBCE961B4D4B2C00E4B287 /* FBSDKLoginKit.framework */; };
+		D9FBCE9A1B4D4B2C00E4B287 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9FBCE971B4D4B2C00E4B287 /* FBSDKShareKit.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		9F0C17651B390C5300122D7C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9F0C17441B390C5300122D7C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9F0C174B1B390C5300122D7C;
-			remoteInfo = WhyDoPeopleLikeYou;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		9F0630AC1B4BE3B900AB4157 /* test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
@@ -126,9 +115,6 @@
 		9F0C17591B390C5300122D7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9F0C175B1B390C5300122D7C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9F0C175E1B390C5300122D7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		9F0C17641B390C5300122D7C /* WhyDoPeopleLikeYouTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhyDoPeopleLikeYouTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9F0C17691B390C5300122D7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9F0C176A1B390C5300122D7C /* WhyDoPeopleLikeYouTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhyDoPeopleLikeYouTests.swift; sourceTree = "<group>"; };
 		9F0C17741B390E5800122D7C /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Framework/Bolts.framework; sourceTree = "<group>"; };
 		9F0C17751B390E5800122D7C /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Framework/Parse.framework; sourceTree = "<group>"; };
 		9F0C17761B390E5800122D7C /* ParseCrashReporting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ParseCrashReporting.framework; path = Framework/ParseCrashReporting.framework; sourceTree = "<group>"; };
@@ -146,9 +132,6 @@
 		9F0C17901B390EA800122D7C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9F0C17921B390EAE00122D7C /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		9F0C17941B390EB800122D7C /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		9F0C179D1B3910DE00122D7C /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		9F0C179E1B3910DE00122D7C /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		9F0C179F1B3910DE00122D7C /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		9F0C17A31B3911B200122D7C /* WhyDoPeopleLikeYou-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhyDoPeopleLikeYou-Bridging-Header.h"; sourceTree = "<group>"; };
 		9F0D0FA71B3A9EB900B24C86 /* AdvertisementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvertisementViewController.swift; sourceTree = "<group>"; };
 		9F11D84B1B4151D800B91BB3 /* SwiftSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSpinner.swift; sourceTree = "<group>"; };
@@ -230,6 +213,9 @@
 		9FE6F5AC1B4A6A790092E40B /* tempResultHorizental */ = {isa = PBXFileReference; lastKnownFileType = file; path = tempResultHorizental; sourceTree = "<group>"; };
 		9FE6F5AE1B4A86FE0092E40B /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		9FF9989E1B4D233C009FA154 /* waterMarkBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waterMarkBG.png; sourceTree = "<group>"; };
+		D9FBCE951B4D4B2C00E4B287 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		D9FBCE961B4D4B2C00E4B287 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		D9FBCE971B4D4B2C00E4B287 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,26 +230,19 @@
 				9F0C178D1B390E9C00122D7C /* Security.framework in Frameworks */,
 				9F0C178B1B390E9600122D7C /* QuartzCore.framework in Frameworks */,
 				9F0C17891B390E9000122D7C /* MobileCoreServices.framework in Frameworks */,
-				9F0C17A01B3910DE00122D7C /* FBSDKCoreKit.framework in Frameworks */,
+				D9FBCE981B4D4B2C00E4B287 /* FBSDKCoreKit.framework in Frameworks */,
 				9F0C17871B390E8B00122D7C /* CoreLocation.framework in Frameworks */,
 				9F0C17851B390E8500122D7C /* CoreGraphics.framework in Frameworks */,
 				9F0C17831B390E8000122D7C /* CFNetwork.framework in Frameworks */,
 				9F0C17811B390E7A00122D7C /* AudioToolbox.framework in Frameworks */,
-				9F0C17A21B3910DE00122D7C /* FBSDKShareKit.framework in Frameworks */,
+				D9FBCE9A1B4D4B2C00E4B287 /* FBSDKShareKit.framework in Frameworks */,
 				9F0C177F1B390E5800122D7C /* ParseUI.framework in Frameworks */,
-				9F0C17A11B3910DE00122D7C /* FBSDKLoginKit.framework in Frameworks */,
+				D9FBCE991B4D4B2C00E4B287 /* FBSDKLoginKit.framework in Frameworks */,
 				9F0C177B1B390E5800122D7C /* Parse.framework in Frameworks */,
 				9F0C177C1B390E5800122D7C /* ParseCrashReporting.framework in Frameworks */,
 				9F0C177D1B390E5800122D7C /* ParseFacebookUtils.framework in Frameworks */,
 				9F0C177A1B390E5800122D7C /* Bolts.framework in Frameworks */,
 				9F0C177E1B390E5800122D7C /* ParseFacebookUtilsV4.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9F0C17611B390C5300122D7C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +254,6 @@
 			children = (
 				9F0C17961B390F6100122D7C /* Framework */,
 				9F0C174E1B390C5300122D7C /* WhyDoPeopleLikeYou */,
-				9F0C17671B390C5300122D7C /* WhyDoPeopleLikeYouTests */,
 				9F0C174D1B390C5300122D7C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -284,7 +262,6 @@
 			isa = PBXGroup;
 			children = (
 				9F0C174C1B390C5300122D7C /* WhyDoPeopleLikeYou.app */,
-				9F0C17641B390C5300122D7C /* WhyDoPeopleLikeYouTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -323,29 +300,12 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		9F0C17671B390C5300122D7C /* WhyDoPeopleLikeYouTests */ = {
-			isa = PBXGroup;
-			children = (
-				9F0C176A1B390C5300122D7C /* WhyDoPeopleLikeYouTests.swift */,
-				9F0C17681B390C5300122D7C /* Supporting Files */,
-			);
-			path = WhyDoPeopleLikeYouTests;
-			sourceTree = "<group>";
-		};
-		9F0C17681B390C5300122D7C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				9F0C17691B390C5300122D7C /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		9F0C17961B390F6100122D7C /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				9F0C179D1B3910DE00122D7C /* FBSDKCoreKit.framework */,
-				9F0C179E1B3910DE00122D7C /* FBSDKLoginKit.framework */,
-				9F0C179F1B3910DE00122D7C /* FBSDKShareKit.framework */,
+				D9FBCE951B4D4B2C00E4B287 /* FBSDKCoreKit.framework */,
+				D9FBCE961B4D4B2C00E4B287 /* FBSDKLoginKit.framework */,
+				D9FBCE971B4D4B2C00E4B287 /* FBSDKShareKit.framework */,
 				9F0C17941B390EB800122D7C /* libsqlite3.dylib */,
 				9F0C17921B390EAE00122D7C /* libz.dylib */,
 				9F0C17901B390EA800122D7C /* SystemConfiguration.framework */,
@@ -499,24 +459,6 @@
 			productReference = 9F0C174C1B390C5300122D7C /* WhyDoPeopleLikeYou.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9F0C17631B390C5300122D7C /* WhyDoPeopleLikeYouTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9F0C17711B390C5300122D7C /* Build configuration list for PBXNativeTarget "WhyDoPeopleLikeYouTests" */;
-			buildPhases = (
-				9F0C17601B390C5300122D7C /* Sources */,
-				9F0C17611B390C5300122D7C /* Frameworks */,
-				9F0C17621B390C5300122D7C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9F0C17661B390C5300122D7C /* PBXTargetDependency */,
-			);
-			name = WhyDoPeopleLikeYouTests;
-			productName = WhyDoPeopleLikeYouTests;
-			productReference = 9F0C17641B390C5300122D7C /* WhyDoPeopleLikeYouTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -528,10 +470,6 @@
 				TargetAttributes = {
 					9F0C174B1B390C5300122D7C = {
 						CreatedOnToolsVersion = 6.3;
-					};
-					9F0C17631B390C5300122D7C = {
-						CreatedOnToolsVersion = 6.3;
-						TestTargetID = 9F0C174B1B390C5300122D7C;
 					};
 				};
 			};
@@ -549,7 +487,6 @@
 			projectRoot = "";
 			targets = (
 				9F0C174B1B390C5300122D7C /* WhyDoPeopleLikeYou */,
-				9F0C17631B390C5300122D7C /* WhyDoPeopleLikeYouTests */,
 			);
 		};
 /* End PBXProject section */
@@ -607,13 +544,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9F0C17621B390C5300122D7C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -653,23 +583,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9F0C17601B390C5300122D7C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9F0C176B1B390C5300122D7C /* WhyDoPeopleLikeYouTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		9F0C17661B390C5300122D7C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9F0C174B1B390C5300122D7C /* WhyDoPeopleLikeYou */;
-			targetProxy = 9F0C17651B390C5300122D7C /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9F0C17581B390C5300122D7C /* Main.storyboard */ = {
@@ -781,6 +695,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Framework",
 					/Users/KHUNNINE/Documents/FacebookSDK,
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = WhyDoPeopleLikeYou/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -799,45 +714,12 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Framework",
 					/Users/KHUNNINE/Documents/FacebookSDK,
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = WhyDoPeopleLikeYou/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WhyDoPeopleLikeYou/WhyDoPeopleLikeYou-Bridging-Header.h";
-			};
-			name = Release;
-		};
-		9F0C17721B390C5300122D7C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = WhyDoPeopleLikeYouTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WhyDoPeopleLikeYou.app/WhyDoPeopleLikeYou";
-			};
-			name = Debug;
-		};
-		9F0C17731B390C5300122D7C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = WhyDoPeopleLikeYouTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WhyDoPeopleLikeYou.app/WhyDoPeopleLikeYou";
 			};
 			name = Release;
 		};
@@ -858,15 +740,6 @@
 			buildConfigurations = (
 				9F0C176F1B390C5300122D7C /* Debug */,
 				9F0C17701B390C5300122D7C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9F0C17711B390C5300122D7C /* Build configuration list for PBXNativeTarget "WhyDoPeopleLikeYouTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9F0C17721B390C5300122D7C /* Debug */,
-				9F0C17731B390C5300122D7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
