@@ -28,6 +28,8 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationCo
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        println(UIFont.familyNames())
+        
         // Set the view elements
         
         setBackgroundImageView()
@@ -157,7 +159,7 @@ extension ViewController {
         self.view.addSubview(loginView)
         
         UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: {
-            self.loginView.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
+            self.loginView.center.y = CGRectGetMaxY( self.view.frame ) * 0.7 - self.elementHeight/2 - self.margin
             }, completion: nil)
     }
     
@@ -166,15 +168,17 @@ extension ViewController {
     
     func loginViewClicked () {
         
-        self.loginView.removeFromSuperview()
+        UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: {
+            self.loginView.center.y = CGRectGetMaxY( self.view.frame ) * 1.2
+            }, completion: { (success: Bool) in
+                self.loginView.removeFromSuperview()
+        })
     }
     
     
     func userLoggedIn () {
         
-        SwiftSpinner.show("Loading\nUser profile", animated: true)
-        
-        UserLogged.setLogObject()
+        SwiftSpinner.show("กำลังโหลดข้อมูล", animated: true)
         
         // update some UI
 //        DataController.loadUserProfileImage()

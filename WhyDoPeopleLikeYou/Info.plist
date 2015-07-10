@@ -46,8 +46,15 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SUPERMARKET-2.TTF</string>
+		<string>SUPERMARKET.TTF</string>
+		<string>THSarabunNew Bold.ttf</string>
+		<string>THSarabunNew BoldItalic.ttf</string>
+		<string>THSarabunNew Italic.ttf</string>
+		<string>THSarabunNew.ttf</string>
 	</array>
 </dict>
 </plist>

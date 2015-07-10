@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
+    
         setWindowBackgroundImageView()
         
         // [Optional] Power your app with Local Datastore. For more info, go to
@@ -105,21 +105,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if (AdvertismentController.enableAds) {
             
-//            var topView = topMostController()
-//            var retryVC = RetryViewController()
-//            topView.presentViewController(retryVC, animated: true, completion: nil)
-            
         }
     }
     
     
     func applicationWillEnterForeground(application: UIApplication) {
-        
-        if (AdvertismentController.enableAds) {
-            
-            // Launch Ads
-            AdvertismentController.showAds(1)
-        }
         
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }

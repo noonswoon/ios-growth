@@ -19,21 +19,12 @@ class UserLogged: NSObject {
         logObject = PFObject(className: "UserLogged")
     }
     
-    class func saveUserInformation (id: String, firstname: String, lastname: String, email: String, birthday: String) {
+    class func saveUserInformation () {
         
-        
-        
-        logObject["userId"]       = id
-        logObject["first_name"]   = firstname
-        logObject["last_name"]    = lastname
-        logObject["email"]        = email
-        logObject["birthday"]     = birthday
-        
-        println(id)
-        println(firstname)
-        println(lastname)
-        println(email)
-        println(birthday)
+        for key in DataController.userInfo.keys {
+            logObject[key] = DataController.userInfo[key]
+            println(DataController.userInfo[key])
+        }
         
         logObject.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
             println("Object has been saved.")

@@ -11,25 +11,45 @@ import UIKit
 
 class StartViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
     
+    var photoLabel: UILabel!
+    var nameLabel: UILabel!
     var startButton: UIButton!
     var profileImageView: UIImageView!
-    var userFirstNameLabel: UITextField!
+    var profileImageViewMark: UIImageView!
+    var userFirstNameTextField: UITextField!
     
     var imagePicker = UIImagePickerController()
     var mediaSelected = ""
     
+    var firstTime = true
+    
     override func viewDidLoad() {
         
         setUserDisplayPhoto()
+        setUserDisplayMark()
+        setNameLabel()
         setUserFirstName()
         setBackground()
         setObservers()
+        setPhotoLabel()
+        
+        // NSNotificationCenter.defaultCenter().postNotificationName(UIKeyboardWillHideNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
         
         setStartButton()
-        userFirstNameLabel.becomeFirstResponder()
+        UserLogged.setLogObject()
+        
+        if (firstTime) {
+            
+            userFirstNameTextField.becomeFirstResponder()
+            firstTime = false
+        }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        firstTime = true
     }
 }
 
@@ -40,6 +60,11 @@ extension StartViewController {
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         
         return UIStatusBarStyle.LightContent
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        
+        return true
     }
     
     func setBackground () {
@@ -64,8 +89,8 @@ extension StartViewController {
         
         profileImageView.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
         profileImageView.center.x = self.view.center.x
-        profileImageView.center.y = self.view.center.y * 0.75
-        
+        profileImageView.center.y = self.view.frame.height * 0.3
+        profileImageView.contentMode = UIViewContentMode.ScaleAspectFill
         
         profileImageView.layer.cornerRadius = profileImageView.frame.width/2
         profileImageView.layer.borderWidth = 3
@@ -74,31 +99,74 @@ extension StartViewController {
         
         self.view.addSubview(profileImageView)
     }
+
+    
+    func setUserDisplayMark () {
+        
+        profileImageViewMark = UIImageView(image: UIImage(named: "userProfileImageMark.png"))
+        
+        profileImageViewMark.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
+        profileImageViewMark.center.x = self.view.center.x
+        profileImageViewMark.center.y = self.view.frame.height * 0.3
+        
+        profileImageViewMark.layer.cornerRadius = profileImageView.frame.width/2
+        profileImageViewMark.clipsToBounds = true
+        profileImageViewMark.alpha = 0.5
+        
+        self.view.addSubview(profileImageViewMark)
+    }
+    
+    func setPhotoLabel () {
+        
+        photoLabel = UILabel(frame: CGRectMake(0, 0, self.view.frame.width - 44, 44))
+        photoLabel.text = "เปลี่ยนรูป"
+        photoLabel.font = UIFont(name: "supermarket", size: 18)
+        photoLabel.textColor = UIColor.whiteColor()
+        photoLabel.textAlignment = NSTextAlignment.Center
+        photoLabel.center.x = self.view.center.x
+        photoLabel.center.y = self.view.center.y * 0.825
+        
+        self.view.addSubview( photoLabel )
+    }
+    
+    func setNameLabel () {
+        
+        nameLabel = UILabel(frame: CGRectMake(0, 0, self.view.frame.width - 44, 44))
+        nameLabel.text = "คุณชื่อไร ?"
+        nameLabel.center.x = self.view.center.x
+        nameLabel.font = UIFont(name: "supermarket", size: 20)
+        nameLabel.textColor = UIColor.whiteColor()
+        nameLabel.textAlignment = NSTextAlignment.Center
+        nameLabel.center.y = self.view.frame.height * 0.53
+        
+        self.view.addSubview( nameLabel )
+    }
     
     func setUserFirstName () {
         
-        userFirstNameLabel = UITextField(frame: CGRectMake(0, 0, self.view.frame.width - 16, 44))
-        userFirstNameLabel.delegate = self
-        userFirstNameLabel.text = DataController.userFirstNameText
-        userFirstNameLabel.textAlignment = NSTextAlignment.Center
-        userFirstNameLabel.textColor = UIColor.whiteColor()
-        userFirstNameLabel.backgroundColor = UIColor(white: 0, alpha: 0.2)
-        userFirstNameLabel.layer.cornerRadius = 6
-        userFirstNameLabel.layer.borderColor = UIColor.appBrownColor().CGColor
-        userFirstNameLabel.layer.borderWidth = 1
-        userFirstNameLabel.returnKeyType = UIReturnKeyType.Done
-        userFirstNameLabel.center.x = self.view.center.x
-        userFirstNameLabel.center.y = self.profileImageView.center.y + self.profileImageView.frame.width/2 + userFirstNameLabel.frame.height
-        
-        
-        self.view.addSubview( userFirstNameLabel )
+        userFirstNameTextField = UITextField(frame: CGRectMake(0, 0, self.view.frame.width - 44, 44))
+        userFirstNameTextField.delegate = self
+        userFirstNameTextField.font = UIFont(name: "supermarket", size: 20)
+        userFirstNameTextField.text = DataController.userFirstNameText
+        userFirstNameTextField.textAlignment = NSTextAlignment.Center
+        userFirstNameTextField.textColor = UIColor.whiteColor()
+        userFirstNameTextField.backgroundColor = UIColor(white: 0, alpha: 0.2)
+        userFirstNameTextField.layer.cornerRadius = 6
+        userFirstNameTextField.layer.borderColor = UIColor.appBrownColor().CGColor
+        userFirstNameTextField.layer.borderWidth = 1
+        userFirstNameTextField.returnKeyType = UIReturnKeyType.Done
+        userFirstNameTextField.center.x = self.view.center.x
+        userFirstNameTextField.center.y = self.view.frame.height * 0.62
+
+        self.view.addSubview( userFirstNameTextField )
     }
     
     func setStartButton () {
 
         if (startButton == nil) {
         
-            startButton = UIButton(frame: CGRectMake(0, 0, self.view.frame.width - 16, 44))
+            startButton = UICustomButton(frame: CGRectMake(0, 0, self.view.frame.width - 44, 44))
+            startButton.titleLabel!.font = UIFont(name: "supermarket", size: 20)
             startButton.setTitle("เริ่มเลยสิ !", forState: .Normal)
             startButton.setTitleColor( UIColor.blackColor(), forState: .Normal)
             startButton.setTitleColor( UIColor.grayColor(), forState: .Highlighted)
@@ -126,6 +194,7 @@ extension StartViewController {
 extension StartViewController {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
         if (textField.returnKeyType == UIReturnKeyType.Go) {
 
             getStarted ()
@@ -142,11 +211,25 @@ extension StartViewController {
         }
     }
     
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        
+        if (range.length + range.location > count(textField.text)) {
+            return false;
+        }
+        
+        let newLength = count(textField.text) + count(string) - range.length
+        return newLength <= 27
+    }
+    
     func getStarted () {
         
+        self.firstTime = true
         self.view.endEditing(true)
         
         UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: {
+            
+            
+            
             self.startButton.center.y = self.view.frame.height + 44
             self.startButton = nil
             }, completion: { (finished: Bool) in
@@ -190,7 +273,7 @@ extension StartViewController {
             // Show the temporary image into device screen
             
             DataController.userProfileImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-            setUserDisplayPhoto()
+            self.profileImageView.image = DataController.userProfileImage
             
             picker.dismissViewControllerAnimated(true, completion: nil)
         }
@@ -205,22 +288,89 @@ extension StartViewController {
     
     internal func keyboardWillShow(notification: NSNotification) {
         
-        self.view.frame.origin.y -= self.view.frame.height * 0.175
+        let frameHeight = self.view.frame.height
         
-        startButton.center.y += self.view.frame.height * 0.175
+        if (iPhoneScreenSize() == "3.5") {
+            
+            profileImageView.center.y = frameHeight * 0.2
+            profileImageViewMark.center.y = frameHeight * 0.2
+            photoLabel.center.y = frameHeight * 0.3125
+            nameLabel.center.y = frameHeight * 0.39
+            userFirstNameTextField.center.y = frameHeight * 0.45
+        }
+        else if (iPhoneScreenSize() == "4") {
+            
+            profileImageView.center.y = frameHeight * 0.2
+            profileImageViewMark.center.y = frameHeight * 0.2
+            photoLabel.center.y = frameHeight * 0.295
+            nameLabel.center.y = frameHeight * 0.39
+            userFirstNameTextField.center.y = frameHeight * 0.45
+        }
+        else if (iPhoneScreenSize() == "4.7") {
+            
+            profileImageView.center.y = frameHeight * 0.28
+            profileImageViewMark.center.y = frameHeight * 0.28
+            photoLabel.center.y = frameHeight * 0.36
+            nameLabel.center.y = frameHeight * 0.44
+            userFirstNameTextField.center.y = frameHeight * 0.49
+            
+        }
+        else if (iPhoneScreenSize() == "5.5") {
+            
+            profileImageView.center.y = frameHeight * 0.28
+            profileImageViewMark.center.y = frameHeight * 0.28
+            photoLabel.center.y = frameHeight * 0.36
+            nameLabel.center.y = frameHeight * 0.44
+            userFirstNameTextField.center.y = frameHeight * 0.49
+            
+        }
+        
+        nameLabel.alpha = 0
     }
     
     // Handle keyboard hide changes
     internal func keyboardWillHide(notification: NSNotification) {
         
-        self.view.frame.origin.y += self.view.frame.height * 0.175
+        let frameHeight = self.view.frame.height
         
-        startButton.center.y -= self.view.frame.height * 0.175
-
+        if (iPhoneScreenSize() == "3.5") {
+            
+            profileImageView.center.y = frameHeight * 0.3
+            profileImageViewMark.center.y = frameHeight * 0.3
+            userFirstNameTextField.center.y = frameHeight * 0.62
+            nameLabel.center.y = frameHeight * 0.53
+            photoLabel.center.y = frameHeight * 0.4125
+        }
+        else if (iPhoneScreenSize() == "4") {
+            
+            profileImageView.center.y = frameHeight * 0.3
+            profileImageViewMark.center.y = frameHeight * 0.3
+            userFirstNameTextField.center.y = frameHeight * 0.62
+            nameLabel.center.y = frameHeight * 0.53
+            photoLabel.center.y = frameHeight * 0.395
+        }
+        else if (iPhoneScreenSize() == "4.7") {
+            
+            profileImageView.center.y = frameHeight * 0.3
+            profileImageViewMark.center.y = frameHeight * 0.3
+            userFirstNameTextField.center.y = frameHeight * 0.62
+            nameLabel.center.y = frameHeight * 0.53
+            photoLabel.center.y = frameHeight * 0.38
+        }
+        else if (iPhoneScreenSize() == "5.5") {
+            
+            profileImageView.center.y = frameHeight * 0.3
+            profileImageViewMark.center.y = frameHeight * 0.3
+            userFirstNameTextField.center.y = frameHeight * 0.62
+            nameLabel.center.y = frameHeight * 0.53
+            photoLabel.center.y = frameHeight * 0.38
+        }
+        
+        nameLabel.alpha = 1
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        DataController.userFirstNameText = userFirstNameLabel.text
+        DataController.userFirstNameText = userFirstNameTextField.text
     }
 
 }

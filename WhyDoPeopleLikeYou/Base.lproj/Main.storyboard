@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <scenes>
-        <!--Test Result View Controller-->
+        <!--Test Question View Controller-->
         <scene sceneID="22q-Oa-DtK">
             <objects>
-                <viewController id="opD-j8-gLP" customClass="TestResultViewController" customModule="WhyDoPeopleLikeYou" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="opD-j8-gLP" customClass="TestQuestionViewController" customModule="WhyDoPeopleLikeYou" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="OOD-ti-j7g"/>
                         <viewControllerLayoutGuide type="bottom" id="WQp-Kc-JhV"/>

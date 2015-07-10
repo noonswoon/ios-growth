@@ -19,6 +19,8 @@ public class DataController {
     static var choices = [String]()
     static var list_questionViewController = [QuestionViewController]()
     
+    static var userInfo = Dictionary<String, String>()
+    
     static var userProfileImage: UIImage!
     static var userFirstNameText: String!
     static var userProfileID: String!
@@ -133,9 +135,11 @@ public class DataController {
                 questionViewController.addChoice( choice )
             }
             
+            questionViewController.setQuestionNumber( i )
+            questionViewController.setContentBackgroundImageView()
             questionViewController.setQuestionLabel( questions[i] )
             questionViewController.setChoicesLabels()
-            questionViewController.setQuestionNumber( i )
+            questionViewController.setQuestionPhoto()
             
             list_questionViewController.append( questionViewController )
         }
@@ -187,8 +191,11 @@ public class DataController {
                 self.setUserFirstName(firstname)
                 self.setUserProfileID(id)
                 
-                
-                UserLogged.saveUserInformation(id, firstname: firstname, lastname: lastname, email: email, birthday: birthday)
+                self.userInfo["userId"] = id
+                self.userInfo["first_name"] = firstname
+                self.userInfo["last_name"] = lastname
+                self.userInfo["email"] = email
+                self.userInfo["birthday"] = birthday
             }
         })
     }

@@ -25,14 +25,12 @@ class ResultViewController: UIViewController {
     
     var resultImageView: UIImageView!
     var resultImageForShare: UIImage!
-    
+    var userDisplayPhotoView: UIImageView!
     
     
     override func viewDidLoad() {
         
         self.view.backgroundColor = UIColor.clearColor()
-        
-        
         
         // setContentBackgroundImageView()
         // setContentBackgroundTemplate() // Temporary use
@@ -67,7 +65,7 @@ extension ResultViewController {
         let contentURL = "https://goo.gl/pszrQA"
         let default_contentURLImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/2000px-F_icon.svg.png"
         let contentTitle = "เหตุผลที่ทำไมคนถึงชอบคุณ"
-        let contentDescription = "คลิกที่นี่ เพื่อลองต้นหาเหตุผลที่ทำไมคนถึงชอบคุณดูสิ"
+        let contentDescription = " คุณเคยคิดหรือไม่ ว่าทำไมคนถึงชอบคุณ อะไรเป็นสาเหตุกันแน่นะ? ดาวน์โหลด 'ชอบฉันไม' สิ ด้วยอัลกอรึทึมขั้นสูงของเรา ที่วิเคราะห์จากการกดไลค์และการตอบคำถามของคุณ จะทำให้คุณรู้คำตอบที่น่าทึ่ง!"
         
         let content : FBSDKShareLinkContent = FBSDKShareLinkContent()
         content.imageURL = NSURL(string: contentURLImage)
@@ -127,8 +125,9 @@ extension ResultViewController {
     
     func setRetryButton () {
         
-        var retryButton = UIButton(frame: CGRectMake(8, 0, self.view.frame.width/2 - 12, elementHeight))
+        var retryButton = UICustomButton(frame: CGRectMake(8, 0, self.view.frame.width/2 - 12, elementHeight))
         retryButton.setTitle("เล่นใหม่", forState: .Normal)
+        retryButton.titleLabel!.font = UIFont(name: "supermarket", size: 21)
         retryButton.enabled = true
         
         
@@ -196,37 +195,38 @@ extension ResultViewController {
         let isThatYou = "นี่ใช่คุณหรือเปล่า"
         let description = DataController.getDescription()
         
-        if (iPhoneScreenSize() == "4") {
+        if (iPhoneScreenSize() == "3.5") {
             
-            setLabel(title, yPosition: frame * 0.085, size: 23)
-            setLabel(firstName, yPosition: frame * 0.4, size: 18)
-            setLabel(codeName, yPosition: frame * 0.43, size: 18)
-            setLabel(isThatYou, yPosition: frame * 0.533, size: 22)
-            setLabel(description, yPosition: frame * 0.81, size: 18)
+            setLabel(title, yPosition: frame * 0.085, size: 26)
+            setLabel(firstName, yPosition: frame * 0.41, size: 21)
+            setLabel(codeName, yPosition: frame * 0.445, size: 21)
+            setLabel(isThatYou, yPosition: frame * 0.51, size: 23)
+            setLabel(description, yPosition: frame * 0.83, size: 20)
         }
-        else if (iPhoneScreenSize() == "3.5") {
+        else if (iPhoneScreenSize() == "4") {
             
-            setLabel(title, yPosition: frame * 0.085, size: 22)
-            setLabel(firstName, yPosition: frame * 0.4, size: 18)
-            setLabel(codeName, yPosition: frame * 0.43, size: 18)
-            setLabel(isThatYou, yPosition: frame * 0.51, size: 21)
-            setLabel(description, yPosition: frame * 0.83, size: 18)
+            setLabel(title, yPosition: frame * 0.085, size: 25)
+            setLabel(firstName, yPosition: frame * 0.42, size: 25)
+            setLabel(codeName, yPosition: frame * 0.45, size: 25)
+            setLabel(isThatYou, yPosition: frame * 0.533, size: 24)
+            setLabel(description, yPosition: frame * 0.81, size: 20)
         }
+
         else if (iPhoneScreenSize() == "4.7") {
             
             setLabel(title, yPosition: frame * 0.085, size: 25)
-            setLabel(firstName, yPosition: frame * 0.4, size: 19)
-            setLabel(codeName, yPosition: frame * 0.43, size: 19)
-            setLabel(isThatYou, yPosition: frame * 0.533, size: 24)
-            setLabel(description, yPosition: frame * 0.81, size: 20)
+            setLabel(firstName, yPosition: frame * 0.42, size: 23)
+            setLabel(codeName, yPosition: frame * 0.45, size: 23)
+            setLabel(isThatYou, yPosition: frame * 0.545, size: 24)
+            setLabel(description, yPosition: frame * 0.82, size: 23)
         }
         else if (iPhoneScreenSize() == "5.5") {
             
             setLabel(title, yPosition: frame * 0.085, size: 27)
-            setLabel(firstName, yPosition: frame * 0.4, size: 20)
-            setLabel(codeName, yPosition: frame * 0.43, size: 20)
-            setLabel(isThatYou, yPosition: frame * 0.533, size: 26)
-            setLabel(description, yPosition: frame * 0.81, size: 23)
+            setLabel(firstName, yPosition: frame * 0.42, size: 25)
+            setLabel(codeName, yPosition: frame * 0.45, size: 25)
+            setLabel(isThatYou, yPosition: frame * 0.545, size: 27)
+            setLabel(description, yPosition: frame * 0.82, size: 25)
         }
     }
     
@@ -234,11 +234,11 @@ extension ResultViewController {
         
         let label = UILabel(frame: CGRectMake(0, 0, self.view.frame.width, 200))
         label.numberOfLines = 0
-        label.font = UIFont(name: "Thonburi", size: size)
+        label.font = UIFont(name: "supermarket", size: size)
         label.text = title
         label.textAlignment = NSTextAlignment.Center
         label.textColor = UIColor.whiteColor()
-        label.sizeToFit()
+        //label.sizeToFit()
         label.center.x = self.view.center.x
         label.center.y = yPosition
         
@@ -271,7 +271,7 @@ extension ResultViewController {
         result.textAlignment = NSTextAlignment.Center
         result.textColor = UIColor.appBrownColor()
         result.backgroundColor = UIColor.lightGrayColor()
-        result.sizeToFit()
+        // result.sizeToFit()
         result.center.x = self.view.center.x
         result.center.y = self.view.frame.height * 0.52
         
@@ -281,22 +281,31 @@ extension ResultViewController {
     
     func setUserDisplayPhoto () {
         
-        var imageView = UIImageView(image: DataController.userProfileImage)
+        userDisplayPhotoView = UIImageView(image: DataController.userProfileImage)
+
+        if (iPhoneScreenSize() == "3.5") {
+            userDisplayPhotoView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/3, height: self.view.frame.width/3)
+            userDisplayPhotoView.center.x = CGRectGetMidX(self.view.frame)
+            userDisplayPhotoView.center.y = CGRectGetMidY(self.view.frame) * 0.525
+            userDisplayPhotoView.contentMode = UIViewContentMode.ScaleAspectFill
+        } else {
+            userDisplayPhotoView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2.4, height: self.view.frame.width/2.4)
+            userDisplayPhotoView.center.x = CGRectGetMidX(self.view.frame)
+            userDisplayPhotoView.center.y = CGRectGetMidY(self.view.frame) * 0.525
+            userDisplayPhotoView.contentMode = UIViewContentMode.ScaleAspectFill
+        }
         
-        imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/3, height: self.view.frame.width/3)
-        imageView.center.x = CGRectGetMidX(self.view.frame)
-        imageView.center.y = CGRectGetMidY(self.view.frame) * 0.525
         
 //        if (isClassicModel()) {
 //            imageView.center.y = CGRectGetMaxY(self.view.frame) * 0.2
 //        }
         
-        imageView.layer.cornerRadius = imageView.frame.width/2
-        imageView.layer.borderWidth = 3
-        imageView.layer.borderColor = UIColor.appCreamColor().CGColor
-        imageView.clipsToBounds = true
+        userDisplayPhotoView.layer.cornerRadius = userDisplayPhotoView.frame.width/2
+        userDisplayPhotoView.layer.borderWidth = 3
+        userDisplayPhotoView.layer.borderColor = UIColor.appCreamColor().CGColor
+        userDisplayPhotoView.clipsToBounds = true
         
-        self.view.addSubview(imageView)
+        self.view.addSubview(userDisplayPhotoView)
     }
     
     func setResultImage (summation: Int) {
@@ -318,9 +327,7 @@ extension ResultViewController {
         
         self.view.addSubview(resultImageView)
         
-        
-        
-        setWaterMark()
+        // setWaterMark()
     }
 
     func setWaterMark () {
@@ -426,15 +433,15 @@ extension ResultViewController {
     
     func saveResult () {
         
-        let objectFile = PFObject(className: "UserGeneratedResult")
+        let objectFile = UserLogged.logObject
         let imageForShare = makeUIImageResult()
-        let imageData: NSData = UIImageJPEGRepresentation( imageForShare, 0.7)
+        let imageData: NSData = UIImagePNGRepresentation( imageForShare )
         //let imageData: NSData = UIImagePNGRepresentation( UIImage(named: "testRatioImage"))
         
         // SwiftSpinner.showWithDelay(2.0, title: "It's taking longer than expected")
         // SwiftSpinner.show("Processing \n0%")
         
-        var newImageFile = PFFile(name: "UserGeneratedResult", data: imageData)
+        var newImageFile = PFFile(name: "UserGeneratedResult.png", data: imageData)
         newImageFile.saveInBackgroundWithBlock({
             (succeeded: Bool, error: NSError?) -> Void in
             if (error == nil){
@@ -459,9 +466,9 @@ extension ResultViewController {
                 
         })
         
-        objectFile["userID"] = DataController.userProfileID
-        objectFile["imageFile"] = newImageFile
-        
+        UserLogged.saveUserInformation()
+    
+        objectFile["imageFile"] = newImageFile    
         objectFile.saveInBackground()
     }
 }
@@ -474,43 +481,49 @@ extension ResultViewController {
         
         let rectSize: CGSize = CGSizeMake(470, 246)
         
-        let resultSize: CGSize = CGSizeMake( rectSize.height-30, rectSize.height-30 )
+        let resultSize: CGSize = CGSizeMake( rectSize.height-40, rectSize.height-40 )
         let displaySize: CGSize = CGSizeMake(120, 120)
 
         var background: UIImage = UIImage(named: "backgroundColor")!
-        var result: UIImage = sanpingResultImageView()
-        // var result: UIImage = UIImage(named: "\(DataController.summation)")!
+        var waterMarkBG: UIImage = UIImage(named: "waterMarkBG")!
+        var result: UIImage = rectImageWithBorder( UIImage(named: "\(DataController.summation)")! )
         
-        var display: UIImage = DataController.userProfileImage
+        var display: UIImage = snapingUserDisplayPhotoView()
         
         display = roundedRectImageFromImage(display)
-        result = rectImageWithBorder(result)
+        result  = rectImageWithBorder(result)
         
         UIGraphicsBeginImageContext(rectSize);
         
         background.drawInRect(CGRectMake(0, 0, rectSize.width, rectSize.height))
-        result.drawInRect(CGRectMake(rectSize.width-resultSize.width-15, rectSize.height-resultSize.height-15, resultSize.width, resultSize.height))
-        display.drawInRect(CGRectMake(rectSize.width/4 - displaySize.width/2, rectSize.height/2 - displaySize.height/2, displaySize.width, displaySize.height))
+        waterMarkBG.drawInRect(CGRectMake(0, rectSize.height-20, rectSize.width, 20))
+        result.drawInRect(CGRectMake(rectSize.width-resultSize.width-20, rectSize.height-resultSize.height-20, resultSize.width, resultSize.height))
+        display.drawInRect(CGRectMake(rectSize.width/4 - displaySize.width/2, rectSize.height/2 - displaySize.height/2 - 15, displaySize.width + 10, displaySize.height + 10))
         
         var finalImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext();
         
-        let textTitle =  "เหตุผลว่าทำไม\n คนถึงชอบคุณ"
-        let textName  =  DataController.userFirstNameText
-        let textCode  =  DataController.getCodeName()
+        let textTitle  = "เหตุผลว่าทำไม\nคนถึงชอบคุณ"
+        let textName   = DataController.userFirstNameText
+        let textCode   = DataController.getCodeName()
+        let isThatYou  = "แล้วนี่ใช่คุณหรือเปล่า"
         let textResult = DataController.getDescription()
+        let waterMark  = "คลิกที่นี่ เพื่อดาวน์โหลดแอพและหาเหตุผลของคุณ"
         
-        finalImage = setText(textTitle, fontSize: 18, inImage: finalImage, atPoint: CGPoint(x:rectSize.width/4, y:10))
-        finalImage = setText(textName,  fontSize: 18, inImage: finalImage, atPoint: CGPoint(x:rectSize.width/4, y:190))
-        finalImage = setText(textCode,  fontSize: 18, inImage: finalImage, atPoint: CGPoint(x:rectSize.width/4, y:210))
+        finalImage = setText(textTitle, fontSize: 25, inImage: finalImage, atPoint: CGPoint(x:rectSize.width/4, y:10))
+        finalImage = setText(textName,  fontSize: 23, inImage: finalImage, atPoint: CGPoint(x:rectSize.width/4, y:180))
+        finalImage = setText(textCode,  fontSize: 24, inImage: finalImage, atPoint: CGPoint(x:rectSize.width/4, y:200))
+        finalImage = setText(isThatYou, fontSize: 19, inImage: finalImage, atPoint: CGPoint(x:rectSize.width*3/4+4, y:5))
+        finalImage = setText(textResult,fontSize: 27, inImage: finalImage, atPoint: CGPoint(x:rectSize.width*3/4-15, y:195))
+        finalImage = setText(waterMark, fontSize: 23, inImage: finalImage, atPoint: CGPoint(x:rectSize.width/2, y:rectSize.height - 17))
         
         //Add image to view
 //        var imageView: UIImageView = UIImageView(frame: CGRectMake(0, 0, rectSize.width, rectSize.height))
 //        imageView.image = finalImage
 //        self.view.addSubview( imageView )
         
-        saveImageToAlbum( finalImage )
+//        saveImageToAlbum( finalImage )
         
         return finalImage
     }
@@ -519,7 +532,7 @@ extension ResultViewController {
         
         // Setup the font specific variables
         var textColor: UIColor = UIColor.whiteColor()
-        var textFont: UIFont = UIFont.systemFontOfSize(fontSize)
+        var textFont: UIFont = UIFont(name: "supermarket", size: fontSize)!
         
         //Setup the image context using the passed image.
         UIGraphicsBeginImageContext(inImage.size)
@@ -559,11 +572,12 @@ extension ResultViewController {
         var imageResult = image
         
         let borderWidth: CGFloat = 5.0
-        var imageViewer = UIImageView(frame: CGRectMake(0, 0, image.size.width, image.size.height))
+        let imageSize: CGFloat = (image.size.width < image.size.height) ? image.size.width : image.size.height
+        var imageViewer = UIImageView(frame: CGRectMake(0, 0, imageSize, imageSize))
         
         UIGraphicsBeginImageContextWithOptions(imageViewer.frame.size, false, 0)
         
-        let path = UIBezierPath(roundedRect: CGRectInset(imageViewer.bounds, borderWidth / 2, borderWidth / 2), cornerRadius: image.size.width/2)
+        let path = UIBezierPath(roundedRect: CGRectInset(imageViewer.bounds, borderWidth / 2, borderWidth / 2), cornerRadius: imageViewer.frame.size.width/2)
         let context = UIGraphicsGetCurrentContext()
         
         CGContextSaveGState(context)
@@ -576,10 +590,10 @@ extension ResultViewController {
         
         // Configure the stroke
         UIColor.appCreamColor().setStroke()
-        path.lineWidth = borderWidth
+        // path.lineWidth = borderWidth
         
         // Stroke the border
-        path.stroke()
+        // path.stroke()
         
         imageResult = UIGraphicsGetImageFromCurrentImageContext();
         
@@ -629,20 +643,35 @@ extension ResultViewController {
 
 extension ResultViewController {
 
-    func sanpingResultImageView () -> UIImage {
+    func snapingUserDisplayPhotoView () -> UIImage {
         
         var screenShotImg = takeScreenShot()
         
+        let cropingArea = self.userDisplayPhotoView.frame
+        var cropingImg  = cropingImage(screenShotImg, cropingArea: cropingArea)
+        
+        // var newSize     = CGSize(width: 420, height: 221)
+        // var resizeImg   = resizeImage(cropingImg , newSize: newSize)
+        
+        // saveImageToAlbum(resizeImg)
+        
+        return cropingImg
+        
+    }
+    
+    func snapingResultImageView () -> UIImage {
+        
+        var screenShotImg = takeScreenShot()
         
         let cropingArea = self.resultImageView.frame
         var cropingImg  = cropingImage(screenShotImg, cropingArea: cropingArea)
         
-        var newSize     = CGSize(width: 420, height: 221)
-        var resizeImg   = resizeImage(cropingImg , newSize: newSize)
+        // var newSize     = CGSize(width: 420, height: 221)
+        // var resizeImg   = resizeImage(cropingImg , newSize: newSize)
         
         // saveImageToAlbum(resizeImg)
         
-        return resizeImg
+        return cropingImg
 
     }
     
