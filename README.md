@@ -3,7 +3,7 @@ Internship iOS Fun &amp; Growth App
 
 
 
-<img src="http://files.parsetfss.com/3d189fc8-bfe5-41b9-9c96-fded3c6809a7/tfss-787c86ba-48db-4a3c-bb54-7c7861d622fb-Untitled-1.png" height="50%" width="50%">
+<img src="http://files.parsetfss.com/3d189fc8-bfe5-41b9-9c96-fded3c6809a7/tfss-787c86ba-48db-4a3c-bb54-7c7861d622fb-Untitled-1.png" height="70%" width="70%">
 
 <img src="http://files.parsetfss.com/3d189fc8-bfe5-41b9-9c96-fded3c6809a7/tfss-5822aed1-83d9-4349-9e53-762cf9d8d5f3-UserGeneratedResult.png" height="30%" width="30%">
 
