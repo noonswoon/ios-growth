@@ -48,9 +48,6 @@ class StartViewController: UIViewController, UINavigationControllerDelegate, UII
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        firstTime = true
-    }
 }
 
 // MARK: Setter methods
