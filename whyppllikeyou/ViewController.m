@@ -40,7 +40,6 @@
     }
 
     [self setLoginButton];
-    
     [self testParse];
 }
 
@@ -85,30 +84,22 @@
 
 - (void) setShareButton {
     
-    
-    
-    NSString *contentURL         = @"https://goo.gl/pszrQA";
-    NSString *contentImageURL    = @"http://files.parsetfss.com/6a10db95-2e8a-45f0-b063-f8d3157c87e1/tfss-99e636a8-920f-4294-989f-43c49fb30ee7-UserGeneratedResult.png";
-    NSString *contentTitle       = @"เหตุผลที่ทำไมคนถึงชอบคุณ";
-    NSString *contentDescription = @"คุณเคยคิดหรือไม่ ว่าทำไมคนถึงชอบคุณ อะไรเป็นสาเหตุกันแน่นะ? ดาวน์โหลด 'ชอบฉันไม' สิ ด้วยอัลกอรึทึมขั้นสูงของเรา ที่วิเคราะห์จากการกดไลค์และการตอบคำถามของคุณ จะทำให้คุณรู้คำตอบที่น่าทึ่ง!";
+    NSString *contentURL      = @"https://goo.gl/pszrQA";
+    NSString *contentImageURL = @"http://files.parsetfss.com/6a10db95-2e8a-45f0-b063-f8d3157c87e1/tfss-99e636a8-920f-4294-989f-43c49fb30ee7-UserGeneratedResult.png";
+    NSString *contentTitle    = @"เหตุผลที่ทำไมคนถึงชอบคุณ";
+    NSString *contentDesc     = @"คุณเคยคิดหรือไม่ ว่าทำไมคนถึงชอบคุณ อะไรเป็นสาเหตุกันแน่นะ? ดาวน์โหลด 'ชอบฉันไม' สิ ด้วยอัลกอรึทึมขั้นสูงของเรา ที่วิเคราะห์จากการกดไลค์และการตอบคำถามของคุณ จะทำให้คุณรู้คำตอบที่น่าทึ่ง!";
     
     FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
-    
-
-    
     content.imageURL           = [[NSURL alloc] initWithString: contentImageURL];
     content.contentURL         = [[NSURL alloc] initWithString: contentURL];
     content.contentTitle       = contentTitle;
-    content.contentDescription = contentDescription;
-
+    content.contentDescription = contentDesc;
 
 //    FBSDKShareDialog *shareDialog = [[FBSDKShareDialog alloc] init];
 //    shareDialog.shareContent = content;
 //    [shareDialog show];
 
-    
 //    [FBSDKShareDialog showFromViewController:self withContent:content delegate:self];
-
     
     FBSDKShareButton *button = [[FBSDKShareButton alloc] init];
     button.frame = CGRectMake(0, 0, self.view.frame.size.width/2, 88);

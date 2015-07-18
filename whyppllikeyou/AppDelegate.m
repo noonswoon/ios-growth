@@ -11,6 +11,7 @@
 #import <Parse/Parse.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Google/Analytics.h>
+#import <whyppllikeyou-Swift.h>
 
 @interface AppDelegate ()
 
@@ -21,20 +22,53 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+    [self setBackgroundImage];
+    [self initGoogleAnalytic];
+    [self initParse: launchOptions];
+    [self setNotification];
+    
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                    didFinishLaunchingWithOptions:launchOptions];
+}
+
+- (void) dismissPresentViewController {
+    
+    UIViewController *vc = self.window.rootViewController;
+    [vc.presentedViewController dismissViewControllerAnimated:true
+                                                   completion:nil];
+}
+
+- (void) setNotification {
+    
+    // Add an observer that will respond to retry button click
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissPresentViewController)
+                                                 name:@"RetryButtonClicked"
+                                               object:nil];
+}
+
+- (void) setBackgroundImage {
+    
+    UIImageView *bgImageView = [[UIImageView alloc] initWithFrame: self.window.frame];
+    bgImageView.image = [UIImage imageNamed: @"main_background"];
+    
+    [self.window addSubview: bgImageView];
+    [self.window sendSubviewToBack: bgImageView];
+}
+
+- (void) initGoogleAnalytic {
+    
     // Configure tracker from GoogleService-Info.plist.
+    
     NSError *configureError;
     [[GGLContext sharedInstance] configureWithError:&configureError];
     NSAssert(!configureError, @"Error configuring Google services: %@", configureError);
     
     // Optional: configure GAI options.
+    
     GAI *gai = [GAI sharedInstance];
     gai.trackUncaughtExceptions = YES;  // report uncaught exceptions
     gai.logger.logLevel = kGAILogLevelVerbose;  // remove before app release
-    
-    [self initParse: launchOptions];
-    
-    return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                    didFinishLaunchingWithOptions:launchOptions];
+
 }
 
 - (void) initParse: (NSDictionary *)launchOptions {
@@ -69,6 +103,10 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    if ([AdvertismentController isEnabled]) {
+        [AdvertismentController showAds: 1];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
