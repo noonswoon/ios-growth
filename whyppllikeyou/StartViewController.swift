@@ -55,7 +55,6 @@ extension StartViewController {
 }
 
 // MARK: - Google Analytic tracking
-
 extension StartViewController {
     
     func screenTracking () {
@@ -68,7 +67,6 @@ extension StartViewController {
 }
 
 // MARK: - Setter methods
-
 extension StartViewController {
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -193,7 +191,6 @@ extension StartViewController {
 }
 
 // MARK: - Controller methods
-
 extension StartViewController {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

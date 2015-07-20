@@ -51,6 +51,7 @@ extension QuestionViewController {
 
 // MARK: Set and generate choices
 extension QuestionViewController {
+    
     func generateChoice (position: CGFloat) {
         
         let buttonWidth  : CGFloat = CGRectGetMaxX( self.view.frame ) * 0.75
@@ -90,8 +91,6 @@ extension QuestionViewController {
     }
     
     func choiceButtonClick (sender: UIButton!) {
-        
-        println("\(sender.tag): \(choices[sender.tag])")
         
         DataController.summation = DataController.summation + sender.tag
         println(DataController.summation)
@@ -137,20 +136,15 @@ extension QuestionViewController {
 
 
 // MARK: Setter methods
-
 extension QuestionViewController {
     
     func setQuestionNumber (number: Int) {
-        
         self.questionNo = number
     }
     
     func setQuestionPhoto () {
         
         var imageString = "q\(questionNo+1).jpg"
-        
-        println(imageString)
-        
         var image = UIImage(named: imageString)
         
         resultImageView = UIImageView(image: image)
@@ -194,6 +188,7 @@ extension QuestionViewController {
     func setContentBackgroundImageView () {
         
         setContentBackgroundImage_Style1()
+        // Uncomment the like below to change the content background image style
         // setContentBackgroundImage_Style2()
     }
     

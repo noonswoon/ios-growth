@@ -7,11 +7,15 @@
 //
 
 #import "AppDelegate.h"
+
+#import <whyppllikeyou-Swift.h>
 #import <AdBuddiz/AdBuddiz.h>
 #import <Parse/Parse.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Google/Analytics.h>
-#import <whyppllikeyou-Swift.h>
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
 
 @interface AppDelegate ()
 
@@ -24,11 +28,16 @@
 
     [self setBackgroundImage];
     [self initGoogleAnalytic];
-    [self initParse: launchOptions];
+    [self initParse:application didFinishLaunchingWithOptions:launchOptions];
+    [self initFabric];
     [self setNotification];
     
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                     didFinishLaunchingWithOptions:launchOptions];
+}
+
+- (void) initFabric {
+    [Fabric with:@[CrashlyticsKit]];
 }
 
 - (void) dismissPresentViewController {
@@ -71,7 +80,7 @@
 
 }
 
-- (void) initParse: (NSDictionary *)launchOptions {
+- (void) initParse: (UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // [Optional] Power your app with Local Datastore. For more info, go to parse.com/docs/ios_guide#localdatastore/iOS
     [Parse enableLocalDatastore];
@@ -81,6 +90,24 @@
     
     // [Optional] Track statistics around application opens.
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    // Setting up push notification
+    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes  categories:nil];
+    [application registerUserNotificationSettings:settings];
+    [application registerForRemoteNotifications];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    [PFPush handlePush:userInfo];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+
+    // Store the deviceToken in the current installation and save it to Parse.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation setDeviceTokenFromData:deviceToken];
+    [currentInstallation saveInBackground];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
@@ -103,7 +130,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    
+
     if ([AdvertismentController isEnabled]) {
         [AdvertismentController showAds: 1];
     }

@@ -76,10 +76,7 @@ public class DataController {
         ("ฟันขูดมะพร้าว"),
         ("ฝอยขัดหม้อ")]
     
-
-
     // MARK: Generate question view controller
-    
     class func setQuestionAndChoice () {
         
         questions.append("คุณคิดว่าตัวเองน่ารักรึเปล่า")
@@ -115,13 +112,8 @@ public class DataController {
     
     class func setQuestionViewControllers () {
         
-        println(choices)
-        
         let numberOfChoicePerQuestion = choices.count/questions.count
         let numberOfQuestion = questions.count
-        
-        println("number of question: \(numberOfChoicePerQuestion)")
-        println("number of choice/Q: \(numberOfQuestion)")
         
         for (var i=0 ; i<numberOfQuestion ; i++) {
             
@@ -158,45 +150,54 @@ public class DataController {
     }
     
     class func presentFirstQuestion (rootView: UIViewController) {
+        
         var firstQuestion = list_questionViewController[0]
         firstQuestion.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
         rootView.presentViewController( firstQuestion, animated: true, completion: nil)
     }
-    
-    
-    
+
     // MARK: Generating result
-    
     class func loadUserProfile() {
         
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me?fields=id,email,first_name,last_name,birthday", parameters: nil)
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me?fields=gender,id,email,first_name,last_name,birthday", parameters: nil)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             if ((error) != nil) {
-                // Process error
                 println("Error: \(error)")
             }
             else {
                 println("fetched user: \(result)")
-                
-                let id        : String = (result.valueForKey("id")         != nil)  ? result.valueForKey("id")          as! String : ""
-                let firstname : String = (result.valueForKey("first_name") != nil)  ? result.valueForKey("first_name")  as! String : ""
-                let lastname  : String = (result.valueForKey("last_name")  != nil)  ? result.valueForKey("last_name")   as! String : ""
-                let email     : String = (result.valueForKey("email")      != nil)  ? result.valueForKey("email")       as! String : firstname + "." + lastname + "@facebook.com"
-                let birthday  : String = (result.valueForKey("birthday")   != nil)  ? result.valueForKey("birthday")    as! String : ""
-                
-                
-                self.setUserProfileImage(id)
-                self.setUserFirstName(firstname)
-                self.setUserProfileID(id)
-                
-                self.userInfo["userId"] = id
-                self.userInfo["first_name"] = firstname
-                self.userInfo["last_name"] = lastname
-                self.userInfo["email"] = email
-                self.userInfo["birthday"] = birthday
+                self.setUserInfo(result)
             }
         })
+    }
+    
+    class func setUserInfo (result: AnyObject) {
+        
+        let id        : String = (result.valueForKey("id")         != nil) ? result.valueForKey("id")          as! String : ""
+        let firstname : String = (result.valueForKey("first_name") != nil) ? result.valueForKey("first_name")  as! String : ""
+        let lastname  : String = (result.valueForKey("last_name")  != nil) ? result.valueForKey("last_name")   as! String : ""
+        let email     : String = (result.valueForKey("email")      != nil) ? result.valueForKey("email")       as! String : firstname + "." + lastname + "@facebook.com"
+        let birthday  : String = (result.valueForKey("birthday")   != nil) ? result.valueForKey("birthday")    as! String : ""
+        let gender    : String = (result.valueForKey("gender")     != nil) ? result.valueForKey("gender")      as! String : "male"
+        
+        self.setUserProfileImage(id)
+        self.setUserFirstName(firstname)
+        self.setUserProfileID(id)
+        self.setupPushNotificationChannel(gender)
+        
+        self.userInfo["userId"] = id
+        self.userInfo["first_name"] = firstname
+        self.userInfo["last_name"] = lastname
+        self.userInfo["email"] = email
+        self.userInfo["birthday"] = birthday
+    }
+    
+    class func setupPushNotificationChannel (gender: String) {
+        // When users indicate they are Giants fans, we subscribe them to that channel.
+        var currentInstallation = PFInstallation.currentInstallation()
+        currentInstallation.addUniqueObject(gender, forKey: "channels")
+        currentInstallation.saveInBackgroundWithBlock(nil)
     }
     
     class func setUserProfileID(ID: String) {
@@ -228,20 +229,10 @@ public class DataController {
             SwiftSpinner.hide()
         }
     }
-
-
 }
 
-
-
 // MARK: Generating result
-
 extension DataController {
-    
-    // User information
-    
-    
-    // MARK: Calculating result
     
     class func findMaximumPageCategoryCount () {
         
@@ -264,7 +255,7 @@ extension DataController {
                 
                 // Keep those data into dictionary named categoryDic. Use category name as key and among as value
                 for data in datas {
-                    let category = data[ "id" ] as! String
+                    let category = data["id"] as! String
                     println(category)
                     let firstChar = (Array(category))[0]
                     
@@ -299,61 +290,12 @@ extension DataController {
                     println("\(value!)\t : \(key)")
                 }
                 // println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
-                
             }
         })
     }
     
-    
-    class func sortingFanpageUserLike () {
-        // For more complex open graph stories, use `FBSDKShareAPI`
-        // with `FBSDKShareOpenGraphContent`
-        /* make the API call */
-        
-        let graphPath : String = "me?fields=likes.limit(1000)"
-        
-        var request: FBSDKGraphRequest = FBSDKGraphRequest(graphPath: graphPath, parameters: nil, HTTPMethod: "GET")
-        request.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil) {
-                println("Error: \(error)")
-            }
-            else {
-                var categoryDic = Dictionary<String, Int>()
-                
-                // Getting all of the category of page that user liked
-                let resultData = result as! NSDictionary
-                let likes: NSDictionary = resultData["likes"] as! NSDictionary
-                let datas:  NSArray = likes["data"] as! NSArray
-                
-                // Keep those data into dictionary named categoryDic. Use category name as key and among as value
-                for data in datas {
-                    let category = data["category"] as! String
-                    if ( categoryDic[category] == nil ) {
-                        categoryDic[category] = 1
-                    } else {
-                        categoryDic[category] = categoryDic[category]! + 1
-                    }
-                }
-                
-                // Sorting keys by value
-                var sortedKeys = Array(categoryDic.keys).sorted({
-                    categoryDic[$0] > categoryDic[$1]
-                })
-                
-                // Show
-                println("\nCouting category of fanpage that user liked")
-                for sortedKey in sortedKeys {
-                    let key   = sortedKey
-                    let value = categoryDic[sortedKey]
-                    
-                    println("\(value!)\t : \(key)")
-                }
-            }
-        })
-    }    
-    
     class func generateResult (keyword: String) {
+        
         var scalars     = keyword.lowercaseString.unicodeScalars
         let firstScalar = scalars[ scalars.startIndex ].hashValue
         let key         = firstScalar - 97
@@ -362,21 +304,38 @@ extension DataController {
     }
     
     class func setResult (num: Int) {
+        
         result = (self.result + num) % resultsThai.count
     }
     
     class func setSummartion (num: Int) {
+        
         summation = (self.summation + num) % resultsThai.count
+        
         println("summation: \(summation)")
     }
     
-    class func getDescription () -> String {
+    class func getPhotoResult () -> UIImage {
         summation = (summation < 1) ? 1 : summation
+        summation = (summation > codeName.count-1) ? codeName.count-1 : summation
+        var imageString = "\(summation)"
+        
+        return UIImage(named: imageString)!
+    }
+    
+    class func getDescription () -> String {
+        
+        summation = (summation < 1) ? 1 : summation
+        summation = (summation > codeName.count-1) ? codeName.count-1 : summation
+        
         return DataController.resultsThai[ summation - 1 ]
     }
     
     class func getCodeName () -> String {
+        
         summation = (summation < 1) ? 1 : summation
+        summation = (summation > codeName.count-1) ? codeName.count-1 : summation
+        
         return DataController.codeName[ summation - 1 ]
     }
     

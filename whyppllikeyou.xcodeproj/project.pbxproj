@@ -11,7 +11,6 @@
 		9F0AA8701B5771240021D56D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F0AA86F1B5771240021D56D /* main.m */; };
 		9F0AA8731B5771240021D56D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F0AA8721B5771240021D56D /* AppDelegate.m */; };
 		9F0AA8761B5771240021D56D /* whyppllikeyou.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9F0AA8741B5771240021D56D /* whyppllikeyou.xcdatamodeld */; };
-		9F0AA8791B5771240021D56D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F0AA8781B5771240021D56D /* ViewController.m */; };
 		9F0AA87C1B5771240021D56D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F0AA87A1B5771240021D56D /* Main.storyboard */; };
 		9F0AA87E1B5771240021D56D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F0AA87D1B5771240021D56D /* Images.xcassets */; };
 		9F0AA8811B5771240021D56D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F0AA87F1B5771240021D56D /* LaunchScreen.xib */; };
@@ -97,8 +96,6 @@
 		9F0AA8711B5771240021D56D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9F0AA8721B5771240021D56D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9F0AA8751B5771240021D56D /* whyppllikeyou.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = whyppllikeyou.xcdatamodel; sourceTree = "<group>"; };
-		9F0AA8771B5771240021D56D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		9F0AA8781B5771240021D56D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		9F0AA87B1B5771240021D56D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9F0AA87D1B5771240021D56D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9F0AA8801B5771240021D56D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -238,8 +235,6 @@
 				9FA2DE141B58D1E400EED84D /* Custom Class */,
 				9F0AA8711B5771240021D56D /* AppDelegate.h */,
 				9F0AA8721B5771240021D56D /* AppDelegate.m */,
-				9F0AA8771B5771240021D56D /* ViewController.h */,
-				9F0AA8781B5771240021D56D /* ViewController.m */,
 				9FA2DE001B58D1B200EED84D /* AdvertisementViewController.swift */,
 				9FA2DE021B58D1BA00EED84D /* DataController.swift */,
 				9FA2DE031B58D1BA00EED84D /* QuestionViewController.swift */,
@@ -409,6 +404,7 @@
 				9F0AA8671B5771240021D56D /* Frameworks */,
 				9F0AA8681B5771240021D56D /* Resources */,
 				F9DD3057451636F9AB8B246B /* Copy Pods Resources */,
+				9F9D99BB1B5CDBCA0002A65D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -443,6 +439,7 @@
 		9F0AA8621B5771240021D56D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "KHUN NINE";
 				TargetAttributes = {
@@ -548,6 +545,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		9F9D99BB1B5CDBCA0002A65D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/Fabric.framework/run\" d3e7ad9a40d59fbd5b1dbd35f737c28b6ea51582 0476dc8e1b367bf8e04442224854688758b6718837ecc230c45f666789051b4c";
+		};
 		F9DD3057451636F9AB8B246B /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -580,7 +590,6 @@
 				9F0AA8731B5771240021D56D /* AppDelegate.m in Sources */,
 				9FA2DE011B58D1B200EED84D /* AdvertisementViewController.swift in Sources */,
 				9F0AA8761B5771240021D56D /* whyppllikeyou.xcdatamodeld in Sources */,
-				9F0AA8791B5771240021D56D /* ViewController.m in Sources */,
 				9FA2DE051B58D1BA00EED84D /* QuestionViewController.swift in Sources */,
 				9F0AA8701B5771240021D56D /* main.m in Sources */,
 				9FA2DE071B58D1C500EED84D /* ResultViewController.swift in Sources */,

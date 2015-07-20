@@ -133,7 +133,7 @@ extension ResultViewController {
         if ( !AdvertismentController.isEnabled() ) {
             
             // show the buttons up by animation
-            self.setShareButtonWith()
+            self.setShareButton()
             self.setRetryButton()
             
             // take a sanpshot for
@@ -155,9 +155,10 @@ extension ResultViewController {
 
 extension ResultViewController {
     
-    func setShareButtonWith () {
+    func setShareButton () {
         
         shareButton = FBSDKShareButton()
+        shareButton.titleLabel?.text = "test"
         shareButton.frame = CGRectMake(self.view.frame.width/2 + 4, 0, self.view.frame.width/2 - 12, elementHeight)
         shareButton.enabled = false
         
@@ -207,8 +208,8 @@ extension ResultViewController {
         
         var retryButton = UIButton(frame: CGRectMake(8, 0, self.view.frame.width/2 - 12, elementHeight))
         retryButton.setTitle("เล่นใหม่", forState: .Normal)
+        retryButton.titleLabel?.font = UIFont(name: "SukhumvitSet-Medium", size: 18)
         retryButton.enabled = true
-        
         
         // The y position should be animated
         retryButton.center.y = CGRectGetMaxY( self.view.frame ) + elementHeight/2 + self.margin
@@ -391,13 +392,7 @@ extension ResultViewController {
     
     func setResultImage (summation: Int) {
         
-        var imageKey = (summation < 1) ? 1 : summation
-        
-        var imageString = "\(imageKey)"
-        
-        println(imageString)
-        
-        var image = UIImage(named: imageString)
+        var image = DataController.getPhotoResult()
         
         resultImageView = UIImageView(image: image)
         resultImageView.frame = CGRect(x: 0, y: 0, width: CGRectGetMidX(self.view.frame), height: CGRectGetMidX(self.view.frame))
@@ -431,7 +426,6 @@ extension ResultViewController {
         waterMarkText.center.y = resultImageView.center.y - resultImageView.frame.width/2 + 10
         
         self.view.addSubview(waterMarkText)
-
     }
     
     func setContentBackgroundTemplate () {

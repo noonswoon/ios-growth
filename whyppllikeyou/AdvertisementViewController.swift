@@ -53,6 +53,7 @@ extension AdvertismentController {
 
 // MARK: - AdBuddiz Delegate
 extension AdvertismentController {
+    
     func didHideAd() {
         println("didHideAd !!!!!!!!!!!")
     }
