@@ -13,6 +13,7 @@ import Parse
 class AdvertismentController: NSObject, AdBuddizDelegate{
     
     static var eneabledAds: Bool = false
+    static var userClickedShareButton: Bool = true
     
     // Show the advertisments, it should has a few delays before showing up
     class func showAds (timeDelay: Double) {
@@ -33,6 +34,10 @@ class AdvertismentController: NSObject, AdBuddizDelegate{
     class func isEnabled () -> Bool {
         return eneabledAds
     }
+    
+    class func isUserClickShareButton () -> Bool {
+        return userClickedShareButton
+    }
 }
 
 // MARK: - Setter methods
@@ -43,11 +48,15 @@ extension AdvertismentController {
     }
     
     class func enebleAds () {
-        eneabledAds = true
+        self.eneabledAds = true
     }
     
     class func disableAds () {
-        eneabledAds = false
+        self.eneabledAds = false
+    }
+    
+    class func setUserClickedShare (flag: Bool) {
+        self.userClickedShareButton = flag
     }
 }
 
@@ -59,22 +68,12 @@ extension AdvertismentController {
     }
     
     func didShowAd() {
+        // Disable ads after it shows
         AdvertismentController.disableAds()
     }
     
     func didClick() {
         UserLogged.adsClicked()
-        trackEvent()
-    }
-}
-
-// MARK: - Google Analytic track event
-extension AdvertismentController {
-    func trackEvent () {
-        
-        var tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("UserAction", action: "User clicked try again",
-            label: nil,
-            value: nil).build()  as [NSObject : AnyObject])
+        UserLogged.trackEvent("User clicked ads")
     }
 }

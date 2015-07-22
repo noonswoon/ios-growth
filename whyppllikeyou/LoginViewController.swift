@@ -31,28 +31,17 @@ extension LoginViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        screenTracking()
+        UserLogged.trackScreen("Login view")
     }
     
     override func viewDidAppear(animated: Bool) {
         if (FBSDKAccessToken.currentAccessToken() != nil) {
+            println("Current access token: \(FBSDKAccessToken.currentAccessToken().tokenString)")
             self.userLoggedIn()
         }
         else {
             self.setLoginView()
         }
-    }
-}
-
-// MARK: - Google Analytic tracking
-extension LoginViewController {
-    
-    func screenTracking () {
-        var tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "LoginViewController")
-        
-        var builder = GAIDictionaryBuilder.createScreenView()
-        tracker.send(builder.build() as [NSObject : AnyObject])
     }
 }
 

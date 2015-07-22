@@ -32,22 +32,9 @@ extension QuestionViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        screenTracking()
+        UserLogged.trackScreen("Question view: \(questionNo)")
     }
 }
-
-// MARK: - Google Analytic tracking
-extension QuestionViewController {
-    
-    func screenTracking () {
-        var tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "QuestionViewController \(questionNo)")
-        
-        var builder = GAIDictionaryBuilder.createScreenView()
-        tracker.send(builder.build() as [NSObject : AnyObject])
-    }
-}
-
 
 // MARK: Set and generate choices
 extension QuestionViewController {
@@ -311,4 +298,3 @@ extension QuestionViewController {
         self.view.addSubview( clipper )
     }
 }
-

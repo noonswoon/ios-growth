@@ -138,7 +138,7 @@ public class DataController {
     class func getStartQuestion (rootView: UIViewController) {
     
         DataController.summation = result
-        AdvertismentController.disableAds()
+        //AdvertismentController.disableAds()
         
         let timeDelay: Double = 0
         let delay = timeDelay * Double(NSEC_PER_SEC)
@@ -235,31 +235,32 @@ public class DataController {
 extension DataController {
     
     class func findMaximumPageCategoryCount () {
-        
-        var graphPath : String = "me?fields=likes.limit(100)"
+
+        var graphPath : String = "me?fields=likes.limit(1000)"
         var returnResult = ""
         
-        var request: FBSDKGraphRequest = FBSDKGraphRequest(graphPath: graphPath, parameters: nil, HTTPMethod: "GET")
+        var request: FBSDKGraphRequest = FBSDKGraphRequest(graphPath: graphPath, parameters: nil, tokenString: FBSDKAccessToken.currentAccessToken().tokenString, version: "v2.3", HTTPMethod: "GET")
         request.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             if ((error) != nil) {
                 println("Error: \(error)")
             }
             else {
+                println(result)
+                
+                // Dictionay for temporary contain the category
                 var categoryDic = Dictionary<Character, Int>()
                 
                 // Getting all of the category of page that user liked
                 let resultData = result as! NSDictionary
                 let likes: NSDictionary = resultData["likes"] as! NSDictionary
-                let datas:  NSArray = likes["data"] as! NSArray
+                let datas: NSArray = likes["data"] as! NSArray
                 
                 // Keep those data into dictionary named categoryDic. Use category name as key and among as value
                 for data in datas {
-                    let category = data["id"] as! String
-                    println(category)
-                    let firstChar = (Array(category))[0]
+                    var category: String! = data["category"] as! String
                     
-                    //println("\(firstChar): \(category)")
+                    let firstChar = (Array(category))[0]
                     
                     if ( categoryDic[firstChar] == nil ) {
                         categoryDic[firstChar] = 0
@@ -273,10 +274,10 @@ extension DataController {
                     categoryDic[$0] > categoryDic[$1]
                 })
                 
-                // Generate result
-                println( self.generateResult("\(sortedKeys[0])") )
+                // Generate and set the result, after finish this line the result will be ready to use
+                self.generateResult("\(sortedKeys[0])")
                 
-                // Show result
+                // Just show the relation about unique character and how many of its
                 println("\nCouting the first character of fanpage category that user liked")
                 for sortedKey in sortedKeys {
                     
@@ -289,13 +290,12 @@ extension DataController {
                     
                     println("\(value!)\t : \(key)")
                 }
-                // println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
+                println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
             }
         })
     }
     
     class func generateResult (keyword: String) {
-        
         var scalars     = keyword.lowercaseString.unicodeScalars
         let firstScalar = scalars[ scalars.startIndex ].hashValue
         let key         = firstScalar - 97
@@ -304,14 +304,12 @@ extension DataController {
     }
     
     class func setResult (num: Int) {
-        
-        result = (self.result + num) % resultsThai.count
+        result = (result + num) % resultsThai.count
+        result = (result < 0) ? result*(-1) : result
     }
     
     class func setSummartion (num: Int) {
-        
         summation = (self.summation + num) % resultsThai.count
-        
         println("summation: \(summation)")
     }
     
@@ -324,7 +322,6 @@ extension DataController {
     }
     
     class func getDescription () -> String {
-        
         summation = (summation < 1) ? 1 : summation
         summation = (summation > codeName.count-1) ? codeName.count-1 : summation
         
@@ -332,13 +329,11 @@ extension DataController {
     }
     
     class func getCodeName () -> String {
-        
         summation = (summation < 1) ? 1 : summation
         summation = (summation > codeName.count-1) ? codeName.count-1 : summation
         
         return DataController.codeName[ summation - 1 ]
     }
-    
 }
 
 // Extension for UIColor

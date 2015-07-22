@@ -39,7 +39,7 @@ extension StartViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        screenTracking()
+        UserLogged.trackScreen("Start view")
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -47,22 +47,14 @@ extension StartViewController {
         UserLogged.setLogObject()
         
         if (firstTime) {
-            
             userFirstNameTextField.becomeFirstResponder()
             firstTime = false
         }
-    }
-}
-
-// MARK: - Google Analytic tracking
-extension StartViewController {
-    
-    func screenTracking () {
-        var tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "StartViewController")
         
-        var builder = GAIDictionaryBuilder.createScreenView()
-        tracker.send(builder.build() as [NSObject : AnyObject])
+        // Should show only after click retry, should not show when user click share and retry
+        if (!AdvertismentController.isUserClickShareButton()) {
+            AdvertismentController.showAds(0)
+        }
     }
 }
 

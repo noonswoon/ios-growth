@@ -12,13 +12,11 @@ import Parse
 class UserLogged: NSObject {
     
     // MARK: - Parse user logged object
-    
     static var logObject: PFObject!
     
     class func setLogObject () {
         logObject = PFObject(className: "UserLogged")
     }
-    
     
     // Save user imformation to Parse
     class func saveUserInformation () {
@@ -38,17 +36,14 @@ class UserLogged: NSObject {
     class func saveUserImageFile (imageFile: PFFile) {
         
         let objectFile = UserLogged.logObject
-        
         objectFile["imageFile"] = imageFile
         logObject.saveInBackgroundWithBlock( nil )
     }
-    
     
     class func shareButtonClicked () {
         
         logObject["clickedShare"] = true
         logObject.saveInBackgroundWithBlock( nil )
-        
     }
     
     class func adsClicked () {
@@ -56,5 +51,25 @@ class UserLogged: NSObject {
         logObject["clickedAds"] = true
         logObject.saveInBackgroundWithBlock( nil )
     }
+}
+
+// MARK: - Google Analytic tracking user behavior
+extension UserLogged {
     
+    // Tracking events when user press buttons
+    class func trackEvent (eventName: String) {
+        var tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("UserAction", action: eventName,
+            label: nil,
+            value: nil).build()  as [NSObject : AnyObject])
+    }
+    
+    // Tracking screens when whose screens appear to users
+    class func trackScreen (screenName: String) {
+        var tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: screenName)
+        
+        var builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+    }
 }

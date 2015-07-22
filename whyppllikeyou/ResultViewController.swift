@@ -125,29 +125,27 @@ extension ResultViewController {
         setResultImage( DataController.summation )
         setSpinner()
         setLabels()
-        
     }
     
     override func viewDidAppear(animated: Bool) {
         
         if ( !AdvertismentController.isEnabled() ) {
             
-            // show the buttons up by animation
+            // Show the buttons up by animation
             self.setShareButton()
             self.setRetryButton()
             
-            // take a sanpshot for
+            // Take a sanpshot
             self.saveResult()
+            
+            // Set the varible for sharing ads
+            AdvertismentController.setUserClickedShare(false)
         }
     }
     
     override func viewWillAppear(animated: Bool) {
         
-        var tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "ResultViewController")
-        
-        var builder = GAIDictionaryBuilder.createScreenView()
-        tracker.send(builder.build() as [NSObject : AnyObject])
+        UserLogged.trackScreen("Result view")
     }
 }
 
@@ -161,25 +159,18 @@ extension ResultViewController {
         shareButton.titleLabel?.text = "test"
         shareButton.frame = CGRectMake(self.view.frame.width/2 + 4, 0, self.view.frame.width/2 - 12, elementHeight)
         shareButton.enabled = false
-        
         // The y position should be animated 
         shareButton.center.y = CGRectGetMaxY( self.view.frame ) + elementHeight/2 + self.margin
-        
         shareButton.addTarget(self, action: "shareButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
         shareButton.layer.cornerRadius = 6
         shareButton.layer.masksToBounds = true
         
-        
         // Add button into subview
-        
         if (shareButton.superview == nil) {
-            
             self.view.addSubview(shareButton)
         }
         
-        
-        // Show up animation
-        
+        // Show button up with animation
         UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             
             self.shareButton.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
@@ -195,6 +186,7 @@ extension ResultViewController {
         
         // Enable the advertisment alert
         AdvertismentController.enebleAds()
+        AdvertismentController.setUserClickedShare(true)
     }
     
     
@@ -210,19 +202,15 @@ extension ResultViewController {
         retryButton.setTitle("เล่นใหม่", forState: .Normal)
         retryButton.titleLabel?.font = UIFont(name: "SukhumvitSet-Medium", size: 18)
         retryButton.enabled = true
-        
         // The y position should be animated
         retryButton.center.y = CGRectGetMaxY( self.view.frame ) + elementHeight/2 + self.margin
-        
         retryButton.addTarget(self, action: "retryButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
         retryButton.backgroundColor = UIColor.appGreenColor()
         retryButton.layer.cornerRadius = 6
         retryButton.layer.masksToBounds = true
         
-        
         // Add button into subview
         self.view.addSubview(retryButton)
-        
         
         // Show up animation
         UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
@@ -237,10 +225,8 @@ extension ResultViewController {
         // Post a notification to Retry
         NSNotificationCenter.defaultCenter().postNotificationName("RetryButtonClicked", object: nil)
         
-        var tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("UserAction", action: "User clicked try again",
-                                                                         label: nil,
-                                                                         value: nil).build()  as [NSObject : AnyObject])
+        // Track user event
+        UserLogged.trackEvent("User clicked retry button")
     }
 }
 
