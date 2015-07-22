@@ -26,6 +26,7 @@
 		9F0AA8A91B5776930021D56D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0AA8A81B5776930021D56D /* libz.dylib */; };
 		9F0AA8AB1B57769E0021D56D /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0AA8AA1B57769D0021D56D /* libsqlite3.dylib */; };
 		9F1ED0121B58FAF900061136 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1ED0111B58FAF900061136 /* StartViewController.swift */; };
+		9F2CC5AE1B5F996400EA5835 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2CC5AD1B5F996400EA5835 /* Reachability.swift */; };
 		9F3A15751B579FEC00264D3E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F3A15741B579FEC00264D3E /* GoogleService-Info.plist */; };
 		9F3A15771B57B66600264D3E /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F3A15761B57B66600264D3E /* Parse.framework */; };
 		9F3A15791B57B68500264D3E /* AdBuddiz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F3A15781B57B68500264D3E /* AdBuddiz.framework */; };
@@ -113,6 +114,7 @@
 		9F0AA8A81B5776930021D56D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		9F0AA8AA1B57769D0021D56D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		9F1ED0111B58FAF900061136 /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		9F2CC5AD1B5F996400EA5835 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		9F3A15741B579FEC00264D3E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9F3A15761B57B66600264D3E /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Framework/Parse.framework; sourceTree = "<group>"; };
 		9F3A15781B57B68500264D3E /* AdBuddiz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdBuddiz.framework; path = Framework/AdBuddiz.framework; sourceTree = "<group>"; };
@@ -237,10 +239,11 @@
 				9F0AA8721B5771240021D56D /* AppDelegate.m */,
 				9FA2DE001B58D1B200EED84D /* AdvertisementViewController.swift */,
 				9FA2DE021B58D1BA00EED84D /* DataController.swift */,
+				9FA2DE081B58D1CB00EED84D /* LoginViewController.swift */,
 				9FA2DE031B58D1BA00EED84D /* QuestionViewController.swift */,
 				9FA2DE061B58D1C500EED84D /* ResultViewController.swift */,
 				9F1ED0111B58FAF900061136 /* StartViewController.swift */,
-				9FA2DE081B58D1CB00EED84D /* LoginViewController.swift */,
+				9F2CC5AD1B5F996400EA5835 /* Reachability.swift */,
 				9FA2DE0A1B58D1D000EED84D /* UserLogged.swift */,
 				9F0AA87A1B5771240021D56D /* Main.storyboard */,
 				9F0AA87D1B5771240021D56D /* Images.xcassets */,
@@ -583,6 +586,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F2CC5AE1B5F996400EA5835 /* Reachability.swift in Sources */,
 				9FA2DE0B1B58D1D000EED84D /* UserLogged.swift in Sources */,
 				9F1ED0121B58FAF900061136 /* StartViewController.swift in Sources */,
 				9FA2DE111B58D1E000EED84D /* CustomAlertView.swift in Sources */,

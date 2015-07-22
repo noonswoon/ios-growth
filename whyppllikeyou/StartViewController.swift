@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class StartViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
+class StartViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate {
     
     var photoLabel: UILabel!
     var nameLabel: UILabel!
@@ -24,7 +24,7 @@ class StartViewController: UIViewController, UINavigationControllerDelegate, UII
     var firstTime = true
 }
 
-// MARK: - View life cycle 
+// MARK: - View life cycle
 
 extension StartViewController {
     
@@ -83,7 +83,7 @@ extension StartViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name:UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name:UIKeyboardWillHideNotification, object: nil)
     }
-
+    
     func setUserDisplayPhoto () {
         profileImageView = UIImageView(image: DataController.userProfileImage)
         
@@ -99,7 +99,7 @@ extension StartViewController {
         
         self.view.addSubview(profileImageView)
     }
-
+    
     func setUserDisplayMark () {
         profileImageViewMark = UIImageView(image: UIImage(named: "userProfileImageMark.png"))
         
@@ -123,7 +123,7 @@ extension StartViewController {
         photoLabel.center.x = self.view.center.x
         photoLabel.center.y = self.view.center.y * 0.825
         
-        self.view.addSubview( photoLabel )
+        self.view.addSubview(photoLabel)
     }
     
     func setNameLabel () {
@@ -135,7 +135,7 @@ extension StartViewController {
         nameLabel.textAlignment = NSTextAlignment.Center
         nameLabel.center.y = self.view.frame.height * 0.53
         
-        self.view.addSubview( nameLabel )
+        self.view.addSubview(nameLabel)
     }
     
     func setUserFirstName () {
@@ -152,8 +152,8 @@ extension StartViewController {
         userFirstNameTextField.returnKeyType = UIReturnKeyType.Done
         userFirstNameTextField.center.x = self.view.center.x
         userFirstNameTextField.center.y = self.view.frame.height * 0.62
-
-        self.view.addSubview( userFirstNameTextField )
+        
+        self.view.addSubview(userFirstNameTextField)
     }
     
     func setStartButton () {
@@ -161,24 +161,22 @@ extension StartViewController {
             startButton = UIButton(frame: CGRectMake(0, 0, self.view.frame.width - 44, 44))
             startButton.titleLabel?.font = UIFont(name: "SukhumvitSet-Medium", size: 18)
             startButton.setTitle("เริ่มเลยสิ !", forState: .Normal)
-            startButton.setTitleColor( UIColor.blackColor(), forState: .Normal)
-            startButton.setTitleColor( UIColor.grayColor(), forState: .Highlighted)
+            startButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+            startButton.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
             startButton.center.x = self.view.center.x
-            startButton.center.y = CGRectGetMaxY( self.view.frame ) + CGRectGetMaxY( self.startButton.frame )
+            startButton.center.y = CGRectGetMaxY(self.view.frame) + CGRectGetMaxY(self.startButton.frame)
             startButton.backgroundColor = UIColor.whiteColor()
             startButton.layer.cornerRadius = 6
             startButton.layer.borderColor = UIColor.blackColor().CGColor
             startButton.layer.borderWidth = 1
             startButton.addTarget(self, action: "getStarted", forControlEvents: UIControlEvents.TouchUpInside)
-        
+            
             view.addSubview(startButton)
             
             UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: {
-                self.startButton.center.y = CGRectGetMaxY( self.view.frame ) - self.startButton.frame.height/2 - 8
+                self.startButton.center.y = CGRectGetMaxY(self.view.frame) - self.startButton.frame.height/2 - 8
                 }, completion: nil)
-
         }
-    
     }
 }
 
@@ -215,41 +213,58 @@ extension StartViewController {
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         var touch = touches.first as! UITouch
-        var point = touch.locationInView( profileImageView )
+        var point = touch.locationInView(profileImageView)
         
-        if (CGRectContainsPoint( profileImageView.bounds, point)) {
+        if (CGRectContainsPoint(profileImageView.bounds, point)) {
             photoBtnClicked()
         }
         else {
             self.view.endEditing(true)
         }
-
+        
         super.touchesBegan(touches , withEvent:event)
     }
     
     func photoBtnClicked(){
+        self.view.endEditing(true)
+        
+        let actionSheet: UIActionSheet = UIActionSheet(title: "ต้องการเลือกรูปภาพจาก?", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
+        actionSheet.addButtonWithTitle("อัลบั้มรูป")
+        actionSheet.addButtonWithTitle("ถ่ายภาพใหม่")
+        actionSheet.showInView(self.view)
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if (buttonIndex == 1) {
+            getPictureFromSource(takePhoto: false)
+        }
+        else if (buttonIndex == 2) {
+            getPictureFromSource(takePhoto: true)
+        }
+    }
+    
+    func getPictureFromSource (#takePhoto: Bool) {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
-            println("Photo capture")
             imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum;
+            if (takePhoto) {
+                imagePicker.sourceType = .Camera
+            } else {
+                imagePicker.sourceType = .SavedPhotosAlbum
+            }
             imagePicker.allowsEditing = false
             self.presentViewController(imagePicker, animated: true, completion: nil)
             
             self.mediaSelected = "Photo"
         }
-        
     }
     
-    // Used for Both Photo & Video Methods
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        if (self.mediaSelected == "Photo") {
-            // Show the temporary image into device screen
-            DataController.userProfileImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-            self.profileImageView.image = DataController.userProfileImage
-            
-            picker.dismissViewControllerAnimated(true, completion: nil)
-        }
-        self.mediaSelected = ""
+        // Show the image we pick to profile image view
+        
+        DataController.userProfileImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        self.profileImageView.image = DataController.userProfileImage
+        
+        picker.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -330,5 +345,5 @@ extension StartViewController {
     func textFieldDidEndEditing(textField: UITextField) {
         DataController.userFirstNameText = userFirstNameTextField.text
     }
-
+    
 }

@@ -35,7 +35,11 @@ extension LoginViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        if (FBSDKAccessToken.currentAccessToken() != nil) {
+        if (!Reachability.isConnectedToNetwork()) {
+            let myAlert = UIAlertView(title: "AlertView", message: "No internet connection", delegate: nil, cancelButtonTitle: "Cancel")
+            myAlert.show()
+        }
+        else if (FBSDKAccessToken.currentAccessToken() != nil) {
             println("Current access token: \(FBSDKAccessToken.currentAccessToken().tokenString)")
             self.userLoggedIn()
         }
