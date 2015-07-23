@@ -120,7 +120,21 @@ extension StartViewController {
         photoLabel.textAlignment = NSTextAlignment.Center
         photoLabel.textColor = UIColor.whiteColor()
         photoLabel.center.x = self.view.center.x
-        photoLabel.center.y = self.view.center.y * 0.825
+        
+        let frameHeight = self.view.frame.height
+        
+        if (iPhoneScreenSize() == "3.5") {
+            photoLabel.center.y = frameHeight * 0.4125
+        }
+        else if (iPhoneScreenSize() == "4") {
+            photoLabel.center.y = frameHeight * 0.395
+        }
+        else if (iPhoneScreenSize() == "4.7") {
+            photoLabel.center.y = frameHeight * 0.38
+        }
+        else if (iPhoneScreenSize() == "5.5") {
+            photoLabel.center.y = frameHeight * 0.37
+        }
         
         self.view.addSubview(photoLabel)
     }

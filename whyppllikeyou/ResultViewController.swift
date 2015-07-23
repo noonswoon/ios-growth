@@ -92,7 +92,6 @@ extension ResultViewController {
 }
 
 // MARK: - Variables
-
 class ResultViewController: UIViewController {
     
     var shareButton: FBSDKShareButton!
@@ -109,13 +108,8 @@ class ResultViewController: UIViewController {
     var resultImageView: UIImageView!
     var resultImageForShare: UIImage!
     var userDisplayPhotoView: UIImageView!
-}
 
-
-// MARK: - View lief cycle
-
-extension ResultViewController {
-    
+    // MARK: - View lief cycle
     override func viewDidLoad() {
         
         self.view.backgroundColor = UIColor.clearColor()
@@ -147,12 +141,8 @@ extension ResultViewController {
         
         UserLogged.trackScreen("Result view")
     }
-}
 
-// MARK: - Set Facebook share button
-
-extension ResultViewController {
-    
+    // MARK: - Set Facebook share button
     func setShareButton () {
         
         shareButton = FBSDKShareButton()
@@ -189,14 +179,8 @@ extension ResultViewController {
         AdvertismentController.enebleAds()
         AdvertismentController.setUserClickedShare(true)
     }
-    
-    
-}
 
-// MARK: - Set retry button
-
-extension ResultViewController {
-    
+    // MARK: - Set retry button
     func setRetryButton () {
         
         var retryButton = UIButton(frame: CGRectMake(8, 0, self.view.frame.width/2 - 12, elementHeight))
@@ -469,7 +453,8 @@ extension ResultViewController {
         
         // Draw an UIImage to share to Facebook
         let imageForShare = drawUIImageResult()
-        let imageData: NSData = UIImagePNGRepresentation( imageForShare )
+        let imageData: NSData = UIImagePNGRepresentation(imageForShare)
+        // let imageData: NSData = UIImageJPEGRepresentation(imageForShare, 0.3)
         
         var newImageFile = PFFile(name: "UserGeneratedResult.png", data: imageData)
         newImageFile.saveInBackgroundWithBlock({

@@ -92,7 +92,7 @@ extension LoginViewController {
     // Set login button
     func setLoginView () {
         loginView = FBSDKLoginButton()
-        loginView.frame = CGRectMake(8, 0, self.view.frame.width - margin*2, elementHeight)
+        loginView.frame = CGRectMake(8, 0, self.view.frame.width * 0.9, elementHeight)
         loginView.center.x = CGRectGetMidX( self.view.frame )
         loginView.center.y = CGRectGetMaxY( self.view.frame ) + CGRectGetMaxY( self.loginView.frame )
         loginView.layer.cornerRadius = 6
@@ -104,13 +104,18 @@ extension LoginViewController {
         self.view.addSubview(loginView)
         
         UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: {
-            self.loginView.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
+            self.loginView.center.y = CGRectGetMaxY( self.view.frame ) * 0.65
             }, completion: nil)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
 }
 
 // MARK: Facebook SDKs method
