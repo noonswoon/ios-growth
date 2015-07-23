@@ -14,11 +14,13 @@
                         <viewControllerLayoutGuide type="bottom" id="Rdw-F0-Dwb"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="R0Q-D7-Jl5">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="TVw-6n-Gav"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XuN-fY-K7n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D987A0AAD8E845DDA6D1C4F1"
+               BlueprintIdentifier = "D79ADC581EB1315459F73650"
                BuildableName = "libPods-FBSDKLoginKit.a"
                BlueprintName = "Pods-FBSDKLoginKit"
                ReferencedContainer = "container:Pods.xcodeproj">

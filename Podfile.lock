@@ -39,9 +39,9 @@ PODS:
 DEPENDENCIES:
   - Crashlytics
   - Fabric
-  - FBSDKCoreKit
-  - FBSDKLoginKit
-  - FBSDKShareKit
+  - FBSDKCoreKit (~> 4.4.0)
+  - FBSDKLoginKit (~> 4.4.0)
+  - FBSDKShareKit (~> 4.4.0)
   - Google/Analytics (~> 1.0.0)
 
 SPEC CHECKSUMS:

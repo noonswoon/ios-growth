@@ -298,3 +298,12 @@ extension QuestionViewController {
         self.view.addSubview( clipper )
     }
 }
+
+// MARK: - Controller methods
+extension QuestionViewController {
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        var touch = touches.first as! UITouch
+        var point = touch.locationInView(self.view)
+    }
+}

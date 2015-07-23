@@ -88,7 +88,8 @@
     // ****************************************************************************
     // Uncomment this line if you want to enable Crash Reporting
     // [ParseCrashReporting enable];
-    [Parse setApplicationId:@"o65F0zJJ6YGRvXm7cFitouYlRblWzC3BLiw5Yksu" clientKey:@"TeM3aKKALJDaA01x181cpYfF0e2cWxJVzQm4LVAz"];
+    [Parse setApplicationId:@"o65F0zJJ6YGRvXm7cFitouYlRblWzC3BLiw5Yksu"
+                  clientKey:@"TeM3aKKALJDaA01x181cpYfF0e2cWxJVzQm4LVAz"];
     
     [PFUser enableAutomaticUser];
     
@@ -130,9 +131,18 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // Store the deviceToken in the current installation and save it to Parse.
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
-    [currentInstallation saveInBackground];
+    [currentInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            NSLog(@"The currentInstallation saved successfully.");
+        } else {
+            NSLog(@"There was an error saving the currentInstallation: %@", error);
+        }
+    }];
+    
+    NSLog(@"device token: %@", deviceToken);
     
     [PFPush subscribeToChannelInBackground:@"" block:^(BOOL succeeded, NSError *error) {
         if (succeeded) {

@@ -21,11 +21,10 @@ class StartViewController: UIViewController, UINavigationControllerDelegate, UII
     var imagePicker = UIImagePickerController()
     var mediaSelected = ""
     
-    var firstTime = true
+    var firstTimes = true
 }
 
 // MARK: - View life cycle
-
 extension StartViewController {
     
     override func viewDidLoad() {
@@ -46,14 +45,15 @@ extension StartViewController {
         setStartButton()
         UserLogged.setLogObject()
         
-        if (firstTime) {
+        if (firstTimes) {
             userFirstNameTextField.becomeFirstResponder()
-            firstTime = false
+            firstTimes = false
         }
         
         // Should show only after click retry, should not show when user click share and retry
         if (!AdvertismentController.isUserClickShareButton()) {
             AdvertismentController.showAds(0)
+            AdvertismentController.setUserClickedShare(true)
         }
     }
 }
@@ -79,7 +79,6 @@ extension StartViewController {
     }
     
     func setObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceOrientationDidChange:", name: UIDeviceOrientationDidChangeNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name:UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name:UIKeyboardWillHideNotification, object: nil)
     }
@@ -184,11 +183,7 @@ extension StartViewController {
 extension StartViewController {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if (textField.returnKeyType == UIReturnKeyType.Go) {
-            getStarted ()
-            return true
-        }
-        else if (textField.returnKeyType == UIReturnKeyType.Done) {
+        if (textField.returnKeyType == UIReturnKeyType.Done) {
             self.view.endEditing(true)
             return true
         }
@@ -198,7 +193,7 @@ extension StartViewController {
     }
     
     func getStarted () {
-        self.firstTime = true
+        self.firstTimes = true
         self.view.endEditing(true)
         
         UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: {
@@ -213,16 +208,14 @@ extension StartViewController {
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         var touch = touches.first as! UITouch
-        var point = touch.locationInView(profileImageView)
+        var point = touch.locationInView(self.view)
         
-        if (CGRectContainsPoint(profileImageView.bounds, point)) {
+        if (CGRectContainsPoint(profileImageView.frame, point)) {
             photoBtnClicked()
         }
         else {
             self.view.endEditing(true)
         }
-        
-        super.touchesBegan(touches , withEvent:event)
     }
     
     func photoBtnClicked(){
@@ -259,12 +252,11 @@ extension StartViewController {
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        // Show the image we pick to profile image view
+            // Show the image we pick to profile image view
+            DataController.userProfileImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+            self.profileImageView.image = DataController.userProfileImage
         
-        DataController.userProfileImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        self.profileImageView.image = DataController.userProfileImage
-        
-        picker.dismissViewControllerAnimated(true, completion: nil)
+            picker.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -345,5 +337,4 @@ extension StartViewController {
     func textFieldDidEndEditing(textField: UITextField) {
         DataController.userFirstNameText = userFirstNameTextField.text
     }
-    
 }

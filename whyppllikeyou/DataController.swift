@@ -315,7 +315,7 @@ extension DataController {
     
     class func getPhotoResult () -> UIImage {
         summation = (summation < 1) ? 1 : summation
-        summation = (summation > codeName.count-1) ? codeName.count-1 : summation
+        summation = summation % codeName.count
         var imageString = "\(summation)"
         
         return UIImage(named: imageString)!

@@ -60,6 +60,7 @@ extension ResultViewController {
         background.drawInRect(CGRectMake(0, 0, rectSize.width, rectSize.height))
         waterMarkBG.drawInRect(CGRectMake(0, rectSize.height-18, rectSize.width, 18))
         result.drawInRect(CGRectMake(rectSize.width-resultSize.width-25, rectSize.height-resultSize.height-25, resultSize.width, resultSize.height))
+        // display.drawAtPoint( CGPointMake(rectSize.width/4 - displaySize.width/2, rectSize.height/2 - displaySize.height/1.7 - 5) )
         display.drawInRect(CGRectMake(rectSize.width/4 - displaySize.width/2, rectSize.height/2 - displaySize.height/1.7 - 5, displaySize.width, displaySize.height))
         
         // finalImage in the image after we draw every images
@@ -104,8 +105,7 @@ class ResultViewController: UIViewController {
     
     let margin: CGFloat = 8
     let elementHeight: CGFloat = 44
-    
-    
+
     var resultImageView: UIImageView!
     var resultImageForShare: UIImage!
     var userDisplayPhotoView: UIImageView!
@@ -183,6 +183,7 @@ extension ResultViewController {
         
         // Log user activities
         UserLogged.shareButtonClicked()
+        UserLogged.trackEvent("User clicked share button")
         
         // Enable the advertisment alert
         AdvertismentController.enebleAds()
@@ -304,46 +305,16 @@ extension ResultViewController {
     func setLabel (title: String, yPosition: CGFloat, size: CGFloat) {
         
         let label = UILabel(frame: CGRectMake(0, 0, self.view.frame.width, 200))
-        label.numberOfLines = 2
+        label.numberOfLines = 1
         label.font = UIFont(name: "SukhumvitSet-Medium", size: size)
         label.textAlignment = NSTextAlignment.Center
         label.textColor = UIColor.whiteColor()
         label.text = title
-        label.sizeToFit()
+//        label.sizeToFit()
         label.center.x = self.view.center.x
         label.center.y = yPosition
         
         self.view.addSubview( label )
-    }
-    
-    func setUserFirstName () {
-        
-        let userFirstNameLabel = UILabel(frame: CGRectMake(0, 0, self.view.frame.width, 80))
-        userFirstNameLabel.text = DataController.userFirstNameText
-        userFirstNameLabel.textAlignment = NSTextAlignment.Center
-        userFirstNameLabel.textColor = UIColor.appCreamColor()
-        userFirstNameLabel.backgroundColor = UIColor.lightGrayColor()
-        userFirstNameLabel.sizeToFit()
-        userFirstNameLabel.center.x = self.view.center.x
-        userFirstNameLabel.center.y = self.view.frame.height * 0.4
-        
-        self.view.addSubview( userFirstNameLabel )
-    }
-    
-    func setResultText () {
-        
-        let result = UILabel(frame: CGRectMake(0, 0, self.view.frame.width, 100))
-        result.numberOfLines = 0
-        result.lineBreakMode = .ByWordWrapping
-        result.text = DataController.getDescription()
-        result.textAlignment = NSTextAlignment.Center
-        result.textColor = UIColor.appBrownColor()
-        result.backgroundColor = UIColor.lightGrayColor()
-        result.sizeToFit()
-        result.center.x = self.view.center.x
-        result.center.y = self.view.frame.height * 0.52
-        
-        self.view.addSubview( result )
     }
     
     func setUserDisplayPhoto () {
@@ -599,10 +570,10 @@ extension ResultViewController {
         
         // Configure the stroke
         UIColor.appCreamColor().setStroke()
-        // path.lineWidth = borderWidth
+        path.lineWidth = borderWidth
         
         // Stroke the border
-        // path.stroke()
+        path.stroke()
         
         imageResult = UIGraphicsGetImageFromCurrentImageContext();
         
@@ -644,12 +615,9 @@ extension ResultViewController {
         
         return imageResult
     }
-
 }
 
-
 // MARK: - Capture screen methods
-
 extension ResultViewController {
 
     func snapingUserDisplayPhotoView () -> UIImage {
@@ -670,7 +638,6 @@ extension ResultViewController {
     func snapingResult () -> UIImage {
         
         var screenShotImg = takeScreenShot()
-    
         
         let cropingArea = self.backgroundImageView.frame
         var cropingImg  = cropingImage(screenShotImg, cropingArea: cropingArea)
@@ -731,8 +698,15 @@ extension ResultViewController {
     }
     
     func saveImageToAlbum (image: UIImage) {
-        
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
     }
+}
+
+// MARK: - Controller methods
+extension ResultViewController {
     
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        var touch = touches.first as! UITouch
+        var point = touch.locationInView(self.view)
+    }
 }
