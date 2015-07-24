@@ -166,7 +166,7 @@ public class DataController {
                 println("Error: \(error)")
             }
             else {
-                println("fetched user: \(result)")
+                //println("fetched user: \(result)")
                 self.setUserInfo(result)
             }
         })
@@ -180,23 +180,25 @@ public class DataController {
         let email     : String = (result.valueForKey("email")      != nil) ? result.valueForKey("email")       as! String : firstname + "." + lastname + "@facebook.com"
         let birthday  : String = (result.valueForKey("birthday")   != nil) ? result.valueForKey("birthday")    as! String : ""
         let gender    : String = (result.valueForKey("gender")     != nil) ? result.valueForKey("gender")      as! String : "male"
-        
-        self.setUserProfileImage(id)
-        self.setUserFirstName(firstname)
-        self.setUserProfileID(id)
-        self.setupPushNotificationChannel(gender)
-        
+
         self.userInfo["userId"] = id
         self.userInfo["first_name"] = firstname
         self.userInfo["last_name"] = lastname
         self.userInfo["email"] = email
         self.userInfo["birthday"] = birthday
+        
+        self.setUserProfileImage(id)
+        self.setUserFirstName(firstname)
+        self.setUserProfileID(id)
+        self.setupPushNotificationChannel(id, gender:gender)
     }
     
-    class func setupPushNotificationChannel (gender: String) {
+    class func setupPushNotificationChannel (fbId:String, gender: String) {
         // When users indicate they are Giants fans, we subscribe them to that channel.
         var currentInstallation = PFInstallation.currentInstallation()
         currentInstallation.addUniqueObject(gender, forKey: "channels")
+        var userChannel = "nswhyppl" + fbId
+        currentInstallation.addUniqueObject(userChannel, forKey: "channels")
         currentInstallation.saveInBackgroundWithBlock(nil)
     }
     

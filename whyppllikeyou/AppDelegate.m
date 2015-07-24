@@ -16,6 +16,7 @@
 #import "whyppllikeyou-Swift.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import "settings.h"
 
 @interface AppDelegate ()
 
@@ -87,8 +88,8 @@
     // ****************************************************************************
     // Uncomment this line if you want to enable Crash Reporting
     // [ParseCrashReporting enable];
-    [Parse setApplicationId:@"o65F0zJJ6YGRvXm7cFitouYlRblWzC3BLiw5Yksu"
-                  clientKey:@"TeM3aKKALJDaA01x181cpYfF0e2cWxJVzQm4LVAz"];
+    [Parse setApplicationId:PARSE_APP_ID
+                  clientKey:PARSE_CLIENT_KEY];
     
     [PFUser enableAutomaticUser];
     
@@ -192,7 +193,7 @@
     
     [FBSDKAppEvents activateApp];
     
-    [AdBuddiz setPublisherKey:@"07c78b4c-8ced-4e63-a5ae-227bdffab5d8"];
+    [AdBuddiz setPublisherKey:ADBUDDIZ_PUBLISHER_KEY];
     [AdBuddiz cacheAds];
 }
 

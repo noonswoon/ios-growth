@@ -11,3 +11,4 @@
 #import <Google/Analytics.h>
 
 #import <AdBuddiz/AdBuddiz.h>
+#import "settings.h"

@@ -160,6 +160,7 @@
 		9FA2DE0F1B58D1E000EED84D /* SwiftSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSpinner.swift; sourceTree = "<group>"; };
 		D92D56321B625B65005F9211 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		D92D56331B625B65005F9211 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		D9343A621B625DC500284499 /* settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
 		D97B32391B625A19009B4662 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Images/Default-568h@2x.png"; sourceTree = "<group>"; };
 		D97B323A1B625A19009B4662 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Images/Default.png; sourceTree = "<group>"; };
 		D97B323B1B625A19009B4662 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Images/Default@2x.png"; sourceTree = "<group>"; };
@@ -226,6 +227,7 @@
 		9F0AA86C1B5771240021D56D /* whyppllikeyou */ = {
 			isa = PBXGroup;
 			children = (
+				D9343A611B625DA400284499 /* InternalLib */,
 				9FA2DE411B58D21A00EED84D /* Resource */,
 				9FA2DE141B58D1E400EED84D /* Custom Class */,
 				9F0AA8711B5771240021D56D /* AppDelegate.h */,
@@ -375,6 +377,14 @@
 				7227CED7C93036DBA405EA0E /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D9343A611B625DA400284499 /* InternalLib */ = {
+			isa = PBXGroup;
+			children = (
+				D9343A621B625DC500284499 /* settings.h */,
+			);
+			name = InternalLib;
 			sourceTree = "<group>";
 		};
 		D97B32381B6259E6009B4662 /* LaunchImage */ = {
