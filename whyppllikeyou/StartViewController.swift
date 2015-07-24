@@ -266,7 +266,7 @@ extension StartViewController {
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-            // Show the image we pick to profile image view
+            // Show the image we picked to profile image view
             DataController.userProfileImage = info[UIImagePickerControllerOriginalImage] as! UIImage
             self.profileImageView.image = DataController.userProfileImage
         

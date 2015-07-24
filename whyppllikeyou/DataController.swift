@@ -253,44 +253,45 @@ extension DataController {
                 
                 // Getting all of the category of page that user liked
                 let resultData = result as! NSDictionary
-                let likes: NSDictionary = resultData["likes"] as! NSDictionary
-                let datas: NSArray = likes["data"] as! NSArray
-                
-                // Keep those data into dictionary named categoryDic. Use category name as key and among as value
-                for data in datas {
-                    var category: String! = data["category"] as! String
-                    
-                    let firstChar = (Array(category))[0]
-                    
-                    if ( categoryDic[firstChar] == nil ) {
-                        categoryDic[firstChar] = 0
-                    } else {
-                        categoryDic[firstChar] = categoryDic[firstChar]! + 1
+                if let likes: NSDictionary = resultData["likes"] as? NSDictionary {
+                    if let datas: NSArray = likes["data"] as? NSArray {
+                        // Keep those data into dictionary named categoryDic. Use category name as key and among as value
+                        for data in datas {
+                            var category: String! = data["category"] as! String
+                            
+                            let firstChar = (Array(category))[0]
+                            
+                            if ( categoryDic[firstChar] == nil ) {
+                                categoryDic[firstChar] = 0
+                            } else {
+                                categoryDic[firstChar] = categoryDic[firstChar]! + 1
+                            }
+                        }
+                        
+                        // Sorting keys by value
+                        var sortedKeys = Array(categoryDic.keys).sorted({
+                            categoryDic[$0] > categoryDic[$1]
+                        })
+                        
+                        // Generate and set the result, after finish this line the result will be ready to use
+                        self.generateResult("\(sortedKeys[0])")
+                        
+                        // Just show the relation about unique character and how many of its
+                        println("\nCouting the first character of fanpage category that user liked")
+                        for sortedKey in sortedKeys {
+                            
+                            let key   = sortedKey
+                            let value = categoryDic[sortedKey]
+                            
+                            if (value == 0) {
+                                continue
+                            }
+                            
+                            println("\(value!)\t : \(key)")
+                        }
+                        println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
                     }
                 }
-                
-                // Sorting keys by value
-                var sortedKeys = Array(categoryDic.keys).sorted({
-                    categoryDic[$0] > categoryDic[$1]
-                })
-                
-                // Generate and set the result, after finish this line the result will be ready to use
-                self.generateResult("\(sortedKeys[0])")
-                
-                // Just show the relation about unique character and how many of its
-                println("\nCouting the first character of fanpage category that user liked")
-                for sortedKey in sortedKeys {
-                    
-                    let key   = sortedKey
-                    let value = categoryDic[sortedKey]
-                    
-                    if (value == 0) {
-                        continue
-                    }
-                    
-                    println("\(value!)\t : \(key)")
-                }
-                println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
             }
         })
     }

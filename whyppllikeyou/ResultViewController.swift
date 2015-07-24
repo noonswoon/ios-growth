@@ -85,7 +85,7 @@ extension ResultViewController {
         finalImage = setText(waterMark, fontSize: 18, inImage: finalImage, atPoint: CGPoint(x:rectSize.width/2,         y:rectSize.height - 24))
         
         // Save image into album, use this method if you don't want to check it on Parse or Facebook
-        saveImageToAlbum( finalImage )
+        // saveImageToAlbum( finalImage )
         
         return finalImage
     }

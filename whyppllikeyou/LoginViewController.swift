@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationControllerDelegate {
+class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, UINavigationControllerDelegate, UIAlertViewDelegate {
     
     // MARK: Facebook SDKs permission
     let permissions = ["public_profile", "email", "user_likes", "user_photos"]
@@ -36,8 +36,7 @@ extension LoginViewController {
     
     override func viewDidAppear(animated: Bool) {
         if (!Reachability.isConnectedToNetwork()) {
-            let myAlert = UIAlertView(title: "AlertView", message: "No internet connection", delegate: nil, cancelButtonTitle: "Cancel")
-            myAlert.show()
+            self.showAlertMessage()
         }
         else if (FBSDKAccessToken.currentAccessToken() != nil) {
             println("Current access token: \(FBSDKAccessToken.currentAccessToken().tokenString)")
@@ -143,7 +142,6 @@ extension LoginViewController {
 extension UIViewController {
     
     // Get the size of device
-    
     func iPhoneScreenSize () -> String {
         
         var result: CGSize = UIScreen.mainScreen().bounds.size
@@ -167,5 +165,16 @@ extension UIViewController {
         else {
             return ""
         }
+    }
+    
+    // UIAlert view delegate
+    func showAlertMessage () {
+        let myAlert = UIAlertView(title: "AlertView", message: "No internet connection", delegate: nil, cancelButtonTitle: "Try agian")
+        myAlert.delegate = self
+        myAlert.show()
+    }
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        self.viewDidAppear(true)
     }
 }
