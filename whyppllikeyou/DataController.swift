@@ -82,32 +82,32 @@ public class DataController {
         questions.append("คุณคิดว่าตัวเองน่ารักรึเปล่า")
         
         choices.append( "ก็มีบ้างบางครั้งนะ" )
-        choices.append( "แน่นอน ก็ฉันน่ารักอะ" )
-        choices.append( "ไม่เลย ฉันไม่คิดว่าฉันน่ารัก" )
+        choices.append("แน่นอน ก็ฉันน่ารักอะ")
+        choices.append("ไม่เลย ฉันไม่คิดว่าฉันน่ารัก")
         
-        questions.append( "คุณแต่งหน้าบ่อยแค่ไหน" )
+        questions.append("คุณแต่งหน้าบ่อยแค่ไหน")
         
-        choices.append( "แต่งทุกวันเลย" )
-        choices.append( "ไม่เคยเลย" )
-        choices.append( "บางครั้งก็แต่ง" )
-
-        questions.append( "คุณออกกำลังกายบ่อยแค่ไหน" )
+        choices.append("แต่งทุกวันเลย")
+        choices.append("ไม่เคยเลย")
+        choices.append("บางครั้งก็แต่ง")
         
-        choices.append( "ไม่เคยเลย" )
-        choices.append( "ออกทุกวันนะ" )
-        choices.append( "เกือบทุกวัน บางวันก็ไม่ได้ออก" )
-
-        questions.append( "คุณโกนหนวด/เครา/ขน ของคุณบ่อยแค่ไหน" )
+        questions.append("คุณออกกำลังกายบ่อยแค่ไหน")
         
-        choices.append( "ทุกวัน" )
-        choices.append( "ทุกสัปดาห์" )
-        choices.append( "ไม่เคย" )
+        choices.append("ไม่เคยเลย")
+        choices.append("ออกทุกวันนะ")
+        choices.append("เกือบทุกวัน บางวันก็ไม่ได้ออก")
         
-        questions.append( "ลองประเมิณความน่าดึงดูดของคุณ" )
+        questions.append("คุณโกนหนวด/เครา/ขน ของคุณบ่อยแค่ไหน")
         
-        choices.append( "0 - 3" )
-        choices.append( "4 - 6" )
-        choices.append( "7 - 10" )
+        choices.append("ทุกวัน")
+        choices.append("ทุกสัปดาห์")
+        choices.append("ไม่เคย")
+        
+        questions.append("ลองประเมิณความน่าดึงดูดของคุณ")
+        
+        choices.append("0 - 3")
+        choices.append("4 - 6")
+        choices.append("7 - 10")
     }
     
     class func setQuestionViewControllers () {

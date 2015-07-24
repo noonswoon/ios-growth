@@ -142,6 +142,7 @@ extension QuestionViewController {
         resultImageView.layer.borderWidth  = 4
         resultImageView.layer.borderColor  = UIColor.whiteColor().CGColor
         resultImageView.layer.cornerRadius = resultImageView.frame.width/2
+        resultImageView.contentMode = UIViewContentMode.ScaleAspectFill
         resultImageView.clipsToBounds = true
         
         self.view.addSubview( resultImageView )
