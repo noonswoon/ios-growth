@@ -17,7 +17,7 @@ extension ResultViewController {
     // Set contents to share
     func setContentToShare (#contentURLImage: String) {
         
-        let contentURL = "https://goo.gl/pszrQA"
+        let contentURL = "http://bit.ly/whyppllike"
         let default_contentURLImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/2000px-F_icon.svg.png"
         let contentTitle = "เหตุผลที่ทำไมคนถึงชอบคุณ"
         let contentDescription = "คุณเคยคิดหรือไม่ ว่าทำไมคนถึงชอบคุณ อะไรเป็นสาเหตุกันแน่นะ? ดาวน์โหลด 'ชอบฉันไม' สิ ด้วยอัลกอรึทึมขั้นสูงของเรา ที่วิเคราะห์จากการกดไลค์และการตอบคำถามของคุณ จะทำให้คุณรู้คำตอบที่น่าทึ่ง!"
