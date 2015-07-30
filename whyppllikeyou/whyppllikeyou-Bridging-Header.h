@@ -11,4 +11,8 @@
 #import <Google/Analytics.h>
 
 #import <AdBuddiz/AdBuddiz.h>
+
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <AWSS3/AWSS3.h>
+
 #import "settings.h"

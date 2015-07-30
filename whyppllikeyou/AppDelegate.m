@@ -16,6 +16,7 @@
 #import "whyppllikeyou-Swift.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import <AWSCore/AWSCore.h>
 #import "settings.h"
 
 @interface AppDelegate ()
@@ -27,15 +28,31 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-    [self setBackgroundImage];
     [self initGoogleAnalytic];
     [self initParse:application didFinishLaunchingWithOptions:launchOptions];
     [self initFabric];
+    [self initAmazonS3];
     [self setNotification];
+    [self setBackgroundImage];
     
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                     didFinishLaunchingWithOptions:launchOptions];
 }
+
+-(void) initAmazonS3 {
+    
+    AWSRegionType const CognitoRegionType = AWSRegionUSEast1;               // e.g. AWSRegionUSEast1
+    AWSRegionType const DefaultServiceRegionType = AWSRegionAPSoutheast1;   // e.g. AWSRegionUSEast1
+    
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc]
+                                                          initWithRegionType:CognitoRegionType
+                                                          identityPoolId: COGNITO_IDENTITY_POOL_ID];
+    
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:DefaultServiceRegionType
+                                                                         credentialsProvider:credentialsProvider];
+    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+}
+
 
 - (void) initFabric {
     [Fabric with:@[CrashlyticsKit]];
@@ -58,6 +75,7 @@
     
     UIImageView *bgImageView = [[UIImageView alloc] initWithFrame: self.window.frame];
     bgImageView.image = [UIImage imageNamed: @"main_background"];
+    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     [self.window addSubview: bgImageView];
     [self.window sendSubviewToBack: bgImageView];

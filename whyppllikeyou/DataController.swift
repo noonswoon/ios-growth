@@ -26,6 +26,10 @@ public class DataController {
     static var userFirstNameText: String!
     static var userProfileID: String!
     
+    static let contentURL = "http://bit.ly/whyppllike"
+    static let contentTitle = "เหตุผลที่ทำไมคนถึงชอบคุณ"
+    static let contentDescription = "คุณเคยคิดหรือไม่ ว่าทำไมคนถึงชอบคุณ อะไรเป็นสาเหตุกันแน่นะ? ดาวน์โหลด 'ชอบฉันไม' สิ ด้วยอัลกอรึทึมขั้นสูงของเรา ที่วิเคราะห์จากการกดไลค์และการตอบคำถามของคุณ จะทำให้คุณรู้คำตอบที่น่าทึ่ง!"
+    
     static let resultsThai = [
         ("ตาตี่ จิตใจเหี้ยม"),
         ("บั้นท้ายใหญ่ ยิ้มง่าย"),
@@ -80,31 +84,26 @@ public class DataController {
     class func setQuestionAndChoice () {
         
         questions.append("คุณคิดว่าตัวเองน่ารักรึเปล่า")
-        
-        choices.append( "ก็มีบ้างบางครั้งนะ" )
+        choices.append("ก็มีบ้างบางครั้งนะ")
         choices.append("แน่นอน ก็ฉันน่ารักอะ")
         choices.append("ไม่เลย ฉันไม่คิดว่าฉันน่ารัก")
         
         questions.append("คุณแต่งหน้าบ่อยแค่ไหน")
-        
         choices.append("แต่งทุกวันเลย")
         choices.append("ไม่เคยเลย")
         choices.append("บางครั้งก็แต่ง")
         
         questions.append("คุณออกกำลังกายบ่อยแค่ไหน")
-        
         choices.append("ไม่เคยเลย")
         choices.append("ออกทุกวันนะ")
         choices.append("เกือบทุกวัน บางวันก็ไม่ได้ออก")
         
         questions.append("คุณโกนหนวด/เครา/ขน ของคุณบ่อยแค่ไหน")
-        
         choices.append("ทุกวัน")
         choices.append("ทุกสัปดาห์")
         choices.append("ไม่เคย")
         
         questions.append("ลองประเมิณความน่าดึงดูดของคุณ")
-        
         choices.append("0 - 3")
         choices.append("4 - 6")
         choices.append("7 - 10")
@@ -196,9 +195,9 @@ public class DataController {
     class func setupPushNotificationChannel (fbId:String, gender: String) {
         // When users indicate they are Giants fans, we subscribe them to that channel.
         var currentInstallation = PFInstallation.currentInstallation()
-        currentInstallation.addUniqueObject(gender, forKey: "channels")
-        var userChannel = "nswhyppl" + fbId
+        var userChannel = PARSE_CHANNEL_PREFIX + fbId
         currentInstallation.addUniqueObject(userChannel, forKey: "channels")
+        currentInstallation.addUniqueObject(gender, forKey: "channels")
         currentInstallation.saveInBackgroundWithBlock(nil)
     }
     
@@ -245,7 +244,7 @@ extension DataController {
         request.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             if ((error) != nil) {
-                println("Error: \(error)")
+                println("Facebook graph error: \(error)")
             }
             else {
                 println(result)
@@ -259,14 +258,16 @@ extension DataController {
                     if let datas: NSArray = likes["data"] as? NSArray {
                         // Keep those data into dictionary named categoryDic. Use category name as key and among as value
                         for data in datas {
-                            var category: String! = data["category"] as! String
+                            if let category = data["category"] as? String {
+                                println("test : \(category)")
                             
-                            let firstChar = (Array(category))[0]
-                            
-                            if ( categoryDic[firstChar] == nil ) {
-                                categoryDic[firstChar] = 0
-                            } else {
-                                categoryDic[firstChar] = categoryDic[firstChar]! + 1
+                                let firstChar = (Array(category))[0]
+                                
+                                if ( categoryDic[firstChar] == nil ) {
+                                    categoryDic[firstChar] = 0
+                                } else {
+                                    categoryDic[firstChar] = categoryDic[firstChar]! + 1
+                                }
                             }
                         }
                         
@@ -275,35 +276,40 @@ extension DataController {
                             categoryDic[$0] > categoryDic[$1]
                         })
                         
-                        // Generate and set the result, after finish this line the result will be ready to use
-                        self.generateResult("\(sortedKeys[0])")
+
                         
-                        // Just show the relation about unique character and how many of its
-                        println("\nCouting the first character of fanpage category that user liked")
-                        for sortedKey in sortedKeys {
+                        if (sortedKeys.count > 1) {
+                            // Generate and set the result, after finish this line the result will be ready to use
+                            var firstChar = self.generateResult("\(sortedKeys[0])")
+                            self.setResult(firstChar)
                             
-                            let key   = sortedKey
-                            let value = categoryDic[sortedKey]
-                            
-                            if (value == 0) {
-                                continue
+                            // Just show the relation about unique character and how many of its
+                            println("\nCouting the first character of fanpage category that user liked")
+                            for sortedKey in sortedKeys {
+                                
+                                let key   = sortedKey
+                                let value = categoryDic[sortedKey]
+                                
+                                if (value == 0) {
+                                    continue
+                                }
+                                
+                                println("\(value!)\t : \(key)")
                             }
-                            
-                            println("\(value!)\t : \(key)")
+                            println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
                         }
-                        println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
                     }
                 }
             }
         })
     }
     
-    class func generateResult (keyword: String) {
+    class func generateResult (keyword: String) -> Int {
         var scalars     = keyword.lowercaseString.unicodeScalars
         let firstScalar = scalars[ scalars.startIndex ].hashValue
         let key         = firstScalar - 97
         
-        setResult( key )
+        return key
     }
     
     class func setResult (num: Int) {
@@ -317,49 +323,21 @@ extension DataController {
     }
     
     class func getPhotoResult () -> UIImage {
-        summation = (summation < 1) ? 1 : summation
-        summation = summation % codeName.count
-        var imageString = "\(summation)"
-        
-        return UIImage(named: imageString)!
+        return UIImage(named: "\(getSummation() + 1)")!
     }
     
     class func getDescription () -> String {
-        summation = (summation < 1) ? 1 : summation
-        summation = (summation > codeName.count-1) ? codeName.count-1 : summation
-        
-        return DataController.resultsThai[ summation - 1 ]
+        return DataController.resultsThai[getSummation()]
     }
     
     class func getCodeName () -> String {
-        summation = (summation < 1) ? 1 : summation
-        summation = (summation > codeName.count-1) ? codeName.count-1 : summation
-        
-        return DataController.codeName[ summation - 1 ]
-    }
-}
-
-// Extension for UIColor
-
-extension UIColor {
-    
-    class func mainColor () -> UIColor {
-        return UIColor(red: 185/255, green: 0/255, blue: 52/255, alpha: 1)
+        return DataController.codeName[getSummation()]
     }
     
-    class func appCreamColor () -> UIColor {
-        return UIColor(red: 254/255, green: 255/255, blue: 187/255, alpha: 1)
-    }
-    
-    class func appBrownColor () -> UIColor {
-        return UIColor(red: 84/255, green: 32/255, blue: 0, alpha: 1)
-    }
-    
-    class func appGreenColor () -> UIColor {
-        return UIColor(red: 7/255, green: 89/255, blue: 1/255, alpha: 1)
-    }
-    
-    class func appBlueColor () -> UIColor {
-        return UIColor(red: 0, green: 0, blue: 234/255, alpha: 1)
+    class func getSummation () -> Int {
+        var res = (summation < 1) ? 1 : summation
+        res = (res > codeName.count-1) ? codeName.count-1 : res
+        println("res \(res)")
+        return res
     }
 }

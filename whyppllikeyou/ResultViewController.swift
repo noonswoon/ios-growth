@@ -17,10 +17,11 @@ extension ResultViewController {
     // Set contents to share
     func setContentToShare (#contentURLImage: String) {
         
-        let contentURL = "http://bit.ly/whyppllike"
-        let default_contentURLImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/2000px-F_icon.svg.png"
-        let contentTitle = "เหตุผลที่ทำไมคนถึงชอบคุณ"
-        let contentDescription = "คุณเคยคิดหรือไม่ ว่าทำไมคนถึงชอบคุณ อะไรเป็นสาเหตุกันแน่นะ? ดาวน์โหลด 'ชอบฉันไม' สิ ด้วยอัลกอรึทึมขั้นสูงของเรา ที่วิเคราะห์จากการกดไลค์และการตอบคำถามของคุณ จะทำให้คุณรู้คำตอบที่น่าทึ่ง!"
+        println(contentURLImage)
+        
+        let contentURL = DataController.contentURL
+        let contentTitle = DataController.contentTitle + ": " + DataController.getDescription()
+        let contentDescription = DataController.contentDescription
         
         let content : FBSDKShareLinkContent = FBSDKShareLinkContent()
         content.imageURL = NSURL(string: contentURLImage)
@@ -44,15 +45,15 @@ extension ResultViewController {
         // Because it is an UIImage, we cannot use alpha method, we have to use image outside
         var background: UIImage = UIImage(named: "backgroundColor")!
         var waterMarkBG: UIImage = UIImage(named: "waterMarkBG")!
-        var result: UIImage = rectImageWithBorder( UIImage(named: "\(DataController.summation)")! )
+        var result: UIImage = DataController.getPhotoResult()
         
         // There are some problems I cannot solve when the user display image is not squre
         // I just fix that by snap the image from ResultViewController
-        var display: UIImage = snapingUserDisplayPhotoView()
+        var display: UIImage = DataController.userProfileImage
         
         // Make image border and circle radius
-        display = roundedRectImageFromImage(display)
-        result  = rectImageWithBorder(result)
+        display = circleImageFromImage(display, size: displaySize)
+        result  = rectImageWithBorder(result, size: resultSize)
         
         UIGraphicsBeginImageContext(rectSize);
         
@@ -60,8 +61,8 @@ extension ResultViewController {
         background.drawInRect(CGRectMake(0, 0, rectSize.width, rectSize.height))
         waterMarkBG.drawInRect(CGRectMake(0, rectSize.height-18, rectSize.width, 18))
         result.drawInRect(CGRectMake(rectSize.width-resultSize.width-25, rectSize.height-resultSize.height-25, resultSize.width, resultSize.height))
-        // display.drawAtPoint( CGPointMake(rectSize.width/4 - displaySize.width/2, rectSize.height/2 - displaySize.height/1.7 - 5) )
-        display.drawInRect(CGRectMake(rectSize.width/4 - displaySize.width/2, rectSize.height/2 - displaySize.height/1.7 - 5, displaySize.width, displaySize.height))
+        display.drawAtPoint( CGPointMake(rectSize.width/4 - displaySize.width/2, rectSize.height/2 - displaySize.height/1.7 - 5) )
+        //display.drawInRect(CGRectMake(rectSize.width/4 - displaySize.width/2, rectSize.height/2 - displaySize.height/1.7 - 5, displaySize.width, displaySize.height))
         
         // finalImage in the image after we draw every images
         var finalImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -114,9 +115,9 @@ class ResultViewController: UIViewController {
         
         self.view.backgroundColor = UIColor.clearColor()
         
-        setBackground()
+        setBackgroundImageView(self.view, imagePath: "main_background2")
         setUserDisplayPhoto()
-        setResultImage( DataController.summation )
+        setResultImage(DataController.getSummation())
         setSpinner()
         setLabels()
     }
@@ -129,8 +130,9 @@ class ResultViewController: UIViewController {
             self.setShareButton()
             self.setRetryButton()
             
-            // Take a sanpshot
-            self.saveResult()
+            // Drawing a result image and upload it to cloud
+            self.uploadResultImageToParse()
+            self.uploadResultImageToS3()
             
             // Set the varible for sharing ads
             AdvertismentController.setUserClickedShare(false)
@@ -218,16 +220,6 @@ class ResultViewController: UIViewController {
 // MARK: - Setter methods
 
 extension ResultViewController {
-    
-    func setBackground () {
-        
-        var backgroundImageView = UIImageView(image: UIImage(named: "main_background2"))
-        backgroundImageView.frame = view.frame
-        backgroundImageView.contentMode = .ScaleAspectFill
-        
-        view.addSubview(backgroundImageView)
-        view.sendSubviewToBack(backgroundImageView)
-    }
 
     // Loading indicator while uploading an result image (while the Facebook share button is disable)
     func setSpinner () {
@@ -445,46 +437,99 @@ extension ResultViewController {
     }
 }
 
-// MARK: - Upload image to Parse
+// MARK: - Upload image to cloud. There are 2 options, either to Parse or AmazonS3
 
 extension ResultViewController {
     
-    func saveResult () {
+    func uploadResultImageToS3 () {
+        let imageForShare = drawUIImageResult()
+        
+        // let fileName = NSProcessInfo.processInfo().globallyUniqueString.stringByAppendingString(".png")
+        let fileName = UserLogged.logObject.objectId!.stringByAppendingString(".png")
+        let filePath = NSTemporaryDirectory().stringByAppendingPathComponent(fileName)
+        let imageData = UIImagePNGRepresentation(imageForShare)
+        imageData.writeToFile(filePath, atomically: true)
+        
+        let uploadRequest = AWSS3TransferManagerUploadRequest()
+        uploadRequest.key = fileName
+        uploadRequest.bucket = S3_BUCKET_NAME
+        uploadRequest.body = NSURL(fileURLWithPath: filePath)
+        
+        self.upload(uploadRequest)
+    }
+    
+    func upload(uploadRequest: AWSS3TransferManagerUploadRequest) {
+        
+        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+        
+        transferManager.upload(uploadRequest).continueWithBlock { (task) -> AnyObject! in
+            if let error = task.error {
+                if error.domain == AWSS3TransferManagerErrorDomain as String {
+                    if let errorCode = AWSS3TransferManagerErrorType(rawValue: error.code) {
+                        switch (errorCode) {
+                        case .Cancelled, .Paused:
+                            break;
+                            
+                        default:
+                            println("upload() failed: [\(error)]")
+                            break;
+                        }
+                    } else {
+                        println("upload() failed: [\(error)]")
+                    }
+                } else {
+                    println("upload() failed: [\(error)]")
+                }
+            }
+            
+            if let exception = task.exception {
+                println("upload() failed: [\(exception)]")
+            }
+            
+            if task.result != nil {
+                println("Upload to AmazonS3 done !")
+                let imgURL = "https://s3-ap-southeast-1.amazonaws.com/\(uploadRequest.bucket)/\(uploadRequest.key)"
+                self.setContentToShare(contentURLImage: imgURL)
+                self.didFinishUploadResultImage()
+            }
+            return nil
+        }
+    }
+    
+    func uploadResultImageToParse () {
         
         // Draw an UIImage to share to Facebook
         let imageForShare = drawUIImageResult()
-        let imageData: NSData = UIImagePNGRepresentation(imageForShare)
-        // let imageData: NSData = UIImageJPEGRepresentation(imageForShare, 0.3)
+        // let imageData: NSData = UIImagePNGRepresentation(imageForShare)
+        let imageData: NSData = UIImageJPEGRepresentation(imageForShare, 0)
         
         var newImageFile = PFFile(name: "UserGeneratedResult.png", data: imageData)
         newImageFile.saveInBackgroundWithBlock({
             (succeeded: Bool, error: NSError?) -> Void in
             
             // If saving the image is succeeded
-            if (error == nil){
-                
-                // Show the image url
-                println(newImageFile.url)
-                
+            if (error == nil) {
                 // Use the image url we got to share on Facebook
-                self.setContentToShare(contentURLImage: newImageFile.url!)
-                
-                // Stop the loading indicator and enable the Facebook share button
-                self.shareButton.enabled = true
-                self.spinner.stopAnimating()
-                
+                // self.setContentToShare(contentURLImage: newImageFile.url!)
+                // self.didFinishUploadResultImage()
             }
             }, progressBlock: { (percentDone: Int32) -> Void in
                 
                 // Show percentage of uploading an image
-                println("percentDone: \(percentDone)")
+                // println("percentDone: \(percentDone)")
                 
         })
         
         // Save user result image to Parse, including the user information
         UserLogged.saveUserInformation()
         UserLogged.saveUserImageFile(newImageFile)
-
+    }
+    
+    func didFinishUploadResultImage () {
+        
+        // Stop the loading indicator and enable the Facebook share button
+        self.shareButton.enabled = true
+        self.spinner.stopAnimating()
     }
 }
 
@@ -532,73 +577,41 @@ extension ResultViewController {
         
     }
     
-    func roundedRectImageFromImage (image: UIImage) -> UIImage {
+    func circleImageFromImage (image: UIImage, size: CGSize) -> UIImage {
         
-        var imageResult = image
+        let imageView = UIImageView(image: image)
         
-        let borderWidth: CGFloat = 5.0
-        let imageSize: CGFloat = (image.size.width < image.size.height) ? image.size.width : image.size.height
-        var imageViewer = UIImageView(frame: CGRectMake(0, 0, imageSize, imageSize))
+        imageView.frame = CGRectMake(0, 0, size.width, size.height)
+        imageView.layer.cornerRadius = imageView.frame.size.width/2
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderColor = UIColor.appCreamColor().CGColor
+        imageView.layer.borderWidth = 3
+        imageView.contentMode = UIViewContentMode.ScaleAspectFill
         
-        UIGraphicsBeginImageContextWithOptions(imageViewer.frame.size, false, 0)
+        UIGraphicsBeginImageContext(imageView.bounds.size)
+        imageView.layer.renderInContext(UIGraphicsGetCurrentContext())
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
         
-        let path = UIBezierPath(roundedRect: CGRectInset(imageViewer.bounds, borderWidth / 2, borderWidth / 2), cornerRadius: imageViewer.frame.size.width/2)
-        let context = UIGraphicsGetCurrentContext()
-        
-        CGContextSaveGState(context)
-        // Clip the drawing area to the path
-        path.addClip()
-        
-        // Draw the image into the context
-        imageResult.drawInRect(imageViewer.bounds)
-        CGContextRestoreGState(context)
-        
-        // Configure the stroke
-        UIColor.appCreamColor().setStroke()
-        path.lineWidth = borderWidth
-        
-        // Stroke the border
-        path.stroke()
-        
-        imageResult = UIGraphicsGetImageFromCurrentImageContext();
-        
-        UIGraphicsEndImageContext();
-        
-        return imageResult
+        return result
     }
     
-    func rectImageWithBorder (image: UIImage) -> UIImage {
+    func rectImageWithBorder (image: UIImage, size: CGSize) -> UIImage {
         
-        var imageResult = image
+        let imageView = UIImageView(image: image)
         
-        let borderWidth: CGFloat = 5.0
-        var imageViewer = UIImageView(frame: CGRectMake(0, 0, image.size.width, image.size.height))
+        imageView.frame = CGRectMake(0, 0, size.width, size.height)
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderColor = UIColor.appCreamColor().CGColor
+        imageView.layer.borderWidth = 3
+        imageView.contentMode = UIViewContentMode.ScaleAspectFill
         
-        UIGraphicsBeginImageContextWithOptions(imageViewer.frame.size, false, 0)
+        UIGraphicsBeginImageContext(imageView.bounds.size)
+        imageView.layer.renderInContext(UIGraphicsGetCurrentContext())
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
         
-        let path = UIBezierPath(roundedRect: CGRectInset(imageViewer.bounds, borderWidth / 2, borderWidth / 2), cornerRadius: 0)
-        let context = UIGraphicsGetCurrentContext()
-        
-        CGContextSaveGState(context)
-        // Clip the drawing area to the path
-        path.addClip()
-        
-        // Draw the image into the context
-        imageResult.drawInRect(imageViewer.bounds)
-        CGContextRestoreGState(context)
-        
-        // Configure the stroke
-        UIColor.appCreamColor().setStroke()
-        path.lineWidth = borderWidth
-        
-        // Stroke the border
-        path.stroke()
-        
-        imageResult = UIGraphicsGetImageFromCurrentImageContext();
-        
-        UIGraphicsEndImageContext();
-        
-        return imageResult
+        return result
     }
 }
 
@@ -629,8 +642,6 @@ extension ResultViewController {
         
         var newSize     = CGSize(width: 420, height: 221)
         var resizeImg   = resizeImage(cropingImg , newSize: newSize)
-        
-        // saveImageToAlbum(resizeImg)
         
         return resizeImg
     }

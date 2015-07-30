@@ -25,7 +25,7 @@ extension LoginViewController {
     
     override func viewDidLoad() {
         // Set the view elements
-        setBackgroundImageView()
+        setBackgroundImageView(self.view, imagePath: "main_background")
         setQuestionViewController()
         setNotificationCenter()
     }
@@ -71,15 +71,6 @@ extension LoginViewController {
         startViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
         
         self.presentViewController(startViewController, animated: true, completion: nil)
-    }
-    
-    func setBackgroundImageView () {
-        let backgroundImageView = UIImageView(image: UIImage(named: "main_background"))
-        backgroundImageView.frame = view.frame
-        backgroundImageView.contentMode = .ScaleAspectFill
-        
-        view.addSubview(backgroundImageView)
-        view.sendSubviewToBack(backgroundImageView)
     }
 
     // Set the question to user for generating result
@@ -140,32 +131,6 @@ extension LoginViewController {
 
 // MARK: - Utility methods
 extension UIViewController {
-    
-    // Get the size of device
-    func iPhoneScreenSize () -> String {
-        
-        var result: CGSize = UIScreen.mainScreen().bounds.size
-        
-        if(result.height == 480) {
-            println("3.5")
-            return "3.5"
-        }
-        else if(result.height == 568) {
-            println("4")
-            return "4"
-        }
-        else if(result.height == 667) {
-            println("4.7")
-            return "4.7"
-        }
-        else if(result.height == 736) {
-            println("5.5")
-            return "5.5"
-        }
-        else {
-            return ""
-        }
-    }
     
     // UIAlert view delegate
     func showAlertMessage () {

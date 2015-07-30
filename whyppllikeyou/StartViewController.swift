@@ -32,7 +32,7 @@ extension StartViewController {
         setUserDisplayMark()
         setNameLabel()
         setUserFirstName()
-        setBackground()
+        setBackgroundImageView(self.view, imagePath: "main_background2")
         setObservers()
         setPhotoLabel()
     }
@@ -67,15 +67,6 @@ extension StartViewController {
     
     override func prefersStatusBarHidden() -> Bool {
         return true
-    }
-    
-    func setBackground () {
-        var backgroundImageView = UIImageView(image: UIImage(named: "main_background2"))
-        backgroundImageView.frame = view.frame
-        backgroundImageView.contentMode = .ScaleAspectFill
-        
-        view.addSubview(backgroundImageView)
-        view.sendSubviewToBack(backgroundImageView)
     }
     
     func setObservers() {
@@ -225,43 +216,54 @@ extension StartViewController {
         var point = touch.locationInView(self.view)
         
         if (CGRectContainsPoint(profileImageView.frame, point)) {
-            photoBtnClicked()
+            changeDisplayPhotoBtnClicked()
         }
         else {
             self.view.endEditing(true)
         }
     }
     
-    func photoBtnClicked(){
+    func changeDisplayPhotoBtnClicked(){
         self.view.endEditing(true)
         
-        let actionSheet: UIActionSheet = UIActionSheet(title: "ต้องการเลือกรูปภาพจาก?", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
-        actionSheet.addButtonWithTitle("อัลบั้มรูป")
-        actionSheet.addButtonWithTitle("ถ่ายภาพใหม่")
-        actionSheet.showInView(self.view)
+        let alertController = UIAlertController(
+            title: "เปลี่ยนรูปภาพ",
+            message: "ต้องการเลือกรูปภาพจาก",
+            preferredStyle: .ActionSheet)
+        
+        let selectPictureAction = UIAlertAction(
+            title: "อัลบั้ม",
+            style: .Default) { (action) -> Void in
+                self.getPictureFromSource(takingNewPhoto: false)
+        }
+        
+        let takingPictureAction = UIAlertAction(
+            title: "ถ่ายภาพใหม่",
+            style: .Default) { (action) -> Void in
+                self.getPictureFromSource(takingNewPhoto: true)
+        }
+        
+        let cancelAction = UIAlertAction(
+            title: "Cancel",
+            style: .Cancel) { (action) -> Void in }
+        
+        alertController.addAction(selectPictureAction)
+        alertController.addAction(takingPictureAction)
+        alertController.addAction(cancelAction)
+        
+        self.presentViewController(
+            alertController,
+            animated: true) { () -> Void in }
+
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if (buttonIndex == 1) {
-            getPictureFromSource(takePhoto: false)
-        }
-        else if (buttonIndex == 2) {
-            getPictureFromSource(takePhoto: true)
-        }
-    }
-    
-    func getPictureFromSource (#takePhoto: Bool) {
+    func getPictureFromSource (#takingNewPhoto: Bool) {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
             imagePicker.delegate = self
-            if (takePhoto) {
-                imagePicker.sourceType = .Camera
-            } else {
-                imagePicker.sourceType = .SavedPhotosAlbum
-            }
+            imagePicker.sourceType = (takingNewPhoto) ? .Camera : .SavedPhotosAlbum
             imagePicker.allowsEditing = false
-            self.presentViewController(imagePicker, animated: true, completion: nil)
             
-            self.mediaSelected = "Photo"
+            self.presentViewController(imagePicker, animated: true, completion: nil)
         }
     }
     

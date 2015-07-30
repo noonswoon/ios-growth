@@ -30,6 +30,7 @@
 		9F3A15771B57B66600264D3E /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F3A15761B57B66600264D3E /* Parse.framework */; };
 		9F3A15791B57B68500264D3E /* AdBuddiz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F3A15781B57B68500264D3E /* AdBuddiz.framework */; };
 		9F3A157B1B57B69700264D3E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F3A157A1B57B69700264D3E /* AdSupport.framework */; };
+		9F3FC18D1B68A021002AAA3C /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3FC18C1B68A021002AAA3C /* Extension.swift */; };
 		9F5C62AF1B5E056D003DD734 /* backgroundColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F5C62AE1B5E056D003DD734 /* backgroundColor.png */; };
 		9F5C62B21B5E0581003DD734 /* userProfileImageMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F5C62B01B5E0581003DD734 /* userProfileImageMark.png */; };
 		9F5C62B31B5E0581003DD734 /* waterMarkBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F5C62B11B5E0581003DD734 /* waterMarkBG.png */; };
@@ -112,6 +113,7 @@
 		9F3A15761B57B66600264D3E /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Framework/Parse.framework; sourceTree = "<group>"; };
 		9F3A15781B57B68500264D3E /* AdBuddiz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdBuddiz.framework; path = Framework/AdBuddiz.framework; sourceTree = "<group>"; };
 		9F3A157A1B57B69700264D3E /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		9F3FC18C1B68A021002AAA3C /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		9F5C62AE1B5E056D003DD734 /* backgroundColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = backgroundColor.png; path = Resources/Images/backgroundColor.png; sourceTree = "<group>"; };
 		9F5C62B01B5E0581003DD734 /* userProfileImageMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = userProfileImageMark.png; path = Resources/Images/userProfileImageMark.png; sourceTree = "<group>"; };
 		9F5C62B11B5E0581003DD734 /* waterMarkBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = waterMarkBG.png; path = Resources/Images/waterMarkBG.png; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				9F0AA8721B5771240021D56D /* AppDelegate.m */,
 				9FA2DE001B58D1B200EED84D /* AdvertisementViewController.swift */,
 				9FA2DE021B58D1BA00EED84D /* DataController.swift */,
+				9F3FC18C1B68A021002AAA3C /* Extension.swift */,
 				9FA2DE081B58D1CB00EED84D /* LoginViewController.swift */,
 				9FA2DE031B58D1BA00EED84D /* QuestionViewController.swift */,
 				9FA2DE061B58D1C500EED84D /* ResultViewController.swift */,
@@ -562,6 +565,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F3FC18D1B68A021002AAA3C /* Extension.swift in Sources */,
 				9F2CC5AE1B5F996400EA5835 /* Reachability.swift in Sources */,
 				9FA2DE0B1B58D1D000EED84D /* UserLogged.swift in Sources */,
 				9F1ED0121B58FAF900061136 /* StartViewController.swift in Sources */,

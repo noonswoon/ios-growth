@@ -19,4 +19,7 @@
 #define PARSE_CLIENT_KEY @"TeM3aKKALJDaA01x181cpYfF0e2cWxJVzQm4LVAz"
 #define PARSE_CHANNEL_PREFIX @"nswhyppl"
 
+#define COGNITO_IDENTITY_POOL_ID @"us-east-1:d7478c2f-24d6-4d4d-a54d-332826cecbfb"
+#define S3_BUCKET_NAME @"nsgrowth.whyppllikeyou"
+
 #endif
