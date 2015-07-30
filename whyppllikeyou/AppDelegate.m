@@ -44,12 +44,10 @@
     AWSRegionType const CognitoRegionType = AWSRegionUSEast1;               // e.g. AWSRegionUSEast1
     AWSRegionType const DefaultServiceRegionType = AWSRegionAPSoutheast1;   // e.g. AWSRegionUSEast1
     
-    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc]
-                                                          initWithRegionType:CognitoRegionType
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:CognitoRegionType
                                                           identityPoolId: COGNITO_IDENTITY_POOL_ID];
     
-    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:DefaultServiceRegionType
-                                                                         credentialsProvider:credentialsProvider];
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:DefaultServiceRegionType credentialsProvider:credentialsProvider];
     AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
 }
 
