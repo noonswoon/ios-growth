@@ -10,14 +10,13 @@ import Foundation
 import UIKit
 import Parse
 
-
-// MARK: - Main methos for sharing contents
+// MARK: - Main method for sharing contents
 extension ResultViewController {
     
     // Set contents to share
     func setContentToShare (#contentURLImage: String) {
         
-        println(contentURLImage)
+        //println(contentURLImage)
         
         let contentURL = DataController.contentURL
         let contentTitle = DataController.contentTitle + ": " + DataController.getDescription()
@@ -123,25 +122,21 @@ class ResultViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
+        // Show the buttons up by animation
+        self.setShareButton()
+        self.setRetryButton()
+            
+        // Drawing a result image and upload it to cloud
+        self.uploadResultImageToS3()
         
-        if ( !AdvertismentController.isEnabled() ) {
-            
-            // Show the buttons up by animation
-            self.setShareButton()
-            self.setRetryButton()
-            
-            // Drawing a result image and upload it to cloud
-            self.uploadResultImageToParse()
-            self.uploadResultImageToS3()
-            
-            // Set the varible for sharing ads
-            AdvertismentController.setUserClickedShare(false)
-        }
+        // * only upload to S3 * self.uploadResultImageToParse()
+        
+        // Set the varible for sharing ads
+        AdvertismentController.setUserClickedShare(false)
     }
     
     override func viewWillAppear(animated: Bool) {
-        
-        UserLogged.trackScreen("Result view")
+        UserLogged.trackScreen("iOS - Result viewed")
     }
 
     // MARK: - Set Facebook share button
@@ -175,10 +170,10 @@ class ResultViewController: UIViewController {
         
         // Log user activities
         UserLogged.shareButtonClicked()
-        UserLogged.trackEvent("User clicked share button")
+        UserLogged.trackEvent("iOS - Share Btn Clicked")
         
         // Enable the advertisment alert
-        AdvertismentController.enebleAds()
+        AdvertismentController.enableAds()
         AdvertismentController.setUserClickedShare(true)
     }
 
@@ -186,7 +181,7 @@ class ResultViewController: UIViewController {
     func setRetryButton () {
         
         var retryButton = UIButton(frame: CGRectMake(8, 0, self.view.frame.width/2 - 12, elementHeight))
-        retryButton.setTitle("เล่นใหม่", forState: .Normal)
+        retryButton.setTitle("ลองใหม่", forState: .Normal)
         retryButton.titleLabel?.font = UIFont(name: "SukhumvitSet-Medium", size: 18)
         retryButton.enabled = true
         // The y position should be animated
@@ -213,7 +208,7 @@ class ResultViewController: UIViewController {
         NSNotificationCenter.defaultCenter().postNotificationName("RetryButtonClicked", object: nil)
         
         // Track user event
-        UserLogged.trackEvent("User clicked retry button")
+        UserLogged.trackEvent("iOS - Retry Btn Clicked")
     }
 }
 

@@ -80,7 +80,7 @@ extension QuestionViewController {
     func choiceButtonClick (sender: UIButton!) {
         
         DataController.summation = DataController.summation + sender.tag
-        println(DataController.summation)
+        //println(DataController.summation)
         
         if (questionNo == DataController.questions.count - 1) {
             

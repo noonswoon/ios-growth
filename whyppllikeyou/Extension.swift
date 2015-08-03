@@ -51,19 +51,19 @@ extension UIViewController {
         var result: CGSize = UIScreen.mainScreen().bounds.size
         
         if(result.height == 480) {
-            println("3.5")
+            //println("3.5")
             return "3.5"
         }
         else if(result.height == 568) {
-            println("4")
+            //println("4")
             return "4"
         }
         else if(result.height == 667) {
-            println("4.7")
+            //println("4.7")
             return "4.7"
         }
         else if(result.height == 736) {
-            println("5.5")
+            //println("5.5")
             return "5.5"
         }
         else {

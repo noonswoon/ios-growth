@@ -12,7 +12,7 @@ import Parse
 // MARK: Advertisment
 class AdvertismentController: NSObject, AdBuddizDelegate{
     
-    static var eneabledAds: Bool = false
+    static var enabledAds: Bool = false
     static var userClickedShareButton: Bool = true
     
     // Show the advertisments, it should has a few delays before showing up
@@ -32,7 +32,7 @@ class AdvertismentController: NSObject, AdBuddizDelegate{
     }
     
     class func isEnabled () -> Bool {
-        return eneabledAds
+        return enabledAds
     }
     
     class func isUserClickShareButton () -> Bool {
@@ -47,12 +47,12 @@ extension AdvertismentController {
         AdBuddiz.setDelegate(AdvertismentController.self())
     }
     
-    class func enebleAds () {
-        self.eneabledAds = true
+    class func enableAds () {
+        self.enabledAds = true
     }
     
     class func disableAds () {
-        self.eneabledAds = false
+        self.enabledAds = false
     }
     
     class func setUserClickedShare (flag: Bool) {
@@ -64,7 +64,7 @@ extension AdvertismentController {
 extension AdvertismentController {
     
     func didHideAd() {
-        println("didHideAd !!!!!!!!!!!")
+        //println("didHideAd !!!!!!!!!!!")
     }
     
     func didShowAd() {
@@ -74,6 +74,6 @@ extension AdvertismentController {
     
     func didClick() {
         UserLogged.adsClicked()
-        UserLogged.trackEvent("User clicked ads")
+        UserLogged.trackEvent("iOS - Ads Clicked")
     }
 }

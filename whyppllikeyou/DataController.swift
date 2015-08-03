@@ -26,7 +26,7 @@ public class DataController {
     static var userFirstNameText: String!
     static var userProfileID: String!
     
-    static let contentURL = "http://bit.ly/whyppllike"
+    static let contentURL = REDIRECT_URL
     static let contentTitle = "เหตุผลที่ทำไมคนถึงชอบคุณ"
     static let contentDescription = "คุณเคยคิดหรือไม่ ว่าทำไมคนถึงชอบคุณ อะไรเป็นสาเหตุกันแน่นะ? ดาวน์โหลด 'ชอบฉันไม' สิ ด้วยอัลกอรึทึมขั้นสูงของเรา ที่วิเคราะห์จากการกดไลค์และการตอบคำถามของคุณ จะทำให้คุณรู้คำตอบที่น่าทึ่ง!"
     
@@ -162,7 +162,7 @@ public class DataController {
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             if ((error) != nil) {
-                println("Error: \(error)")
+                //println("Error: \(error)")
             }
             else {
                 //println("fetched user: \(result)")
@@ -244,10 +244,10 @@ extension DataController {
         request.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             if ((error) != nil) {
-                println("Facebook graph error: \(error)")
+                //println("Facebook graph error: \(error)")
             }
             else {
-                println(result)
+                //println(result)
                 
                 // Dictionay for temporary contain the category
                 var categoryDic = Dictionary<Character, Int>()
@@ -259,7 +259,7 @@ extension DataController {
                         // Keep those data into dictionary named categoryDic. Use category name as key and among as value
                         for data in datas {
                             if let category = data["category"] as? String {
-                                println("test : \(category)")
+                                //println("test : \(category)")
                             
                                 let firstChar = (Array(category))[0]
                                 
@@ -284,7 +284,7 @@ extension DataController {
                             self.setResult(firstChar)
                             
                             // Just show the relation about unique character and how many of its
-                            println("\nCouting the first character of fanpage category that user liked")
+                            //println("\nCouting the first character of fanpage category that user liked")
                             for sortedKey in sortedKeys {
                                 
                                 let key   = sortedKey
@@ -294,9 +294,9 @@ extension DataController {
                                     continue
                                 }
                                 
-                                println("\(value!)\t : \(key)")
+                                //println("\(value!)\t : \(key)")
                             }
-                            println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
+                            //println("\(sortedKeys[0])\t : \(categoryDic[sortedKeys[0]]!)")
                         }
                     }
                 }
@@ -319,7 +319,7 @@ extension DataController {
     
     class func setSummartion (num: Int) {
         summation = (self.summation + num) % resultsThai.count
-        println("summation: \(summation)")
+        //println("summation: \(summation)")
     }
     
     class func getPhotoResult () -> UIImage {
@@ -337,7 +337,7 @@ extension DataController {
     class func getSummation () -> Int {
         var res = (summation < 1) ? 1 : summation
         res = (res > codeName.count-1) ? codeName.count-1 : res
-        println("res \(res)")
+        //println("res \(res)")
         return res
     }
 }

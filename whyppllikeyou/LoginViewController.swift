@@ -39,7 +39,7 @@ extension LoginViewController {
             self.showAlertMessage()
         }
         else if (FBSDKAccessToken.currentAccessToken() != nil) {
-            println("Current access token: \(FBSDKAccessToken.currentAccessToken().tokenString)")
+            //println("Current access token: \(FBSDKAccessToken.currentAccessToken().tokenString)")
             self.userLoggedIn()
         }
         else {
@@ -124,7 +124,7 @@ extension LoginViewController {
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
-        println("User did log out")
+        //println("User did log out")
     }
 }
 
