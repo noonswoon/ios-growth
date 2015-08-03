@@ -1,5 +1,5 @@
-pod 'FBSDKCoreKit', '4.4.0'
-pod 'FBSDKLoginKit', '4.4.0'
-pod 'FBSDKShareKit', '4.4.0'
+pod 'FBSDKCoreKit', '4.3.0'
+pod 'FBSDKLoginKit', '4.3.0'
+pod 'FBSDKShareKit', '4.3.0'
 pod 'Google/Analytics', '~> 1.0.0'
 pod 'AWSS3', '~> 2.2.0'

@@ -14,7 +14,7 @@ import Parse
 extension ResultViewController {
     
     // Set contents to share
-    func setContentToShare (#contentURLImage: String) {
+    func setContentToShare (contentURLImage: String) {
         
         //println(contentURLImage)
         
@@ -96,8 +96,8 @@ class ResultViewController: UIViewController {
     
     var shareButton: FBSDKShareButton!
 
-    // Loading indicator for upload result image to Parse
     var spinner: UIActivityIndicatorView!
+    // Loading indicator for upload result image to Parse
     
     var contentBackgroundImageShape: CAShapeLayer!
     var backgroundImageView: UIImageView!
@@ -117,15 +117,15 @@ class ResultViewController: UIViewController {
         setBackgroundImageView(self.view, imagePath: "main_background2")
         setUserDisplayPhoto()
         setResultImage(DataController.getSummation())
-        setSpinner()
         setLabels()
+        setSpinner()
     }
     
     override func viewDidAppear(animated: Bool) {
-        // Show the buttons up by animation
+
         self.setShareButton()
         self.setRetryButton()
-            
+        
         // Drawing a result image and upload it to cloud
         self.uploadResultImageToS3()
         
@@ -143,7 +143,7 @@ class ResultViewController: UIViewController {
     func setShareButton () {
         
         shareButton = FBSDKShareButton()
-        shareButton.titleLabel?.text = "test"
+        shareButton.titleLabel?.text = "Share"
         shareButton.frame = CGRectMake(self.view.frame.width/2 + 4, 0, self.view.frame.width/2 - 12, elementHeight)
         shareButton.enabled = false
         // The y position should be animated 
@@ -157,12 +157,13 @@ class ResultViewController: UIViewController {
             self.view.addSubview(shareButton)
         }
         
+        shareButton.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
+
         // Show button up with animation
         UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             
             self.shareButton.center.y = CGRectGetMaxY( self.view.frame ) - self.elementHeight/2 - self.margin
             self.spinner.startAnimating()
-            
             }, completion: nil)
     }
     
@@ -281,7 +282,6 @@ extension ResultViewController {
         label.textAlignment = NSTextAlignment.Center
         label.textColor = UIColor.whiteColor()
         label.text = title
-//        label.sizeToFit()
         label.center.x = self.view.center.x
         label.center.y = yPosition
         
@@ -333,54 +333,6 @@ extension ResultViewController {
         
         // setWaterMark()
     }
-
-    func setWaterMark () {
-        var waterMarkBG = UIImage(named: "waterMarkBG")
-        var waterMarkBGView = UIImageView(image: waterMarkBG)
-        
-        waterMarkBGView.frame = CGRectMake(0, 0, resultImageView.frame.width, 20)
-        waterMarkBGView.center.x = resultImageView.center.x
-        waterMarkBGView.center.y = resultImageView.center.y - resultImageView.frame.width/2 + 10
-        waterMarkBGView.alpha = 0.5
-        
-        self.view.addSubview(waterMarkBGView)
-        
-        var waterMarkText = UILabel(frame: CGRectMake(0, 0, resultImageView.frame.width, 20))
-        waterMarkText.text = "Download โหลดได้ที่ Play Store และ App Store"
-        waterMarkText.textColor = UIColor.whiteColor()
-        waterMarkText.font = UIFont.systemFontOfSize( self.view.frame.width/45 )
-        waterMarkText.textAlignment = NSTextAlignment.Center
-        waterMarkText.center.x = resultImageView.center.x
-        waterMarkText.center.y = resultImageView.center.y - resultImageView.frame.width/2 + 10
-        
-        self.view.addSubview(waterMarkText)
-    }
-    
-    func setContentBackgroundTemplate () {
-        
-        let margin: CGFloat = self.margin + 6
-        let statusBarHeight: CGFloat = 20
-        let topMargin: CGFloat = statusBarHeight + self.margin + 3
-        
-        var imageString = "tempContentBackground"
-        var image = UIImage(named: imageString)
-        
-        //        let frameHeight = self.view.frame.height - (topMargin) - elementHeight - margin - 6
-        var frameWidth  = self.view.frame.width - (margin * 2)
-        //        let frameWidth  = frameHeight * 0.7
-        var frameHeight = frameWidth * 1.4
-        
-        if (iPhoneScreenSize() == "3.5") {
-            frameWidth = frameWidth * 0.95
-            frameHeight = frameHeight * 0.95
-        }
-        
-        backgroundImageView = UIImageView(image: image)
-        backgroundImageView.frame = CGRect(x: margin, y: topMargin, width: frameWidth, height: frameHeight)
-        backgroundImageView.center = CGPoint(x: CGRectGetMidX(contentBackgroundImageShape.frame), y: CGRectGetMidY(contentBackgroundImageShape.frame))
-        
-        self.view.addSubview(backgroundImageView)
-    }
     
     func setContentBackgroundImageView () {
         
@@ -419,8 +371,6 @@ extension ResultViewController {
             self.view.layer.addSublayer(line)
             yPosition = yPosition + 30
         }
-        
-        
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -430,6 +380,56 @@ extension ResultViewController {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    
+    /* Deprecated
+    func setWaterMark () {
+    var waterMarkBG = UIImage(named: "waterMarkBG")
+    var waterMarkBGView = UIImageView(image: waterMarkBG)
+    
+    waterMarkBGView.frame = CGRectMake(0, 0, resultImageView.frame.width, 20)
+    waterMarkBGView.center.x = resultImageView.center.x
+    waterMarkBGView.center.y = resultImageView.center.y - resultImageView.frame.width/2 + 10
+    waterMarkBGView.alpha = 0.5
+    
+    self.view.addSubview(waterMarkBGView)
+    
+    var waterMarkText = UILabel(frame: CGRectMake(0, 0, resultImageView.frame.width, 20))
+    waterMarkText.text = "Download โหลดได้ที่ Play Store และ App Store"
+    waterMarkText.textColor = UIColor.whiteColor()
+    waterMarkText.font = UIFont.systemFontOfSize( self.view.frame.width/45 )
+    waterMarkText.textAlignment = NSTextAlignment.Center
+    waterMarkText.center.x = resultImageView.center.x
+    waterMarkText.center.y = resultImageView.center.y - resultImageView.frame.width/2 + 10
+    
+    self.view.addSubview(waterMarkText)
+    }
+    
+    func setContentBackgroundTemplate () {
+    
+    let margin: CGFloat = self.margin + 6
+    let statusBarHeight: CGFloat = 20
+    let topMargin: CGFloat = statusBarHeight + self.margin + 3
+    
+    var imageString = "tempContentBackground"
+    var image = UIImage(named: imageString)
+    
+    //        let frameHeight = self.view.frame.height - (topMargin) - elementHeight - margin - 6
+    var frameWidth  = self.view.frame.width - (margin * 2)
+    //        let frameWidth  = frameHeight * 0.7
+    var frameHeight = frameWidth * 1.4
+    
+    if (iPhoneScreenSize() == "3.5") {
+    frameWidth = frameWidth * 0.95
+    frameHeight = frameHeight * 0.95
+    }
+    
+    backgroundImageView = UIImageView(image: image)
+    backgroundImageView.frame = CGRect(x: margin, y: topMargin, width: frameWidth, height: frameHeight)
+    backgroundImageView.center = CGPoint(x: CGRectGetMidX(contentBackgroundImageShape.frame), y: CGRectGetMidY(contentBackgroundImageShape.frame))
+    
+    self.view.addSubview(backgroundImageView)
+    }
+    */
 }
 
 // MARK: - Upload image to cloud. There are 2 options, either to Parse or AmazonS3
@@ -458,39 +458,38 @@ extension ResultViewController {
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
         
         transferManager.upload(uploadRequest).continueWithBlock { (task) -> AnyObject! in
-            if let error = task.error {
-                if error.domain == AWSS3TransferManagerErrorDomain as String {
-                    if let errorCode = AWSS3TransferManagerErrorType(rawValue: error.code) {
-                        switch (errorCode) {
-                        case .Cancelled, .Paused:
-                            break;
-                            
-                        default:
+            if task.result != nil {
+                println("Upload to AmazonS3 done !")
+                let imgURL = "https://s3-ap-southeast-1.amazonaws.com/\(uploadRequest.bucket)/\(uploadRequest.key)"
+                self.setContentToShare(imgURL)
+                self.didFinishUploadResultImage()
+            } else {
+                if let error = task.error {
+                    if error.domain == AWSS3TransferManagerErrorDomain as String {
+                        if let errorCode = AWSS3TransferManagerErrorType(rawValue: error.code) {
+                            switch (errorCode) {
+                            case .Cancelled, .Paused:
+                                break;
+                            default:
+                                println("upload() failed: [\(error)]")
+                                break;
+                            }
+                        } else {
                             println("upload() failed: [\(error)]")
-                            break;
                         }
                     } else {
                         println("upload() failed: [\(error)]")
                     }
-                } else {
-                    println("upload() failed: [\(error)]")
+                } else if let exception = task.exception {
+                    println("upload() failed: [\(exception)]")
                 }
-            }
-            
-            if let exception = task.exception {
-                println("upload() failed: [\(exception)]")
-            }
-            
-            if task.result != nil {
-                println("Upload to AmazonS3 done !")
-                let imgURL = "https://s3-ap-southeast-1.amazonaws.com/\(uploadRequest.bucket)/\(uploadRequest.key)"
-                self.setContentToShare(contentURLImage: imgURL)
                 self.didFinishUploadResultImage()
             }
             return nil
         }
     }
     
+    /*
     func uploadResultImageToParse () {
         
         // Draw an UIImage to share to Facebook
@@ -519,12 +518,13 @@ extension ResultViewController {
         UserLogged.saveUserInformation()
         UserLogged.saveUserImageFile(newImageFile)
     }
+    */
     
     func didFinishUploadResultImage () {
-        
-        // Stop the loading indicator and enable the Facebook share button
-        self.shareButton.enabled = true
-        self.spinner.stopAnimating()
+        dispatch_async(dispatch_get_main_queue(), {
+            self.shareButton.enabled = true
+            self.spinner.stopAnimating()
+        })
     }
 }
 
