@@ -440,7 +440,7 @@ extension ResultViewController {
         let imageForShare = drawUIImageResult()
         
         // let fileName = NSProcessInfo.processInfo().globallyUniqueString.stringByAppendingString(".png")
-        let fileName = UserLogged.logObject.objectId!.stringByAppendingString(".png")
+        let fileName = DataController.getUserId() + "_" + UserLogged.logObject.objectId!.stringByAppendingString(".png")
         let filePath = NSTemporaryDirectory().stringByAppendingPathComponent(fileName)
         let imageData = UIImagePNGRepresentation(imageForShare)
         imageData.writeToFile(filePath, atomically: true)

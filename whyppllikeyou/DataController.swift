@@ -322,6 +322,10 @@ extension DataController {
         //println("summation: \(summation)")
     }
     
+    class func getUserId () -> String {
+        return self.userInfo["userId"]!
+    }
+    
     class func getPhotoResult () -> UIImage {
         return UIImage(named: "\(getSummation() + 1)")!
     }
