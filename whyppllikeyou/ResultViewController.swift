@@ -14,17 +14,17 @@ import Parse
 extension ResultViewController {
     
     // Set contents to share
-    func setContentToShare (contentURLImage: String) {
+    func setContentToShare (imageURLStr: String) {
         
         //println(contentURLImage)
         
-        let contentURL = DataController.contentURL
+        let contentURLStr = DataController.contentURL
         let contentTitle = DataController.contentTitle + ": " + DataController.getDescription()
         let contentDescription = DataController.contentDescription
         
         let content : FBSDKShareLinkContent = FBSDKShareLinkContent()
-        content.imageURL = NSURL(string: contentURLImage)
-        content.contentURL = NSURL(string: contentURL)
+        content.imageURL = NSURL(string: imageURLStr)
+        content.contentURL = NSURL(string: contentURLStr)
         content.contentTitle = contentTitle
         content.contentDescription = contentDescription
         
@@ -440,7 +440,13 @@ extension ResultViewController {
         let imageForShare = drawUIImageResult()
         
         // let fileName = NSProcessInfo.processInfo().globallyUniqueString.stringByAppendingString(".png")
-        let fileName = DataController.getUserId() + "_" + UserLogged.logObject.objectId!.stringByAppendingString(".png")
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyyMMddHHmmss"
+        formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        let timestamp = formatter.stringFromDate(NSDate())
+        
+        let fileName = DataController.getUserId() + "_" + timestamp + ".png"
         let filePath = NSTemporaryDirectory().stringByAppendingPathComponent(fileName)
         let imageData = UIImagePNGRepresentation(imageForShare)
         imageData.writeToFile(filePath, atomically: true)
@@ -459,6 +465,7 @@ extension ResultViewController {
         
         transferManager.upload(uploadRequest).continueWithBlock { (task) -> AnyObject! in
             if task.result != nil {
+                
                 println("Upload to AmazonS3 done !")
                 let imgURL = "https://s3-ap-southeast-1.amazonaws.com/\(uploadRequest.bucket)/\(uploadRequest.key)"
                 self.setContentToShare(imgURL)
@@ -488,37 +495,6 @@ extension ResultViewController {
             return nil
         }
     }
-    
-    /*
-    func uploadResultImageToParse () {
-        
-        // Draw an UIImage to share to Facebook
-        let imageForShare = drawUIImageResult()
-        // let imageData: NSData = UIImagePNGRepresentation(imageForShare)
-        let imageData: NSData = UIImageJPEGRepresentation(imageForShare, 0)
-        
-        var newImageFile = PFFile(name: "UserGeneratedResult.png", data: imageData)
-        newImageFile.saveInBackgroundWithBlock({
-            (succeeded: Bool, error: NSError?) -> Void in
-            
-            // If saving the image is succeeded
-            if (error == nil) {
-                // Use the image url we got to share on Facebook
-                // self.setContentToShare(contentURLImage: newImageFile.url!)
-                // self.didFinishUploadResultImage()
-            }
-            }, progressBlock: { (percentDone: Int32) -> Void in
-                
-                // Show percentage of uploading an image
-                // println("percentDone: \(percentDone)")
-                
-        })
-        
-        // Save user result image to Parse, including the user information
-        UserLogged.saveUserInformation()
-        UserLogged.saveUserImageFile(newImageFile)
-    }
-    */
     
     func didFinishUploadResultImage () {
         dispatch_async(dispatch_get_main_queue(), {
@@ -612,82 +588,6 @@ extension ResultViewController {
 
 // MARK: - Capture screen methods
 extension ResultViewController {
-
-    func snapingUserDisplayPhotoView () -> UIImage {
-        
-        var screenShotImg = takeScreenShot()
-        
-        let cropingArea = self.userDisplayPhotoView.frame
-        var cropingImg  = cropingImage(screenShotImg, cropingArea: cropingArea)
-        
-        var newSize     = CGSize(width: 130, height: 130)
-        var resizeImg   = resizeImage(cropingImg , newSize: newSize)
-        
-        return resizeImg
-        
-    }
-
-    // A method for treditional approach, take a screenshot, then croping a specific area, and rescale
-    func snapingResult () -> UIImage {
-        
-        var screenShotImg = takeScreenShot()
-        
-        let cropingArea = self.backgroundImageView.frame
-        var cropingImg  = cropingImage(screenShotImg, cropingArea: cropingArea)
-        
-        var newSize     = CGSize(width: 420, height: 221)
-        var resizeImg   = resizeImage(cropingImg , newSize: newSize)
-        
-        return resizeImg
-    }
-    
-    func takeScreenShot () -> UIImage {
-        
-        // Make snapshot area, then shanp it to image
-        
-        let snapshotArea = self.view.frame.size
-        UIGraphicsBeginImageContext( snapshotArea )
-        
-        self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
-        
-        var screenShortImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext();
-        
-        return screenShortImage
-    }
-    
-    func cropingImage (image: UIImage, cropingArea: CGRect) -> UIImage {
-
-        var croppingImg:CGImageRef = image.CGImage
-        croppingImg = CGImageCreateWithImageInRect(croppingImg, cropingArea)
-        
-        return UIImage(CGImage: croppingImg)!
-    }
-    
-    func resizeImage(image: UIImage, newSize: CGSize) -> UIImage {
-        let newRect = CGRectIntegral(CGRectMake(0,0, newSize.width, newSize.height))
-        let imageRef = image.CGImage
-        
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
-        let context = UIGraphicsGetCurrentContext()
-        
-        // Set the quality level to use when rescaling
-        CGContextSetInterpolationQuality(context, kCGInterpolationHigh)
-        let flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
-        
-        CGContextConcatCTM(context, flipVertical)
-        // Draw into the context; this scales the image
-        CGContextDrawImage(context, newRect, imageRef)
-        
-        let newImageRef = CGBitmapContextCreateImage(context) as CGImage
-        let newImage = UIImage(CGImage: newImageRef)
-        
-        // Get the resized image from the context and a UIImage
-        UIGraphicsEndImageContext()
-        
-        return newImage!
-    }
-    
     func saveImageToAlbum (image: UIImage) {
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
     }
